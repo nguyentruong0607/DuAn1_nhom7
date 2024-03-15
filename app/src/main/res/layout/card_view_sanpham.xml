@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/card"
+        android:background="@color/white"
         android:padding="5dp">
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview_img"
@@ -24,7 +24,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/polo"
+                android:src="@drawable/iphone15"
                 />
 
         </androidx.cardview.widget.CardView>
@@ -38,7 +38,7 @@
             android:layout_toRightOf="@+id/cardview_img"
             android:paddingLeft="10dp"
             android:paddingRight="0dp"
-            android:text="Áo polo"
+            android:text="Iphone 15"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -54,7 +54,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="0dp"
             android:text="250.000đ"
-            android:textColor="@color/red"
+            android:textColor="@color/yellow"
             android:textSize="15dp" />
 
         <LinearLayout
@@ -68,13 +68,7 @@
             android:layout_marginRight="20dp"
             >
 
-            <ImageView
-                android:id="@+id/add_sanpham"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:src="@mipmap/plus"
-                android:layout_marginRight="10dp"/>
+
 
             <ImageView
                 android:id="@+id/info_sanpham"

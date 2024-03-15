@@ -1,10 +1,8 @@
-package com.example.nhom1.Adapter;
+package com.example.duan1_nhom7.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +18,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.nhom1.DAOModel.DAOGioHang;
-import com.example.nhom1.DAOModel.DAOUser;
-import com.example.nhom1.Fragment.ChiTietSPFrgm;
-import com.example.nhom1.Fragment.ChiTietSPSuaFrgm;
-import com.example.nhom1.Model.GioHang;
-import com.example.nhom1.Model.SanPham;
-import com.example.nhom1.Model.User;
-import com.example.nhom1.R;
+import com.example.duan1_nhom7.DTO.SanPham;
+import com.example.duan1_nhom7.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -36,9 +28,7 @@ import java.util.ArrayList;
 public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserViewHolder> {
 
     private Context context;
-    private ArrayList<SanPham> list;
-    DAOGioHang daoGioHang;
-    DAOUser daoUser;
+     ArrayList<SanPham> list;
     BottomNavigationView bottomNavigationView;
 
     public AdapterSanPham(Context context, ArrayList<SanPham> list) {
@@ -52,8 +42,6 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_sanpham, parent, false);
-        daoGioHang = new DAOGioHang(view.getContext());
-        daoUser = new DAOUser(view.getContext());
         bottomNavigationView = view.findViewById(R.id.navigation);
         return new UserViewHolder(view);
     }
@@ -62,88 +50,13 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
 //        Set Data cho List Item
         SanPham sanPham = list.get(position);
-        holder.TenSanPham.setText(sanPham.getTenSanPham());
-        holder.GiaTien.setText(String.valueOf(sanPham.getPrice()));
-        Picasso.get().load(sanPham.getImage()).into(holder.img_SanPham);
-        String outTongTien = String.format("%,.0f", sanPham.getPrice());
-        holder.GiaTien.setText(outTongTien + "đ");
-
-//        Set sự kiện Onclick cho các Button
-//        Buton xem sản phẩm
-
-//        Button thêm sản phẩm vào giỏ hàng (Icon ADD)
-        //su kien khi soluongSP =0 thì làm mờ
-        int soluongSP=sanPham.getSoLuongSP();
-        if (soluongSP>=1){
-            holder.itemView.setEnabled(true);
-            holder.itemView.setAlpha(1.0f);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loadFragment(new ChiTietSPFrgm(sanPham));
-                }
-            });
-            holder.add_sanpham.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                Khởi tạo Model
-                    GioHang gioHang = new GioHang(1, sanPham.getId(), 1, "M", "Đen",sanPham.getPrice());
-//                Check Valid SP (SanPham.ID, Size)
-                    ArrayList<GioHang> outList = daoGioHang.checkValidGioHang(gioHang);
-//                Toast.makeText(context, outList.size() + "", Toast.LENGTH_SHORT).show();
-                    if (outList.size() != 0) {
-//                - Có: Update số lượng
-                        GioHang gioHang1 = outList.get(0);
-//                    Toast.makeText(context, "OldSL: " + gioHang1.getSoLuong(), Toast.LENGTH_SHORT).show();
-                        int newSL = gioHang1.getSoLuong() + 1;
-//                    Toast.makeText(context, "NewSL" + newSL, Toast.LENGTH_SHORT).show();
-                        gioHang.setSoLuong(newSL);
-                        boolean kiemtra = daoGioHang.updateGioHang(gioHang);
-                        if (kiemtra) {
-                            notifyDataSetChanged();
-//                        Toast.makeText(context, "Done!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, "Update SL Fail!", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-//                - Không: Thêm sản phẩm
-                        boolean check = daoGioHang.addGiohang(gioHang);
-                        if (check) {
-                            Toast.makeText(context, "Thêm sản phẩm thành công!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, "Fail!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            });
-        }else{
-            holder.itemView.setEnabled(false);
-            holder.itemView.setAlpha(0.5f);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Sản phẩm không có sẵn", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-            holder.add_sanpham.setEnabled(false);
-        }
+        holder.TenSanPham.setText(sanPham.getTenSP());
+        holder.GiaTien.setText(String.valueOf(sanPham.getGiaTienSP()));
+        Picasso.get().load(sanPham.getAnhSP()).into(holder.img_SanPham);
 
 
-        SharedPreferences pref = context.getSharedPreferences("USER_FILE", context.MODE_PRIVATE);
-        int maUser = pref.getInt("MA", 0);
-        User user = daoUser.getUser(maUser);
-        int quyenUser = user.getMaChucVu();
-        if (quyenUser == 2) {
-            holder.info_sanpham.setVisibility(View.GONE);
-        }
 
-        holder.info_sanpham.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new ChiTietSPSuaFrgm(sanPham));
-            }
-        });
+
     }
 
     @Override
@@ -156,7 +69,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
-        private ImageView add_sanpham, info_sanpham, img_SanPham;
+        private ImageView  info_sanpham, img_SanPham;
         private TextView TenSanPham;
         private TextView GiaTien;
 
@@ -164,7 +77,6 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
             super(itemView);
             cardView = itemView.findViewById(R.id.cardview_sanPham);
             info_sanpham = itemView.findViewById(R.id.info_sanpham);
-            add_sanpham = itemView.findViewById(R.id.add_sanpham);
             img_SanPham = itemView.findViewById(R.id.img_sanpham);
             TenSanPham = itemView.findViewById(R.id.ten_sanpham);
             GiaTien = itemView.findViewById(R.id.gia_sanpham);
