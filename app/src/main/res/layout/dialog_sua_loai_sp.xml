@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@drawable/background_dialog"
+    android:orientation="vertical">
+
+
+
+    <EditText
+        android:id="@+id/sua_LinkImg_Loai_SP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/boder_edittextt"
+        android:text="Hi"
+        android:padding="12dp" />
+    <EditText
+        android:id="@+id/sua_Name_Loai_SP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/boder_edittextt"
+        android:text="Cu"
+        android:padding="12dp" />
+
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_Cancle_Sua_SP"
+            android:layout_weight="1"
+            android:text="Thoát"
+            android:layout_width="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_Sua_SP"
+            android:layout_weight="1"
+            android:text="Sửa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>
