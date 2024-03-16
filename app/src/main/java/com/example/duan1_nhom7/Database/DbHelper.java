@@ -9,17 +9,24 @@ import androidx.annotation.Nullable;
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME="duan1";
 
-    public static final int DB_VERSION=1;
+    public static final int DB_VERSION=2;
     public DbHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Tạo bảng TheLoai
         String createTableTheLoai = "CREATE TABLE THELOAI(id_Loai INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "tenLoai TEXT);";
+                "tenLoai TEXT, imgLoaiSP TEXT);";
         db.execSQL(createTableTheLoai);
-        db.execSQL("INSERT INTO THELOAI VALUES(1, 'Iphone'), (2, 'SamSung'), (3, 'Xiaomi');");
+        db.execSQL("INSERT INTO THELOAI VALUES(1, 'Apple', 'https://firebasestorage.googleapis.com/v0/b/testfirebase-c02f8.appspot.com/o/logo-apple-1.webp?alt=media&token=366883f4-a81b-49c0-a27e-bb82a99d6c89'), " +
+                "(2, 'Xiaomi', 'https://firebasestorage.googleapis.com/v0/b/testfirebase-c02f8.appspot.com/o/xiaomi.jpg?alt=media&token=25c8c84f-ef12-4998-86f2-b768c593e92f'), " +
+                "(3, 'SamSung', 'https://firebasestorage.googleapis.com/v0/b/testfirebase-c02f8.appspot.com/o/samsung.jpg?alt=media&token=bdab3eef-6c2e-4fe0-bed3-f949d2512f26'), " +
+                "(4, 'Lenovo', 'https://firebasestorage.googleapis.com/v0/b/testfirebase-c02f8.appspot.com/o/Lenovo_Global_Corporate_Logo.png?alt=media&token=759c0222-6f8b-4862-a60e-5bee6694d9c4'), " +
+                "(5, 'Huawei', 'https://firebasestorage.googleapis.com/v0/b/testfirebase-c02f8.appspot.com/o/hoawei.png?alt=media&token=15d0a466-26d9-4553-87f6-1d9ebb574fd7');");
+
+        // SanPham
         String createTableSanPham = ("CREATE TABLE SanPham(\n" +
                 "id_sanPham INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "anhSP TEXT,\n" +
@@ -41,5 +48,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropLoaiSP);
         String dropSanPham = "drop table if exists SanPham";
         db.execSQL(dropSanPham);
+
+        onCreate(db);
     }
 }
