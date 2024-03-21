@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME="duan1";
 
-    public static final int DB_VERSION=2;
+    public static final int DB_VERSION=3;
     public DbHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -38,6 +38,21 @@ public class DbHelper extends SQLiteOpenHelper {
                 ");");
         db.execSQL(createTableSanPham);
         db.execSQL("INSERT INTO SanPham VALUES(1, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 128gb',20000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50),(2, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 promax 128gb',30000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50)");
+
+        // user
+        String createTableUser = "create table User (" +
+                "id_user INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "ten_user TEXT NOT NULL, " +
+                "password TEXT NOT NULL," +
+                "sodienthoai TEXT NOT NULL," +
+                "diaChi TEXT NOT NULL," +
+                "fullname TEXT NOT NULL," +
+                "id_chucvu INTEGER REFERENCES Chucvu(id_chucvu))";
+        db.execSQL(createTableUser);
+        // chuc vu
+        String createTableChucVu = "CREATE TABLE Chucvu(id_chucvu INTEGER PRIMARY KEY , " +
+                "tenChucVu TEXT NOT NULL);";
+        db.execSQL(createTableChucVu);
     }
 
 

@@ -105,6 +105,28 @@
                             android:lines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_diachi"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:hint="Địa chỉ"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="10"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="@color/red"
+                        app:placeholderText="VD: abc123"
+                        app:startIconDrawable="@drawable/ic_person_black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_diachi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lines="1" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
 
 
                     <com.google.android.material.textfield.TextInputLayout
