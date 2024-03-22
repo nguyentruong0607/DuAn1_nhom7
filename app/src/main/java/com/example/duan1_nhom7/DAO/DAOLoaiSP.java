@@ -1,5 +1,6 @@
 package com.example.duan1_nhom7.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +18,7 @@ public class DAOLoaiSP {
     public DAOLoaiSP(Context context) {
         dbHelper = new DbHelper(context);
     }
-
+    @SuppressLint("Range")
     public List<LoaiSP> getAllLoaiSP() {
         List<LoaiSP> loaiSPList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();

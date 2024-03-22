@@ -75,12 +75,12 @@
                 android:src="@mipmap/plus"
                 android:layout_marginRight="10dp"/>
 
-            <ImageView
-                android:id="@+id/info_sanpham"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:src="@mipmap/more" />
+<!--            <ImageView-->
+<!--                android:id="@+id/info_sanpham"-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@mipmap/more" />-->
 
         </LinearLayout>
 

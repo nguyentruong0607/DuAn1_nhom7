@@ -27,7 +27,7 @@ public class SanPhamDAO {
 
         statement.bindString(1, anhSP);
         statement.bindString(2, tenSP);
-        statement.bindDouble(3, giaTienSP);
+        statement.bindString(3, giaTienSP+"");
         statement.bindLong(4, id_Loai);
         statement.bindString(5, moTaSP);
         statement.bindString(6,SoLuongSP+"");
@@ -68,7 +68,7 @@ public class SanPhamDAO {
             sql = "SELECT * FROM SanPham ORDER BY giaTienSP ASC";
         }
         if (rdoCheck == 2) {
-            sql = "SELECT * FROM SanPham ORDER BY MaLoai ASC";
+            sql = "SELECT * FROM SanPham ORDER BY id_Loai ASC";
         }
         return getData(sql);
     }
@@ -79,9 +79,9 @@ public class SanPhamDAO {
         return list.get(0);
     }
 
-    public ArrayList<SanPham> getSPofTL(int maLoai) {
-        String sql = "Select * FROM SanPham WHERE SanPham.id_Loai = ?";
-        ArrayList<SanPham> list = getData(sql, String.valueOf(maLoai));
+    public ArrayList<SanPham> getSPofTL(int id_Loai) {
+        String sql = "Select * FROM SanPham WHERE SanPham.id_Loai = ? ";
+        ArrayList<SanPham> list = getData(sql, String.valueOf(id_Loai));
         return list;
     }
 

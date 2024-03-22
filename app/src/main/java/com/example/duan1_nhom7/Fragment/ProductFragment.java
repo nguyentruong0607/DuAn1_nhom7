@@ -23,6 +23,7 @@ public class ProductFragment extends Fragment {
     AdapterSanPham adapterSanPham;
     SanPhamDAO sanPhamDAO;
     RecyclerView rcvProduct;
+    SanPham sanPham;
 
     @Nullable
     @Override
@@ -35,10 +36,15 @@ public class ProductFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rcvProduct=view.findViewById(R.id.rcvProduct);
-
         sanPhamDAO=new SanPhamDAO(getContext());
-        list=sanPhamDAO.getAllProduct(0);
-        adapterSanPham=new AdapterSanPham(getContext(), (ArrayList<SanPham>) list);
-        rcvProduct.setAdapter(adapterSanPham);
+
+
+        // Ensure sanPham is not null before accessing its methods
+        if (sanPham != null) {
+            int idLoai = sanPham.getId_Loai();
+            list = sanPhamDAO.getSPofTL(idLoai);
+            adapterSanPham = new AdapterSanPham(getContext(), (ArrayList<SanPham>) list);
+            rcvProduct.setAdapter(adapterSanPham);
+        }
     }
 }
