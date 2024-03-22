@@ -48,7 +48,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
 //        Set Data cho List Item
         SanPham sanPham = list.get(position);
         holder.TenSanPham.setText(sanPham.getTenSP());
-        holder.GiaTien.setText(String.valueOf(sanPham.getGiaTienSP()));
+        holder.GiaTien.setText(String.valueOf(sanPham.getGiaTienSP()+"VNĐ"));
         Picasso.get().load(sanPham.getAnhSP()).into(holder.img_SanPham);
 
 
@@ -73,7 +73,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardview_sanPham);
-            info_sanpham = itemView.findViewById(R.id.info_sanpham);
+//            info_sanpham = itemView.findViewById(R.id.info_sanpham);
             img_SanPham = itemView.findViewById(R.id.img_sanpham);
             TenSanPham = itemView.findViewById(R.id.ten_sanpham);
             GiaTien = itemView.findViewById(R.id.gia_sanpham);

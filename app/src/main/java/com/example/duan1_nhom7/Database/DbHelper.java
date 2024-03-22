@@ -38,6 +38,17 @@ public class DbHelper extends SQLiteOpenHelper {
                 ");");
         db.execSQL(createTableSanPham);
         db.execSQL("INSERT INTO SanPham VALUES(1, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 128gb',20000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50),(2, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 promax 128gb',30000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50)");
+        //Gio hang
+        String tableGioHang = "CREATE Table GioHang (\n" +
+                "id_gioHang INTEGER,\n" +
+                "id_sanPham INTEGER REFERENCES SanPham(id_sanPham),\n" +
+                "SoLuong INTEGER,\n" +
+                "Mau TEXT,\n"+
+                "DonGia DOUBLE\n" +
+                ");";
+        db.execSQL(tableGioHang);
+
+
     }
 
 
@@ -48,7 +59,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropLoaiSP);
         String dropSanPham = "drop table if exists SanPham";
         db.execSQL(dropSanPham);
-
+        String dropGioHang = "drop table if exists GioHang";
+        db.execSQL(dropGioHang);
         onCreate(db);
     }
 }

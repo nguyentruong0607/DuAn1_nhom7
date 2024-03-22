@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragment.StoreFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/floatLayout"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            >
+            <TextView
+                style="@style/edt_Label"
+                android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:text="Giỏ Hàng"
+                android:gravity="center_horizontal"
+                android:textSize="35dp"
+                />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_giohang"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="13dp" />
+
+        <TextView
+            android:id="@+id/txtNotifi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Vui lòng chọn sản phẩm!"
+            android:textSize="22dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/floatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:gravity="center"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+               android:layout_weight="1"
+                >
+
+                <TextView
+                    style="@style/edt_Label"
+                    android:text="Tổng tiền"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/txtGHTongTien"
+                    style="@style/edt_Label"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:text="0 VNĐ"
+                    android:textColor="#F60303"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnGioHangTT"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#FF9800"
+                android:text="Mua hàng"
+                android:textSize="22dp"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+
