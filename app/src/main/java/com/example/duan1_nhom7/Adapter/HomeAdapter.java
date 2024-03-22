@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.DTO.SanPham;
+import com.example.duan1_nhom7.Fragment.ChiTiet_SP_gioHang;
 import com.example.duan1_nhom7.R;
 import com.squareup.picasso.Picasso;
 
@@ -42,8 +43,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         SanPham sanPham = list.get(position);
         Picasso.get().load(sanPham.getAnhSP()).into(holder.itemSpHomeImg);
         holder.itemSpHomeTen.setText(sanPham.getTenSP());
-        holder.itemSpHomeGia.setText(sanPham.getGiaTienSP()+"");
-
+        holder.itemSpHomeGia.setText(sanPham.getGiaTienSP()+""+"VNĐ");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new ChiTiet_SP_gioHang(sanPham));
+            }
+        });
 
     }
 

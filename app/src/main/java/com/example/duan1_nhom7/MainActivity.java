@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             loadFragment(fragment);
             return true;
         } else if (item.getItemId() == R.id.pageBanHang) {
-            fragment = new LoaiSPFragment();
+            fragment = new StoreFragment();
             loadFragment(fragment);
             return true;
         } else if (item.getItemId() == R.id.pageTaiKhoan) {

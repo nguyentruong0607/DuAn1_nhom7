@@ -17,8 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.duan1_nhom7.Adapter.AdapterLoaiSP;
 import com.example.duan1_nhom7.Adapter.HomeAdapter;
+import com.example.duan1_nhom7.DAO.DAOLoaiSP;
 import com.example.duan1_nhom7.DAO.SanPhamDAO;
+import com.example.duan1_nhom7.DTO.LoaiSP;
 import com.example.duan1_nhom7.DTO.SanPham;
 import com.example.duan1_nhom7.R;
 
@@ -26,12 +29,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    RecyclerView rcv_allSP,rcv_allNewSP;
+    RecyclerView rcv_allSP,rcv_allNewSP,rcv_LoaiSPHome;
     private ArrayList<SanPham> listSp = new ArrayList<>();
     LinearLayout layoutParent;
     ViewFlipper viewFlipper;
     SanPhamDAO sanPhamDAO;
     HomeAdapter homeAdapter;
+    DAOLoaiSP daoLoaiSP;
+    AdapterLoaiSP adapterLoaiSP;
+    ArrayList<LoaiSP > listLoaiSP=new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,8 +54,15 @@ public class HomeFragment extends Fragment {
         layoutParent = view.findViewById(R.id.layoutParent);
         rcv_allSP = view.findViewById(R.id.rcv_AllSanPham);
         rcv_allNewSP=view.findViewById(R.id.rcv_SPnew);
+        rcv_LoaiSPHome=view.findViewById(R.id.rcv_LoaiSPHome);
         viewFlipper = view.findViewById(R.id.viewFlipper);
         viewFlipper();
+
+        daoLoaiSP=new DAOLoaiSP(getContext());
+        listLoaiSP= (ArrayList<LoaiSP>) daoLoaiSP.getAllLoaiSP();
+        adapterLoaiSP=new AdapterLoaiSP(getContext(),listLoaiSP);
+        rcv_LoaiSPHome.setAdapter(adapterLoaiSP);
+
         sanPhamDAO=new SanPhamDAO(getContext());
         listSp=sanPhamDAO.getAllProduct(0);
         homeAdapter=new HomeAdapter(listSp,getActivity());
