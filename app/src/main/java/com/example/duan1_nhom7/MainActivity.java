@@ -1,20 +1,16 @@
 package com.example.duan1_nhom7;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.duan1_nhom7.Fragment.Account_Fragment;
 import com.example.duan1_nhom7.Fragment.HomeFragment;
-import com.example.duan1_nhom7.Fragment.LoaiSPFragment;
 import com.example.duan1_nhom7.Fragment.ProductFragment;
 import com.example.duan1_nhom7.Fragment.StoreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.pageTrangChu);
         loadFragment(new HomeFragment());
+
+
 
     }
 
@@ -64,4 +62,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+
+
 }
