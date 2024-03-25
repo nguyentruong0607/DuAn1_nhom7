@@ -43,7 +43,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         SanPham sanPham = list.get(position);
         Picasso.get().load(sanPham.getAnhSP()).into(holder.itemSpHomeImg);
         holder.itemSpHomeTen.setText(sanPham.getTenSP());
-        holder.itemSpHomeGia.setText(sanPham.getGiaTienSP()+""+"VNĐ");
+//        holder.itemSpHomeGia.setText(sanPham.getGiaTienSP()+""+"VNĐ");
+        double giaSP = sanPham.getGiaTienSP();
+        String mGiaSP = String.format("%,.0f", giaSP);
+        holder.itemSpHomeGia.setText(mGiaSP + "VNĐ");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
