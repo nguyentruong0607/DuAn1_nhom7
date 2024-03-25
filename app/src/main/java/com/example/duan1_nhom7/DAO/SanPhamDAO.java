@@ -1,5 +1,7 @@
 package com.example.duan1_nhom7.DAO;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +11,7 @@ import com.example.duan1_nhom7.DTO.SanPham;
 import com.example.duan1_nhom7.Database.DbHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SanPhamDAO {
     private SQLiteDatabase database;
@@ -20,43 +23,39 @@ public class SanPhamDAO {
         database = dbHelper.getReadableDatabase();
     }
 
-    public void insertData(String anhSP, String tenSP, int giaTienSP, int id_Loai, String moTaSP,  int SoLuongSP) {
-        String sql = "INSERT INTO SanPham VALUES (NULL, ?,?,?,?,?,?)";
+    public void insertData(String anhSP, String tenSP, int giaTienSP, int id_Loai, String moTaSP,  int SoLuongSP, String ngaySP) {
+        String sql = "INSERT INTO SanPham VALUES (NULL, ?,?,?,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
-
-        statement.bindString(1, anhSP);
-        statement.bindString(2, tenSP);
-        statement.bindDouble(3, giaTienSP);
-        statement.bindLong(4, id_Loai);
-        statement.bindString(5, moTaSP);
-        statement.bindString(6,SoLuongSP+"");
-        statement.executeInsert();
-    }
-
-    public void updateSanPham(String anhSP, String tenSP, int giaTienSP, int id_Loai, String moTaSP, int id_sanPham, int SoLuongSP) {
-        String sql = "UPDATE SanPham SET anhSP = ?, tenSP = ?, giaTienSP = ?, id_Loai = ?, moTaSP = ?,SoLuongSP=? WHERE MaSanPham =?";
-        SQLiteStatement statement = database.compileStatement(sql);
 
         statement.bindString(1, anhSP);
         statement.bindString(2, tenSP);
         statement.bindString(3, giaTienSP+"");
         statement.bindLong(4, id_Loai);
         statement.bindString(5, moTaSP);
-        statement.bindString(6, SoLuongSP+"");
-        statement.bindString(7, id_sanPham+"");
-        statement.execute();
-        database.close();
+        statement.bindString(6,SoLuongSP+"");
+        statement.bindString(7,ngaySP);
+        statement.executeInsert();
     }
 
-    public void deleteData(int id_sanPham) {
 
-        String sql = "DELETE FROM SanPham WHERE id_sanPham = ?";
-        SQLiteStatement statement = database.compileStatement(sql);
-        statement.clearBindings();
-        statement.bindString(1, id_sanPham+"");
-        statement.execute();
-        database.close();
+    public int updateSanPham(SanPham sanPham){
+        ContentValues values = new ContentValues();
+        values.put("id_Loai",sanPham.getId_Loai());
+        values.put("tenSP", sanPham.getTenSP());
+        values.put("anhSP",sanPham.getAnhSP());
+        values.put("giaTienSP",sanPham.getGiaTienSP()+"");
+        values.put("moTaSP",sanPham.getMoTaSP());
+        values.put("SoLuongSP",sanPham.getSoLuongSP()+"");
+        values.put("ngaySP",sanPham.getNgaySP());
+
+       String [] tham_so=new String[]{sanPham.getId_sanPham()+""};
+       return database.update("SanPham",values,"id_sanPham=?",tham_so);
+
+    }
+    public int deleteData(SanPham sanPham) {
+
+        return database.delete("SanPham","id_sanPham=?",new String[]{sanPham.getId_sanPham()+""});
     }
 
     public ArrayList<SanPham> getAllProduct(int rdoCheck) {
@@ -65,10 +64,10 @@ public class SanPhamDAO {
             sql = "SELECT * FROM SanPham";
         }
         if (rdoCheck == 1) {
-            sql = "SELECT * FROM SanPham ORDER BY giaTienSP ASC";
+            sql = "SELECT * FROM SanPham ORDER BY ngaySP ASC";
         }
         if (rdoCheck == 2) {
-            sql = "SELECT * FROM SanPham ORDER BY MaLoai ASC";
+            sql = "SELECT * FROM SanPham ORDER BY id_Loai ASC";
         }
         return getData(sql);
     }
@@ -79,12 +78,45 @@ public class SanPhamDAO {
         return list.get(0);
     }
 
-    public ArrayList<SanPham> getSPofTL(int maLoai) {
-        String sql = "Select * FROM SanPham WHERE SanPham.id_Loai = ?";
-        ArrayList<SanPham> list = getData(sql, String.valueOf(maLoai));
+    public ArrayList<SanPham> getSPofTL(int id_Loai) {
+        String sql = "Select * FROM SanPham WHERE SanPham.id_Loai = ? ";
+        ArrayList<SanPham> list = getData(sql, String.valueOf(id_Loai));
         return list;
     }
+    @SuppressLint("Range")
+    public List<SanPham> getProductsByCategoryId(int Id_Loai) {
+        List<SanPham> productList = new ArrayList<>();
+        Cursor cursor = null;
 
+        try {
+            String query = "SELECT * FROM SanPham WHERE id_Loai = ?";
+            cursor = database.rawQuery(query, new String[]{String.valueOf(Id_Loai)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    // Extract data from the cursor and create SanPham object
+                     int id = cursor.getInt(cursor.getColumnIndex("id_sanPham"));
+                    String anhSP = cursor.getString(cursor.getColumnIndex("anhSP"));
+                    String tenSP = cursor.getString(cursor.getColumnIndex("tenSP"));
+                    int giaTienSP = cursor.getInt(cursor.getColumnIndex("giaTienSP"));
+                    String moTaSP = cursor.getString(cursor.getColumnIndex("moTaSP"));
+                    int soLuongSP = cursor.getInt(cursor.getColumnIndex("soLuongSP"));
+                    String ngaySP = cursor.getString(cursor.getColumnIndex("ngaySP"));
+
+                    // Create SanPham object
+                    SanPham sanPham = new SanPham(id, anhSP, tenSP, giaTienSP, Id_Loai, moTaSP, soLuongSP, ngaySP);
+                    productList.add(sanPham);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            database.close();
+        }
+
+        return productList;
+    }
     public ArrayList<SanPham> getData(String sql, String... selectionAGrs) {
         ArrayList<SanPham> list = new ArrayList<>();
         Cursor cursor = database.rawQuery(sql, selectionAGrs);
@@ -96,7 +128,8 @@ public class SanPhamDAO {
             int id_Loai = cursor.getInt(4);
             String moTaSP = cursor.getString(5);
             int soLuongSP=cursor.getInt(6);
-            list.add(new SanPham(id, anhSP, tenSP, giaTienSP, id_Loai, moTaSP, soLuongSP));
+            String ngaySP=cursor.getString(7);
+            list.add(new SanPham(id, anhSP, tenSP, giaTienSP, id_Loai, moTaSP, soLuongSP,ngaySP));
         }
         return list;
     }

@@ -8,9 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.DTO.LoaiSP;
+import com.example.duan1_nhom7.Fragment.ProductFragment;
 import com.example.duan1_nhom7.R;
 import com.squareup.picasso.Picasso;
 
@@ -62,6 +66,12 @@ public class AdapterLoaiSP extends RecyclerView.Adapter<AdapterLoaiSP.ViewHolder
                 }
             }
         });
+        holder.imageViewProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               loadFragment(new ProductFragment());
+            }
+        });
     }
 
     @Override
@@ -78,5 +88,11 @@ public class AdapterLoaiSP extends RecyclerView.Adapter<AdapterLoaiSP.ViewHolder
             textViewTenLoaiSP = itemView.findViewById(R.id.txtNameLoaiSP);
             imageViewProduct = itemView.findViewById(R.id.imageViewProduct);
         }
+    }
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

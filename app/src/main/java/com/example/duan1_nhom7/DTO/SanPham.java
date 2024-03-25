@@ -8,11 +8,11 @@ public class SanPham {
     int id_Loai;
     String moTaSP;
     int soLuongSP;
-
+    String ngaySP;
     public SanPham() {
     }
 
-    public SanPham(int id_sanPham, String anhSP, String tenSP, int giaTienSP, int id_Loai, String moTaSP, int soLuongSP) {
+    public SanPham(int id_sanPham, String anhSP, String tenSP, int giaTienSP, int id_Loai, String moTaSP, int soLuongSP, String ngaySP) {
         this.id_sanPham = id_sanPham;
         this.anhSP = anhSP;
         this.tenSP = tenSP;
@@ -20,6 +20,7 @@ public class SanPham {
         this.id_Loai = id_Loai;
         this.moTaSP = moTaSP;
         this.soLuongSP = soLuongSP;
+        this.ngaySP = ngaySP;
     }
 
     public int getId_sanPham() {
@@ -76,5 +77,13 @@ public class SanPham {
 
     public void setSoLuongSP(int soLuongSP) {
         this.soLuongSP = soLuongSP;
+    }
+
+    public String getNgaySP() {
+        return ngaySP;
+    }
+
+    public void setNgaySP(String ngaySP) {
+        this.ngaySP = ngaySP;
     }
 }

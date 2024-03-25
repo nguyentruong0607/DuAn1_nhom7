@@ -1,5 +1,6 @@
 package com.example.duan1_nhom7.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.duan1_nhom7.R;
 
 public class Account_Fragment extends Fragment {
-    private LinearLayout userFrgmTaiKhoan, userFrgmDoiMK, userFrgmTKDoanhThu, userFrgmTKNhanVien, userFrgmThemSP, userFrgmThemLSP, userFrgmThemNhanVien, userFrgmDangXuat;
+    private LinearLayout userFrgmTaiKhoan, userFrgmDoiMK, userFrgmTKDoanhThu, userFrgmTKNhanVien, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat;
     TextView txtUserName, txtChucVu;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -24,12 +26,17 @@ public class Account_Fragment extends Fragment {
 
 
         userFrgmThemSP = view.findViewById(R.id.userFrgmThemSP);
-
+        userFrgmLoaiSP=view.findViewById(R.id.userFrgmLoaiSP);
         userFrgmDangXuat = view.findViewById(R.id.userFrgmDangXuat);
         txtUserName = view.findViewById(R.id.txtUserName);
         txtChucVu = view.findViewById(R.id.txtChucVu);
 
-
+        userFrgmLoaiSP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new LoaiSPFragment());
+            }
+        });
         userFrgmThemSP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

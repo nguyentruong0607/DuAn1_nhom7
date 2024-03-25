@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@drawable/background_dialog"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="12dp"
+        android:text="Vui lòng chọn 1 phương thức thanh toán"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/btnZalopay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thanh toán bằng Zalopay"
+        android:backgroundTint="#00FFFF"
+        android:layout_marginHorizontal="30dp"
+        />
+
+    <Button
+        android:layout_marginHorizontal="30dp"
+        android:backgroundTint="#FF9800"
+        android:layout_marginTop="15dp"
+        android:id="@+id/btnTTKhiNhanHang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thanh toán khi nhận hàng"
+        android:layout_marginBottom="30dp"
+        />
+
+
+
+
+</LinearLayout>
