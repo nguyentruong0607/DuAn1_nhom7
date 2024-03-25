@@ -168,7 +168,7 @@ public class ChiTiet_SP_gioHang extends Fragment {
                     }
                     tongTien = tinhTien(soLuong, donGia, donGiaGoc);
                     String mTinhTien = String.format("%,.0f", tongTien);
-                    txtChiTietTongTien.setText(mTinhTien + "đ");
+                    txtChiTietTongTien.setText(mTinhTien + "VNĐ");
                 }
             }
         });
@@ -185,7 +185,7 @@ public class ChiTiet_SP_gioHang extends Fragment {
                     }
                     tongTien = tinhTien(soLuong, donGia, donGiaGoc);
                     String mTinhTien = String.format("%,.0f", tongTien);
-                    txtChiTietTongTien.setText(mTinhTien + "đ");
+                    txtChiTietTongTien.setText(mTinhTien + "VNĐ");
                 } else {
                     Toast.makeText(getActivity(), "Đã quá giới hạn số lượng" + " " + soLuong, Toast.LENGTH_SHORT).show();
                 }
@@ -198,14 +198,14 @@ public class ChiTiet_SP_gioHang extends Fragment {
         txtChiTietTenSp.setText(sanPham.getTenSP());
         double giaSP = sanPham.getGiaTienSP();
         String mGiaSP = String.format("%,.0f", giaSP);
-        txtChiTietGiaSP.setText(mGiaSP + "đ");
+        txtChiTietGiaSP.setText(mGiaSP + "VNĐ");
         txtChiTietMoTaSP.setText(sanPham.getMoTaSP());
 
         Picasso.get().load(sanPham.getAnhSP()).into(img_sp);
 
         tongTien = tinhTien(soLuong, donGia, donGiaGoc);
         String mTinhTien = String.format("%,.0f", tongTien);
-        txtChiTietTongTien.setText(mTinhTien + " đ");
+        txtChiTietTongTien.setText(mTinhTien + " VNĐ");
 
         AppCompatButton btnChiTietAddToCart = view.findViewById(R.id.btnChiTietAddToCart);
 
