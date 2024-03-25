@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="350dp"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -23,23 +23,16 @@
             android:background="@color/yellow"
             >
 
-            <ImageView
-                android:id="@+id/btnBackThemSP"
-                android:layout_width="30dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:src="@mipmap/leftarrow"
-                />
-
             <TextView
                 style="@style/edt_Label"
                 android:layout_width="match_parent"
                 android:layout_marginRight="30dp"
                 android:textStyle="bold"
-                android:text="Thêm sản phẩm"
+                android:text="Sửa sản phẩm"
                 android:layout_marginLeft="15dp"
                 android:textColor="@color/white"
                 android:textSize="22dp"
+                android:textAlignment="center"
                 />
 
         </LinearLayout>
@@ -63,7 +56,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/edNameSP"
+                    android:id="@+id/ed_suaNameSP"
                     style="@style/edt_TextBox2"
                     android:hint="Nhập tên Sản Phẩm"
                     android:layout_marginTop="5dp"
@@ -86,7 +79,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/edPrice"
+                    android:id="@+id/ed_suaPrice"
                     style="@style/edt_TextBox2"
                     android:hint="Nhập giá bán"
                     android:maxLength="8"
@@ -112,7 +105,7 @@
 
 
                 <Spinner
-                    android:id="@+id/edtLoaiSP"
+                    android:id="@+id/ed_suaLoaiSP"
                     style="@style/edt_TextBox2"
                     android:hint="Nhập loại Sản Phẩm"
                     android:layout_marginTop="5dp"
@@ -132,7 +125,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/edSoLuongSP"
+                    android:id="@+id/ed_suaSoLuongSP"
                     style="@style/edt_TextBox2"
                     android:hint="Nhập số lượng sản phẩm"
                     android:maxLength="7"
@@ -156,7 +149,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/edMoTa"
+                    android:id="@+id/ed_suaMoTa"
                     style="@style/edt_TextBox2"
                     android:hint="Nhập mô tả sản phẩm"
                     android:layout_marginTop="5dp"
@@ -176,21 +169,18 @@
 
                 <TextView
                     style="@style/edt_Label"
-                    android:text="Ngày thêm"
+                    android:text="Số lượng sản phẩm"
                     android:textColor="@color/yellow"
                     android:layout_marginLeft="10dp"
                     />
 
                 <EditText
-                    android:id="@+id/edNgaySP"
+                    android:id="@+id/ed_suaNgaySP"
                     style="@style/edt_TextBox2"
                     android:hint="Nhập ngày sản phẩm"
+                    android:inputType="number"
                     android:layout_marginTop="5dp"
                     android:textColorHint="@color/black"
-                    android:lines="2"
-                    android:maxLines="2"
-                    android:minLines="2"
-                    android:gravity="top"
                     />
 
             </LinearLayout>
@@ -208,7 +198,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/edImageSP"
+                    android:id="@+id/ed_suaImageSP"
                     style="@style/edt_TextBox2"
                     android:hint="Nhập link ảnh sản phẩm"
                     android:layout_marginTop="5dp"
@@ -231,17 +221,17 @@
             android:layout_marginBottom="15dp"
             >
             <Button
-                android:id="@+id/btn_huy_themSP"
+                android:id="@+id/btn_huy_suaSP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hủy"
                 android:backgroundTint="@color/yellow"
                 android:layout_marginRight="50dp"/>
             <Button
-                android:id="@+id/btn_themSP"
+                android:id="@+id/btn_suaSP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thêm"
+                android:text="Sửa"
                 android:backgroundTint="@color/yellow"/>
 
         </LinearLayout>
