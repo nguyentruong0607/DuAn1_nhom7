@@ -32,7 +32,7 @@
             android:id="@+id/ten_sanpham"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="15dp"
             android:layout_toRightOf="@+id/cardview_img"
             android:paddingLeft="10dp"
@@ -45,14 +45,14 @@
             android:id="@+id/gia_sanpham"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="25dp"
             android:layout_marginRight="15dp"
             android:layout_toLeftOf="@+id/boxicon"
             android:layout_toRightOf="@+id/cardview_img"
             android:paddingLeft="10dp"
             android:paddingRight="0dp"
-            android:text="250.000đ"
+            android:text="250.000VNĐ"
             android:textColor="#FB0707"
             android:textSize="15dp" />
 
@@ -64,7 +64,7 @@
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="5dp"
             >
 
             <ImageView
@@ -75,12 +75,12 @@
                 android:src="@mipmap/plus"
                 android:layout_marginRight="10dp"/>
 
-<!--            <ImageView-->
-<!--                android:id="@+id/info_sanpham"-->
-<!--                android:layout_width="25dp"-->
-<!--                android:layout_height="25dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:src="@mipmap/more" />-->
+            <ImageView
+                android:id="@+id/xoa_sanpham"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:src="@drawable/delete" />
 
         </LinearLayout>
 

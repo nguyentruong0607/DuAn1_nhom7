@@ -40,11 +40,11 @@ public class ProductFragment extends Fragment {
 
 
         // Ensure sanPham is not null before accessing its methods
-        if (sanPham != null) {
-            int idLoai = sanPham.getId_Loai();
-            list = sanPhamDAO.getSPofTL(idLoai);
+//        if (sanPham != null) {
+//            int idLoai = sanPham.getId_Loai();
+            list = sanPhamDAO.getAllProduct(2);
             adapterSanPham = new AdapterSanPham(getContext(), (ArrayList<SanPham>) list);
             rcvProduct.setAdapter(adapterSanPham);
-        }
+       //}
     }
 }

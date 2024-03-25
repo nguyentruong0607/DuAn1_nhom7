@@ -33,11 +33,12 @@ public class DbHelper extends SQLiteOpenHelper {
                 "tenSP TEXT,\n" +
                 "giaTienSP Integer,\n" +
                 "id_Loai INTEGER REFERENCES THELOAI(id_Loai),\n" +
-                "moTaSP TEXT,\n" +"soLuongSP INTEGER\n"+
+                "moTaSP TEXT,\n" +"soLuongSP INTEGER,\n" +" ngaySP TEXT\n"+
 
                 ");");
         db.execSQL(createTableSanPham);
-        db.execSQL("INSERT INTO SanPham VALUES(1, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 128gb',20000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50),(2, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 promax 128gb',30000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50)");
+        db.execSQL("INSERT INTO SanPham VALUES(1, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 128gb',20000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50,'3/3/30224'),"+
+                "(2, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 promax 128gb',30000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50,'21/3/2024')");
         //Gio hang
         String tableGioHang = "CREATE Table GioHang (\n" +
                 "id_gioHang INTEGER,\n" +
