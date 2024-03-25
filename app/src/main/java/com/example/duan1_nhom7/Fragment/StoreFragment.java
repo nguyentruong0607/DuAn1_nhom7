@@ -1,12 +1,14 @@
 package com.example.duan1_nhom7.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import com.example.duan1_nhom7.Adapter.AdapterGioHang;
 import com.example.duan1_nhom7.DAO.GioHangDAO;
 import com.example.duan1_nhom7.DTO.GioHang;
 import com.example.duan1_nhom7.R;
+import com.example.duan1_nhom7.ThanhToanActivity;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,7 @@ public class StoreFragment extends Fragment {
     public static TextView txtGHTongTien;
     double tongTien = 0;
     ImageView iconRefreshStore;
+    Button btnThanhToan;
 
     @Nullable
     @Override
@@ -42,8 +46,27 @@ public class StoreFragment extends Fragment {
         daoGioHang= new GioHangDAO(getContext());
         recycle_gioHang=view.findViewById(R.id.recycle_giohang);
         txtGHTongTien=view.findViewById(R.id.txtGHTongTien);
+        btnThanhToan = view.findViewById(R.id.btnGioHangTT);
         listGioHang=daoGioHang.getGioHang();
          createData();
+
+        btnThanhToan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (txtGHTongTien.getText().toString().equals("0 VNĐ") || txtGHTongTien.getText().toString().equals("0VNĐ")) {
+                    Toast.makeText(getContext(), "Giỏ hàng của bạn đang trống.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getActivity(), ThanhToanActivity.class);
+                    String tongTienThanhToan = txtGHTongTien.getText().toString();
+                    intent.putExtra("tong_tien", tongTienThanhToan);
+                    startActivity(intent);
+
+                }
+            }
+
+        });
+
     }
     private void createData() {
         daoGioHang = new GioHangDAO(getContext());
