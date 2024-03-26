@@ -49,8 +49,24 @@ public class DbHelper extends SQLiteOpenHelper {
                 ");";
         db.execSQL(tableGioHang);
 
-
+        // User
+        String createTableUser = "create table User (" +
+                "id_user INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "ten_user TEXT NOT NULL, " +
+                "password TEXT NOT NULL," +
+                "sodienthoai TEXT NOT NULL," +
+                "diaChi TEXT NOT NULL," +
+                "fullname TEXT NOT NULL," +
+                "id_chucvu INTEGER REFERENCES Chucvu(id_chucvu))";
+        db.execSQL(createTableUser);
+        // chuc vu
+        String createTableChucVu = "CREATE TABLE Chucvu(id_chucvu INTEGER PRIMARY KEY , " +
+                "tenChucVu TEXT NOT NULL);";
+        db.execSQL(createTableChucVu);
     }
+
+
+
 
 
 
