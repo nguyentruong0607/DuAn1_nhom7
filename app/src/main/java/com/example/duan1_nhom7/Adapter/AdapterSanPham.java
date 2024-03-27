@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.DAO.DAOLoaiSP;
 import com.example.duan1_nhom7.DAO.SanPhamDAO;
+import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.LoaiSP;
 import com.example.duan1_nhom7.DTO.SanPham;
+import com.example.duan1_nhom7.DTO.User;
 import com.example.duan1_nhom7.Fragment.ChiTiet_SP_gioHang;
 import com.example.duan1_nhom7.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -49,6 +52,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
     DAOLoaiSP daoLoaiSP;
     List<LoaiSP> listLoai;
 
+    UserDAO userDAO;
     public AdapterSanPham(Context context, ArrayList<SanPham> list) {
         this.context = context;
         this.list = list;
@@ -80,6 +84,20 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
                 loadFragment(new ChiTiet_SP_gioHang(sanPham));
             }
         });
+        userDAO=new UserDAO(context);
+
+        //set quyền
+        SharedPreferences pref = context.getSharedPreferences("USER_FILE", context.MODE_PRIVATE);
+        int id_user = pref.getInt("MA", 0);
+        User user = userDAO.getUser(id_user);
+            int quyenUser = user.getChucvu();
+            if (quyenUser != 1) {
+                holder.xoa_sanpham.setVisibility(View.GONE);
+                holder.sua_sanPham.setVisibility(View.GONE);
+            }else {
+                holder.add_sanPham.setVisibility(View.GONE);
+            }
+
         holder.xoa_sanpham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +111,6 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
                          sanPhamDAO=new SanPhamDAO(v.getContext());
                         if(sanPhamDAO.deleteData(sanPham)>0){
                             list.remove(sanPham);
-                            Toast.makeText(context, "Delete Access "+sanPham.getTenSP(), Toast.LENGTH_SHORT).show();
                             sanPhamDAO.getAllProduct(0);
                             notifyItemRemoved(position);
                         }
@@ -102,7 +119,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
                 builder.show();
             }
         });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.sua_sanPham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(context);
@@ -210,7 +227,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
-        private ImageView xoa_sanpham, img_SanPham,add_sanPham;
+        private ImageView xoa_sanpham, img_SanPham,add_sanPham,sua_sanPham;
         private TextView TenSanPham;
         private TextView GiaTien;
 
@@ -220,6 +237,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
             xoa_sanpham = itemView.findViewById(R.id.xoa_sanpham);
             img_SanPham = itemView.findViewById(R.id.img_sanpham);
             add_sanPham=itemView.findViewById(R.id.add_sanpham);
+            sua_sanPham=itemView.findViewById(R.id.sua_sanpham);
             TenSanPham = itemView.findViewById(R.id.ten_sanpham);
             GiaTien = itemView.findViewById(R.id.gia_sanpham);
         }

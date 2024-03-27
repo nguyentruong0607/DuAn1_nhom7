@@ -6,8 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import com.example.duan1_nhom7.DTO.SanPham;
+import com.example.duan1_nhom7.DTO.User;
 import com.example.duan1_nhom7.Database.DbHelper;
 
 import java.util.ArrayList;
@@ -94,7 +96,6 @@ public class SanPhamDAO {
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    // Extract data from the cursor and create SanPham object
                      int id = cursor.getInt(cursor.getColumnIndex("id_sanPham"));
                     String anhSP = cursor.getString(cursor.getColumnIndex("anhSP"));
                     String tenSP = cursor.getString(cursor.getColumnIndex("tenSP"));
@@ -103,7 +104,6 @@ public class SanPhamDAO {
                     int soLuongSP = cursor.getInt(cursor.getColumnIndex("soLuongSP"));
                     String ngaySP = cursor.getString(cursor.getColumnIndex("ngaySP"));
 
-                    // Create SanPham object
                     SanPham sanPham = new SanPham(id, anhSP, tenSP, giaTienSP, Id_Loai, moTaSP, soLuongSP, ngaySP);
                     productList.add(sanPham);
                 } while (cursor.moveToNext());

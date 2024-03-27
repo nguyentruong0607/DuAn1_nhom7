@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="5dp"
-                        android:buttonTint="@color/black"
+                        android:buttonTint="#FF9800"
                         android:padding="8dp"
 
                         android:text="Remember me ?"
