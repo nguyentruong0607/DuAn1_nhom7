@@ -52,7 +52,7 @@ android:padding="10dp">
     android:orientation="vertical">
 
     <TextView
-        android:text="Menu Sản Phẩm"
+        android:text="Menu sản phẩm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

@@ -2,6 +2,7 @@ package com.example.duan1_nhom7.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.SanPham;
+import com.example.duan1_nhom7.DTO.User;
+import com.example.duan1_nhom7.Fragment.ChiTiet_SP_Fragment;
 import com.example.duan1_nhom7.Fragment.ChiTiet_SP_gioHang;
 import com.example.duan1_nhom7.R;
 import com.squareup.picasso.Picasso;
@@ -24,7 +28,7 @@ import java.util.ArrayList;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     private ArrayList<SanPham> list;
     private Context context;
-
+   UserDAO userDAO;
     public HomeAdapter(ArrayList<SanPham> list, Context context) {
         this.list = list;
         this.context = context;
@@ -47,12 +51,29 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         double giaSP = sanPham.getGiaTienSP();
         String mGiaSP = String.format("%,.0f", giaSP);
         holder.itemSpHomeGia.setText(mGiaSP + "VNĐ");
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new ChiTiet_SP_gioHang(sanPham));
-            }
-        });
+        userDAO=new UserDAO(context);
+
+        //set quyền
+        SharedPreferences pref = context.getSharedPreferences("USER_FILE", context.MODE_PRIVATE);
+        int id_user = pref.getInt("MA", 0);
+        User user = userDAO.getUser(id_user);
+        int quyenUser = user.getChucvu();
+       if (quyenUser != 1) {
+
+           holder.itemView.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   loadFragment(new ChiTiet_SP_gioHang(sanPham));
+               }
+           });
+       }else{
+           holder.itemView.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   loadFragment(new ChiTiet_SP_Fragment(sanPham));
+               }
+           });
+       }
 
     }
 

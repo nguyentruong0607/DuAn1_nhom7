@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.duan1_nhom7.DTO.SanPham;
 import com.example.duan1_nhom7.Fragment.Account_Fragment;
 import com.example.duan1_nhom7.Fragment.HomeFragment;
 import com.example.duan1_nhom7.Fragment.LoaiSPFragment;
@@ -21,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     public static BottomNavigationView bottomNavigationView;
-
+    SanPham sanPham;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             loadFragment(fragment);
             return true;
         } else if (item.getItemId() == R.id.pageSanPham) {
-            fragment = new ProductFragment();
+            fragment = new ProductFragment(sanPham);
             loadFragment(fragment);
             return true;
         } else if (item.getItemId() == R.id.pageBanHang) {

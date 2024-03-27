@@ -1,25 +1,38 @@
 package com.example.duan1_nhom7.DTO;
 
 public class User {
-    private int id_user;
-    private String ten_user;
-    private String password;
-    private String sodienthoai;
-    private String diaChi;
-    private String fullname;
-    private int id_chucvu;
+     int id_user;
+     String ten_user;
+     String password;
+     String sodienthoai;
+     String diaChi;
+     String fullname;
+     int Chucvu;
 
 
-    public User() {
-    }
 
-    public User(String ten_user, String password, String sodienthoai, String diaChi, String fullname, int id_chucvu) {
+
+    public User(String ten_user, String password, String sodienthoai, String diaChi, String fullname) {
         this.ten_user = ten_user;
         this.password = password;
         this.sodienthoai = sodienthoai;
         this.diaChi = diaChi;
         this.fullname = fullname;
-        this.id_chucvu = id_chucvu;
+
+    }
+
+    public User(int id_user, String ten_user, String password, String sodienthoai, String diaChi, String fullname, int Chucvu) {
+        this.id_user = id_user;
+        this.ten_user = ten_user;
+        this.password = password;
+        this.sodienthoai = sodienthoai;
+        this.diaChi = diaChi;
+        this.fullname = fullname;
+        this.Chucvu = Chucvu;
+    }
+
+    public User() {
+
     }
 
     public int getId_user() {
@@ -70,11 +83,11 @@ public class User {
         this.fullname = fullname;
     }
 
-    public int getId_chucvu() {
-        return id_chucvu;
+    public int getChucvu() {
+        return Chucvu;
     }
 
-    public void setId_chucvu(int id_chucvu) {
-        this.id_chucvu = id_chucvu;
+    public void setChucvu(int chucvu) {
+        Chucvu = chucvu;
     }
 }
