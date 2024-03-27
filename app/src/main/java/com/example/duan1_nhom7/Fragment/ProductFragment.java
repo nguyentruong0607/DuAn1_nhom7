@@ -25,6 +25,10 @@ public class ProductFragment extends Fragment {
     RecyclerView rcvProduct;
     SanPham sanPham;
 
+    public ProductFragment(SanPham sanPham) {
+        this.sanPham = sanPham;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,12 +43,11 @@ public class ProductFragment extends Fragment {
         sanPhamDAO=new SanPhamDAO(getContext());
 
 
-        // Ensure sanPham is not null before accessing its methods
 //        if (sanPham != null) {
 //            int idLoai = sanPham.getId_Loai();
-            list = sanPhamDAO.getAllProduct(2);
+            list = sanPhamDAO.getAllProduct(1);
             adapterSanPham = new AdapterSanPham(getContext(), (ArrayList<SanPham>) list);
             rcvProduct.setAdapter(adapterSanPham);
-       //}
+        //}
     }
 }

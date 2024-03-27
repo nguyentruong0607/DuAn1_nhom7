@@ -1,6 +1,7 @@
 package com.example.duan1_nhom7.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.Adapter.AdapterGioHang;
 import com.example.duan1_nhom7.DAO.GioHangDAO;
+import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.GioHang;
+import com.example.duan1_nhom7.DTO.User;
 import com.example.duan1_nhom7.R;
 import com.example.duan1_nhom7.ThanhToanActivity;
 
@@ -32,12 +35,23 @@ public class StoreFragment extends Fragment {
     double tongTien = 0;
     ImageView iconRefreshStore;
     Button btnThanhToan;
+    UserDAO daoUser;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_store,container,false);
-        return  view;
+        daoUser=new UserDAO(getContext());
+        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", getActivity().MODE_PRIVATE);
+        int id_user = pref.getInt("MA", 0);
+        User user = daoUser.getUser(id_user);
+        int quyenUser = user.getChucvu();
+        if (quyenUser != 1) {
+            View view=inflater.inflate(R.layout.fragment_store,container,false);
+            return  view;
+            }
+
+
+        return null;
     }
 
     @Override

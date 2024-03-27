@@ -73,19 +73,19 @@ public class RegisterActivity extends AppCompatActivity {
         String dc=edt_diachi.getText().toString();
         String user1=edt_registerUser.getText().toString();
         String pass=edt_registerPass.getText().toString();
-        User user = new User(user1,pass,dt,dc,ten,1);
+        User user = new User(user1,pass,dt,dc,ten);
 
         if(valName()|valPass()|valPhone()|valUser()|valDiaChi()){
 
             if(userDAO.insert(user)>0){
                 Log.i("aaaaaaaaaaa","thanhcong");
-                Toast.makeText(this, "thanhcong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this , LoginActivity.class);
                 startActivity(intent);
 
             }else {
                 Log.i("aaaaaaaaaaa","bai vc");
-                Toast.makeText(this, "bai", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -127,8 +127,8 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
 
 
-        } else if (valPhone.length() > 10  || valPhone.length() < 10 ) {
-            text_inputLayoutPhone.setError("Số điện thoại có 10 số.");
+        } else if (!valPhone.matches("^0[3589]{1}\\d{8}$") ) {
+            text_inputLayoutPhone.setError("Số điện thoại phải đúng định dạng.");
             return false;
 
         } else if (!ischeckPhone(valPhone)) {

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.DTO.LoaiSP;
+import com.example.duan1_nhom7.DTO.SanPham;
 import com.example.duan1_nhom7.Fragment.ProductFragment;
 import com.example.duan1_nhom7.R;
 import com.squareup.picasso.Picasso;
@@ -25,6 +26,7 @@ public class AdapterLoaiSP extends RecyclerView.Adapter<AdapterLoaiSP.ViewHolder
     private Context context;
     private List<LoaiSP> loaiSPList;
     private OnItemClickListener onItemClickListener;
+    SanPham sanPham;
 
     public AdapterLoaiSP(Context context, List<LoaiSP> loaiSPList) {
         this.context = context;
@@ -69,7 +71,7 @@ public class AdapterLoaiSP extends RecyclerView.Adapter<AdapterLoaiSP.ViewHolder
         holder.imageViewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               loadFragment(new ProductFragment());
+               loadFragment(new ProductFragment(sanPham));
             }
         });
     }
