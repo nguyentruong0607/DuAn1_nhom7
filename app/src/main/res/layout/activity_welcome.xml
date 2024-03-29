@@ -24,6 +24,6 @@
         android:layout_marginEnd="23dp"
         android:layout_marginBottom="318dp"
         android:text="Welcome Poly Phone"
-        android:textColor="#FB4106"
+        android:textColor="#FF9800"
         android:textSize="40dp" />
 </RelativeLayout>

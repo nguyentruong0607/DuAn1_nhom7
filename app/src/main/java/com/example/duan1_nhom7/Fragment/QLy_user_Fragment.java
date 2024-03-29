@@ -40,38 +40,39 @@ public class QLy_user_Fragment extends Fragment {
     AdapterUser adapterUser;
     UserDAO dao;
     ImageView img_add;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_qly_user,container,false);
+        View view = inflater.inflate(R.layout.fragment_qly_user, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rcv=view.findViewById(R.id.rcv_user);
-        img_add=view.findViewById(R.id.img_add_user);
+        rcv = view.findViewById(R.id.rcv_user);
+        img_add = view.findViewById(R.id.img_add_user);
         img_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.dialog_add_user);
-                TextInputEditText ed_them_fullname,ed_them_sdtuser,ed_them_tenuser,ed_them_mkuser,ed_them_diaChiUser;
-                ed_them_fullname=dialog.findViewById(R.id.ed_them_fullname);
-                ed_them_sdtuser=dialog.findViewById(R.id.ed_them_sdtuser);
-                ed_them_tenuser=dialog.findViewById(R.id.ed_them_tenuser);
-                ed_them_mkuser=dialog.findViewById(R.id.ed_them_mkuser);
-                ed_them_diaChiUser=dialog.findViewById(R.id.ed_them_diaChi_user);
-                TextInputLayout elt_them_fullname,elt_them_sdtuser,elt_them_tenuser,elt_them_mkuser,elt_them_diaChiUser;
-                elt_them_fullname=dialog.findViewById(R.id.elt_them_fullname);
-                elt_them_sdtuser=dialog.findViewById(R.id.elt_them_sdtuser);
-                elt_them_tenuser=dialog.findViewById(R.id.etl_them_tenuser);
-                elt_them_mkuser=dialog.findViewById(R.id.etl_them_mkuser);
-                elt_them_diaChiUser=dialog.findViewById(R.id.etl_them_diaChi_user);
+                TextInputEditText ed_them_fullname, ed_them_sdtuser, ed_them_tenuser, ed_them_mkuser, ed_them_diaChiUser;
+                ed_them_fullname = dialog.findViewById(R.id.ed_them_fullname);
+                ed_them_sdtuser = dialog.findViewById(R.id.ed_them_sdtuser);
+                ed_them_tenuser = dialog.findViewById(R.id.ed_them_tenuser);
+                ed_them_mkuser = dialog.findViewById(R.id.ed_them_mkuser);
+                ed_them_diaChiUser = dialog.findViewById(R.id.ed_them_diaChi_user);
+                TextInputLayout elt_them_fullname, elt_them_sdtuser, elt_them_tenuser, elt_them_mkuser, elt_them_diaChiUser;
+                elt_them_fullname = dialog.findViewById(R.id.elt_them_fullname);
+                elt_them_sdtuser = dialog.findViewById(R.id.elt_them_sdtuser);
+                elt_them_tenuser = dialog.findViewById(R.id.etl_them_tenuser);
+                elt_them_mkuser = dialog.findViewById(R.id.etl_them_mkuser);
+                elt_them_diaChiUser = dialog.findViewById(R.id.etl_them_diaChi_user);
 
                 Button btn_them_user = dialog.findViewById(R.id.btn_them_user);
-                Button btn_huy_user=dialog.findViewById(R.id.btn_huy_user);
+                Button btn_huy_user = dialog.findViewById(R.id.btn_huy_user);
                 btn_huy_user.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -97,7 +98,7 @@ public class QLy_user_Fragment extends Fragment {
                         if (checkTrong()) {
                             return;
                         }
-                        if (kiemTraKyTu()){
+                        if (kiemTraKyTu()) {
                             return;
                         }
                         long res = dao.insert(obj);
@@ -152,16 +153,17 @@ public class QLy_user_Fragment extends Fragment {
                         }
                         return isEmpty;
                     }
+
                     public boolean kiemTraKyTu() {
                         boolean isEmpty = false;
-                        if (ed_them_tenuser.getText().toString().length()<4) {
+                        if (ed_them_tenuser.getText().toString().length() < 4) {
                             elt_them_tenuser.setError("Tài khoản nhập tối thiểu 4 ký tự!");
                             isEmpty = true;
                         } else {
                             elt_them_tenuser.setErrorEnabled(false);
 
                         }
-                        if (ed_them_mkuser.getText().toString().length()<4) {
+                        if (ed_them_mkuser.getText().toString().length() < 4) {
                             elt_them_mkuser.setError("Mật khẩu nhập tối thiểu 4 ký tự!");
                             isEmpty = true;
                         } else {
@@ -182,14 +184,12 @@ public class QLy_user_Fragment extends Fragment {
             }
 
         });
-        dao=new UserDAO(getContext());
-        list= (ArrayList<User>) dao.getAllUser();
-        adapterUser=new AdapterUser(list,getContext());
+        dao = new UserDAO(getContext());
+        list = (ArrayList<User>) dao.getAllUser();
+        adapterUser = new AdapterUser(list, getContext());
         rcv.setAdapter(adapterUser);
     }
 
 
-
-
-    }
+}
 

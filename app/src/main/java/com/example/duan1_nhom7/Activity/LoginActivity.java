@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +19,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.duan1_nhom7.DAO.AdminDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.User;
 import com.example.duan1_nhom7.MainActivity;
+import com.example.duan1_nhom7.MainActivity_Admin;
 import com.example.duan1_nhom7.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,7 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_login;
     CheckBox checkBox;
     UserDAO userDAO;
-
+    AdminDAO adminDAO;
+    RadioButton rdoAdmin,rdoKhachHang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,42 @@ public class LoginActivity extends AppCompatActivity {
         tv_loginRegister.setOnClickListener(v -> {
             nextRegister();
         });
+        rdoAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_loginRegister.setVisibility(View.GONE);
+
+            }
+        });
+        rdoKhachHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_loginRegister.setVisibility(View.VISIBLE);
+            }
+        });
+        SharedPreferences sharedPreferences = getSharedPreferences("nhotaiKhoan", MODE_PRIVATE);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                if (isChecked) {
+                    editor.putString("username", ed_user.getText().toString());
+                    editor.putString("password", ed_pass.getText().toString());
+                } else {
+                    editor.remove("username");
+                    editor.remove("password");
+                }
+                editor.apply();
+            }
+        });
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
+        if (!username.isEmpty() && !password.isEmpty()) {
+            ed_user.setText(username);
+            ed_pass.setText(password);
+        } else {
+            // Không có tài khoản và mật khẩu được lưu trữ.
+        }
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,19 +108,55 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
 //                Kiểm tra User tồn tại
-                if (checkLogin) {
-                    ArrayList<User> list = userDAO.checkLogin(strUser, strPass);
-                    if (list.size() > 0) {
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                if (checkLogin) {
+//                    ArrayList<User> list = userDAO.checkLogin(strUser, strPass);
+//                    if (list.size() > 0) {
+//                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        intent.putExtra("user", strUser);
+//                        startActivity(intent);
+//                        User user = list.get(0);
+//                        int id_user = user.getId_user();
+//                        remmemberUser(id_user, strUser, strPass, checkBox.isChecked());
+//                        closeKeyboard();
+//                    } else {
+//                        Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+                // Kiểm tra đã chọn quyền hay chưa
+                if (!rdoAdmin.isChecked() && !rdoKhachHang.isChecked()) {
+                    Toast.makeText(LoginActivity.this, "Vui lòng chọn quyền!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Kiểm tra và xử lý đăng nhập cho người dùng khách hàng
+                if (rdoKhachHang.isChecked()) {
+                    if (userDAO.checkLogin(strUser, strPass)) {
+                        SharedPreferences shareQuyen = getSharedPreferences("luuDangNhap", MODE_PRIVATE);
+                        SharedPreferences.Editor edit = shareQuyen.edit();
+                        edit.putString("TK", strUser);
+                        edit.putString("quyen", "khachhang");
+                        edit.apply();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("user", strUser);
                         startActivity(intent);
-                        User user = list.get(0);
-                        int id_user = user.getId_user();
-                        remmemberUser(id_user, strUser, strPass, checkBox.isChecked());
-                        closeKeyboard();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                // Kiểm tra và xử lý đăng nhập cho người dùng quản trị viên
+                adminDAO=new AdminDAO(getApplicationContext());
+                if (rdoAdmin.isChecked()) {
+                    if (adminDAO.checkDangNhap(strUser, strPass)) {
+                        SharedPreferences shareQuyen = getSharedPreferences("luuDangNhap", MODE_PRIVATE);
+                        SharedPreferences.Editor edit = shareQuyen.edit();
+                        edit.putString("TK", strUser);
+                        edit.putString("quyen", "admin");
+                        edit.apply();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity_Admin.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -103,38 +180,14 @@ public class LoginActivity extends AppCompatActivity {
         text_inputLayoutLoginUser = findViewById(R.id.text_inputLayoutLoginUser);
         text_inputLayoutLoginPass = findViewById(R.id.text_inputLayoutLoginPass);
         checkBox=findViewById(R.id.ckb_loginRemember);
-        //        Get Data từ SharedPreferences
-        SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        String user = pref.getString("USERNAME", "");
-        String pass = pref.getString("PASSWORD", "");
-        boolean rem = pref.getBoolean("REMEMBER", false);
-        ed_user.setText(user);
-        ed_pass.setText(pass);
-        checkBox.setChecked(rem);
+        rdoAdmin=findViewById(R.id.rdoNhanVien);
+        rdoKhachHang=findViewById(R.id.rdokhachHang);
+
     }
 
 
-    public void remmemberUser(int id_user, String u, String p, boolean status) {
-        SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        if (!status) {
-            editor.clear();
-        } else {
-            editor.putInt("MA", id_user);
-            editor.putString("USERNAME", u);
-            editor.putString("PASSWORD", p);
-            editor.putBoolean("REMEMBER", status);
-        }
-        editor.commit();
-    }
 
-    private void closeKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+
 
 
 }

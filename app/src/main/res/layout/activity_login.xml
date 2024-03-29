@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff5e00"
+    android:background="#FF9800"
     tools:context=".Activity.LoginActivity">
 
     <ScrollView
@@ -32,8 +32,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Đăng nhập"
                     android:layout_marginTop="60dp"
+                    android:text="Đăng nhập"
                     android:textColor="@color/white"
                     android:textSize="50sp"
                     android:textStyle="bold" />
@@ -66,6 +66,7 @@
                         android:textColor="@color/black"
                         app:endIconMode="clear_text"
                         app:startIconDrawable="@drawable/ic_person_black">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edt_loginUser"
                             android:layout_width="match_parent"
@@ -100,7 +101,6 @@
                         android:id="@+id/ckb_loginRemember"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="5dp"
                         android:buttonTint="#FF9800"
                         android:padding="8dp"
@@ -108,13 +108,35 @@
                         android:text="Remember me ?"
                         android:textColor="@color/black" />
 
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RadioButton
+                            android:id="@+id/rdokhachHang"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:text="Khách hàng"
+                            android:textSize="18sp" />
+
+                        <RadioButton
+                            android:id="@+id/rdoNhanVien"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:text="Admin"
+                            android:textSize="18sp" />
+                    </RadioGroup>
 
                     <Button
                         android:id="@+id/btn_loginLogin"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_marginTop="10dp"
-                        android:backgroundTint="#ff5e00"
+                        android:backgroundTint="#FF9800"
                         android:text="Đăng nhập"
                         android:textAllCaps="false"
                         android:textColor="@color/white"

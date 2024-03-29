@@ -31,6 +31,7 @@ import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.LoaiSP;
 import com.example.duan1_nhom7.DTO.SanPham;
 import com.example.duan1_nhom7.DTO.User;
+import com.example.duan1_nhom7.Fragment.ChiTiet_SP_Fragment;
 import com.example.duan1_nhom7.Fragment.ChiTiet_SP_gioHang;
 import com.example.duan1_nhom7.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,6 +54,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
     List<LoaiSP> listLoai;
 
     UserDAO userDAO;
+
     public AdapterSanPham(Context context, ArrayList<SanPham> list) {
         this.context = context;
         this.list = list;
@@ -67,6 +69,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
         bottomNavigationView = view.findViewById(R.id.navigation);
         return new UserViewHolder(view);
     }
+
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
@@ -84,32 +87,39 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
                 loadFragment(new ChiTiet_SP_gioHang(sanPham));
             }
         });
-        userDAO=new UserDAO(context);
+        userDAO = new UserDAO(context);
 
         //set quyền
-        SharedPreferences pref = context.getSharedPreferences("USER_FILE", context.MODE_PRIVATE);
-        int id_user = pref.getInt("MA", 0);
-        User user = userDAO.getUser(id_user);
-            int quyenUser = user.getChucvu();
-            if (quyenUser != 1) {
-                holder.xoa_sanpham.setVisibility(View.GONE);
-                holder.sua_sanPham.setVisibility(View.GONE);
-            }else {
-                holder.add_sanPham.setVisibility(View.GONE);
-            }
+        SharedPreferences sharedPreferences = context.getSharedPreferences("luuDangNhap", Context.MODE_PRIVATE);
+        String quyen = sharedPreferences.getString("quyen", "");
+        String taiKhoan = sharedPreferences.getString("TK", "");
+        if (quyen.equalsIgnoreCase("khachhang")) {
+            holder.xoa_sanpham.setVisibility(View.GONE);
+            holder.sua_sanPham.setVisibility(View.GONE);
+        } else {
+            holder.add_sanPham.setVisibility(View.GONE);
+        }
+        if (quyen.equalsIgnoreCase("admin")) {
 
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadFragment(new ChiTiet_SP_Fragment(sanPham));
+                }
+            });
+        }
         holder.xoa_sanpham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Bạn có muốn xóa sản phẩm "+sanPham.getTenSP()+"?");
-                builder.setNegativeButton("Không",null);
+                builder.setTitle("Bạn có muốn xóa sản phẩm " + sanPham.getTenSP() + "?");
+                builder.setNegativeButton("Không", null);
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                         sanPhamDAO=new SanPhamDAO(v.getContext());
-                        if(sanPhamDAO.deleteData(sanPham)>0){
+                        sanPhamDAO = new SanPhamDAO(v.getContext());
+                        if (sanPhamDAO.deleteData(sanPham) > 0) {
                             list.remove(sanPham);
                             sanPhamDAO.getAllProduct(0);
                             notifyItemRemoved(position);
@@ -126,26 +136,26 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
 
                 dialog.setContentView(R.layout.fragment_sua_sp);
                 // hiển thị dữ liệu cũ
-                Spinner spnLT=dialog.findViewById(R.id.ed_suaLoaiSP);
+                Spinner spnLT = dialog.findViewById(R.id.ed_suaLoaiSP);
                 daoLoaiSP = new DAOLoaiSP(context);
                 listLoai = (ArrayList<LoaiSP>) daoLoaiSP.getAllLoaiSP();
-                spinnerAdapter = new SpinnerAdapter((List<LoaiSP>) listLoai,context);
+                spinnerAdapter = new SpinnerAdapter((List<LoaiSP>) listLoai, context);
                 spnLT.setAdapter(spinnerAdapter);
                 spnLT.setSelection(list.get(position).getId_Loai());
 
 
                 EditText ed_suaName = dialog.findViewById(R.id.ed_suaNameSP);
-                ed_suaName.setText(  sanPham.getTenSP() );
-                EditText ed_suaPrice=dialog.findViewById(R.id.ed_suaPrice);
-                ed_suaPrice.setText(sanPham.getGiaTienSP()+"");
-                EditText  ed_suaMoTa=dialog.findViewById(R.id.ed_suaMoTa);
+                ed_suaName.setText(sanPham.getTenSP());
+                EditText ed_suaPrice = dialog.findViewById(R.id.ed_suaPrice);
+                ed_suaPrice.setText(sanPham.getGiaTienSP() + "");
+                EditText ed_suaMoTa = dialog.findViewById(R.id.ed_suaMoTa);
                 ed_suaMoTa.setText(sanPham.getMoTaSP());
-                EditText ed_suaImage=dialog.findViewById(R.id.ed_suaImageSP);
+                EditText ed_suaImage = dialog.findViewById(R.id.ed_suaImageSP);
                 ed_suaImage.setText(sanPham.getAnhSP());
-                EditText  ed_suaSoLuongSP=dialog.findViewById(R.id.ed_suaSoLuongSP);
-                ed_suaSoLuongSP.setText(sanPham.getSoLuongSP()+"");
+                EditText ed_suaSoLuongSP = dialog.findViewById(R.id.ed_suaSoLuongSP);
+                ed_suaSoLuongSP.setText(sanPham.getSoLuongSP() + "");
 
-                EditText  ed_suaNgaySP=dialog.findViewById(R.id.ed_suaNgaySP);
+                EditText ed_suaNgaySP = dialog.findViewById(R.id.ed_suaNgaySP);
                 ed_suaNgaySP.setText(sanPham.getNgaySP());
                 ed_suaNgaySP.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -170,7 +180,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
                     }
                 });
                 Button btn_suaSP = dialog.findViewById(R.id.btn_suaSP);
-                Button btn_huy_sua_SP=dialog.findViewById(R.id.btn_huy_suaSP);
+                Button btn_huy_sua_SP = dialog.findViewById(R.id.btn_huy_suaSP);
                 btn_huy_sua_SP.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -181,11 +191,11 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
                     @Override
                     public void onClick(View view) {
                         String tenSP_moi = ed_suaName.getText().toString();
-                        String anhSP_moi= ed_suaImage.getText().toString();
-                        int  giaTienSP_moi = Integer.parseInt(ed_suaPrice.getText().toString());
+                        String anhSP_moi = ed_suaImage.getText().toString();
+                        int giaTienSP_moi = Integer.parseInt(ed_suaPrice.getText().toString());
                         String moTa_moi = ed_suaMoTa.getText().toString();
-                        int  soLuongSP_moi = Integer.parseInt(ed_suaSoLuongSP.getText().toString());
-                        String ngaySP_moi=ed_suaNgaySP.getText().toString();
+                        int soLuongSP_moi = Integer.parseInt(ed_suaSoLuongSP.getText().toString());
+                        String ngaySP_moi = ed_suaNgaySP.getText().toString();
 
                         sanPham.setTenSP(tenSP_moi);
                         sanPham.setAnhSP(anhSP_moi);
@@ -193,15 +203,15 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
                         sanPham.setMoTaSP(moTa_moi);
                         sanPham.setSoLuongSP(soLuongSP_moi);
                         sanPham.setNgaySP(ngaySP_moi);
-                        sanPhamDAO=new SanPhamDAO(context);
+                        sanPhamDAO = new SanPhamDAO(context);
                         long kq = sanPhamDAO.updateSanPham(sanPham);
-                        if(kq>0){
-                            list.set(position, sanPham );
+                        if (kq > 0) {
+                            list.set(position, sanPham);
                             notifyDataSetChanged();
 
                             dialog.dismiss();
 
-                        }else{
+                        } else {
                             Toast.makeText(context, "Lỗi rồi, xem log đi", Toast.LENGTH_SHORT).show();
                         }
 
@@ -211,8 +221,6 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
             }
 
         });
-
-
 
 
     }
@@ -227,7 +235,7 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
-        private ImageView xoa_sanpham, img_SanPham,add_sanPham,sua_sanPham;
+        private ImageView xoa_sanpham, img_SanPham, add_sanPham, sua_sanPham;
         private TextView TenSanPham;
         private TextView GiaTien;
 
@@ -236,8 +244,8 @@ public class AdapterSanPham extends RecyclerView.Adapter<AdapterSanPham.UserView
             cardView = itemView.findViewById(R.id.cardview_sanPham);
             xoa_sanpham = itemView.findViewById(R.id.xoa_sanpham);
             img_SanPham = itemView.findViewById(R.id.img_sanpham);
-            add_sanPham=itemView.findViewById(R.id.add_sanpham);
-            sua_sanPham=itemView.findViewById(R.id.sua_sanpham);
+            add_sanPham = itemView.findViewById(R.id.add_sanpham);
+            sua_sanPham = itemView.findViewById(R.id.sua_sanpham);
             TenSanPham = itemView.findViewById(R.id.ten_sanpham);
             GiaTien = itemView.findViewById(R.id.gia_sanpham);
         }

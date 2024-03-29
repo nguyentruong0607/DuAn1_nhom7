@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff5e00"
+    android:background="#FF9800"
     tools:context=".Activity.RegisterActivity">
 
 
@@ -208,7 +208,7 @@
                             android:layout_width="0dp"
                             android:layout_height="50dp"
                             android:layout_weight="10"
-                            android:backgroundTint="#ff5e00"
+                            android:backgroundTint="#FF9800"
                             android:text="Đăng ký"
                             android:textAllCaps="false"
                             android:textColor="@color/white"

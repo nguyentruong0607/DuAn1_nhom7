@@ -50,8 +50,8 @@ public class LoaiSPFragment extends Fragment {
         recyclerView = view.findViewById(R.id.listDanhSachSP);
         adapter = new AdapterLoaiSP(getContext(), loaiSPList);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(layoutManager);
+//        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+//        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);

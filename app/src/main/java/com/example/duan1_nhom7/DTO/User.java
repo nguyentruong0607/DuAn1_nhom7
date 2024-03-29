@@ -1,13 +1,12 @@
 package com.example.duan1_nhom7.DTO;
 
 public class User {
-     int id_user;
-     String ten_user;
-     String password;
-     String sodienthoai;
-     String diaChi;
-     String fullname;
-     int Chucvu;
+    int id_user;
+    String ten_user;
+    String password;
+    String sodienthoai;
+    String diaChi;
+    String fullname;
 
 
 
@@ -21,14 +20,13 @@ public class User {
 
     }
 
-    public User(int id_user, String ten_user, String password, String sodienthoai, String diaChi, String fullname, int Chucvu) {
+    public User(int id_user, String ten_user, String password, String sodienthoai, String diaChi, String fullname) {
         this.id_user = id_user;
         this.ten_user = ten_user;
         this.password = password;
         this.sodienthoai = sodienthoai;
         this.diaChi = diaChi;
         this.fullname = fullname;
-        this.Chucvu = Chucvu;
     }
 
     public User() {
@@ -83,11 +81,5 @@ public class User {
         this.fullname = fullname;
     }
 
-    public int getChucvu() {
-        return Chucvu;
-    }
 
-    public void setChucvu(int chucvu) {
-        Chucvu = chucvu;
-    }
 }

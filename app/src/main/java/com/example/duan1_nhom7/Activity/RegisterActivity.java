@@ -75,134 +75,207 @@ public class RegisterActivity extends AppCompatActivity {
         String pass=edt_registerPass.getText().toString();
         User user = new User(user1,pass,dt,dc,ten);
 
-        if(valName()|valPass()|valPhone()|valUser()|valDiaChi()){
-
-            if(userDAO.insert(user)>0){
-                Log.i("aaaaaaaaaaa","thanhcong");
-                Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this , LoginActivity.class);
-                startActivity(intent);
-
-            }else {
-                Log.i("aaaaaaaaaaa","bai vc");
-                Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-
-            }
+        if (kiemTraTrong()) {
+            return;
         }
+        if (kiemTraKyTu()){
+            return;
+        }
+        //if(valName()|valPass()|valPhone()|valUser()|valDiaChi()){
+
+        if(userDAO.insert(user)>0){
+            Log.i("aaaaaaaaaaa","thanhcong");
+            Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this , LoginActivity.class);
+            startActivity(intent);
+
+        }else {
+            Log.i("aaaaaaaaaaa","bai vc");
+            Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+
+        }
+        //}
 
     }
 
 
 
     //Validate;
-    private Boolean valName() {
-        String valName = text_inputLayoutName.getEditText().getText().toString().trim();
+//    private Boolean valName() {
+//        String valName = text_inputLayoutName.getEditText().getText().toString().trim();
+//
+//
+//        if (valName.isEmpty()) {
+//            text_inputLayoutName.setError("Không được để trống.");
+//            return false;
+//        } else if (valName.length() > 18) {
+//            text_inputLayoutName.setError("Tên quá dài.");
+//            return false;
+//        } else if (valName.length() < 10) {
+//            text_inputLayoutName.setError("Tên quá ngắn.");
+//            return false;
+//        } else {
+//
+//            text_inputLayoutName.setError(null);
+//            text_inputLayoutName.setErrorEnabled(false);
+//            return true;
+//        }
+//
+//
+//    }
+//
+//
+//    private Boolean valPhone() {
+//        String valPhone = text_inputLayoutPhone.getEditText().getText().toString().trim();
+//
+//        if (valPhone.isEmpty()) {
+//            text_inputLayoutPhone.setError("Không được để trống.");
+//            return false;
+//
+//
+//        } else if (!valPhone.matches("^0[3589]{1}\\d{8}$") ) {
+//            text_inputLayoutPhone.setError("Số điện thoại phải đúng định dạng.");
+//            return false;
+//
+//        } else if (!ischeckPhone(valPhone)) {
+//            text_inputLayoutPhone.setError("Số điện thoại là số.");
+//            return false;
+//
+//        } else {
+//            text_inputLayoutPhone.setError(null);
+//            text_inputLayoutPhone.setErrorEnabled(false);
+//            return true;
+//        }
+//    }
+//
+//    //Check số điện thoại là số;
+//    public Boolean ischeckPhone(String phone) {
+//        try {
+//            Integer.parseInt(phone);
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
+//
+//
+//    private Boolean valUser() {
+//        String valUser = text_inputLayoutUser.getEditText().getText().toString().trim();
+//        String check = "\\A\\w{4,20}\\z";
+//        if (valUser.isEmpty()) {
+//            text_inputLayoutUser.setError("Không được để trống");
+//            return false;
+//        } else if (valUser.length() > 15) {
+//            text_inputLayoutUser.setError("Tên đăng nhập quá dài");
+//            return false;
+//        } else if (!valUser.matches(check)) {
+//            text_inputLayoutUser.setError("Tên đăng nhập không có khoảng trắng");
+//            return false;
+//        } else {
+//            text_inputLayoutUser.setError(null);
+//            text_inputLayoutUser.setErrorEnabled(false);
+//            return true;
+//        }
+//
+//    }
+//
+//    private Boolean valPass() {
+//        String valPass = text_inputLayoutPass.getEditText().getText().toString().trim();
+//        String check = "^" + "(?=.*[a-zA-Z])" + "(?=.*[@#$%^&+=])" + "(?=\\S+$)" + ".{4,}" + "$";
+//        if (valPass.isEmpty()) {
+//            text_inputLayoutPass.setError("Không được bỏ trống");
+//            return false;
+//        } else if (!valPass.matches(check)) {
+//            text_inputLayoutPass.setError("Mật khẩu quá yếu");
+//            return false;
+//        } else {
+//            text_inputLayoutPass.setError(null);
+//            text_inputLayoutPass.setErrorEnabled(false);
+//            return true;
+//        }
+//    }
+//    private Boolean valDiaChi() {
+//        String valDia = text_inputLayoutDiaChi.getEditText().getText().toString().trim();
+//        String check = "\\A\\w{4,20}\\z";
+//        if (valDia.isEmpty()) {
+//            text_inputLayoutDiaChi.setError("Không được để trống");
+//            return false;
+//        }
+//        else if (!valDia.matches(check)) {
+//            text_inputLayoutDiaChi.setError("Tên đăng nhập không có khoảng trắng");
+//            return false;
+//        } else {
+//            text_inputLayoutDiaChi.setError(null);
+//            text_inputLayoutDiaChi.setErrorEnabled(false);
+//            return true;
+//        }
+//
+//    }
+    public boolean kiemTraTrong() {
+        boolean isEmpty = false;
 
-
-        if (valName.isEmpty()) {
-            text_inputLayoutName.setError("Không được để trống.");
-            return false;
-        } else if (valName.length() > 18) {
-            text_inputLayoutName.setError("Tên quá dài.");
-            return false;
-        } else if (valName.length() < 10) {
-            text_inputLayoutName.setError("Tên quá ngắn.");
-            return false;
+        if (edt_registerName.getText().toString().isEmpty()) {
+            text_inputLayoutName.setError("Vui lòng nhập họ tên!");
+            isEmpty = true;
         } else {
-
-            text_inputLayoutName.setError(null);
             text_inputLayoutName.setErrorEnabled(false);
-            return true;
+
         }
-
-
-    }
-
-
-    private Boolean valPhone() {
-        String valPhone = text_inputLayoutPhone.getEditText().getText().toString().trim();
-
-        if (valPhone.isEmpty()) {
-            text_inputLayoutPhone.setError("Không được để trống.");
-            return false;
-
-
-        } else if (!valPhone.matches("^0[3589]{1}\\d{8}$") ) {
-            text_inputLayoutPhone.setError("Số điện thoại phải đúng định dạng.");
-            return false;
-
-        } else if (!ischeckPhone(valPhone)) {
-            text_inputLayoutPhone.setError("Số điện thoại là số.");
-            return false;
-
+        if (edt_registerPhone.getText().toString().isEmpty()) {
+            text_inputLayoutPhone.setError("Vui lòng nhập số điện thoại!");
+            isEmpty = true;
         } else {
-            text_inputLayoutPhone.setError(null);
             text_inputLayoutPhone.setErrorEnabled(false);
-            return true;
+
         }
-    }
-
-    //Check số điện thoại là số;
-    public Boolean ischeckPhone(String phone) {
-        try {
-            Integer.parseInt(phone);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-
-    private Boolean valUser() {
-        String valUser = text_inputLayoutUser.getEditText().getText().toString().trim();
-        String check = "\\A\\w{4,20}\\z";
-        if (valUser.isEmpty()) {
-            text_inputLayoutUser.setError("Không được để trống");
-            return false;
-        } else if (valUser.length() > 15) {
-            text_inputLayoutUser.setError("Tên đăng nhập quá dài");
-            return false;
-        } else if (!valUser.matches(check)) {
-            text_inputLayoutUser.setError("Tên đăng nhập không có khoảng trắng");
-            return false;
+        if (edt_diachi.getText().toString().isEmpty()) {
+            text_inputLayoutDiaChi.setError("Vui lòng nhập địa chỉ!");
+            isEmpty = true;
         } else {
-            text_inputLayoutUser.setError(null);
-            text_inputLayoutUser.setErrorEnabled(false);
-            return true;
-        }
-
-    }
-
-    private Boolean valPass() {
-        String valPass = text_inputLayoutPass.getEditText().getText().toString().trim();
-        String check = "^" + "(?=.*[a-zA-Z])" + "(?=.*[@#$%^&+=])" + "(?=\\S+$)" + ".{4,}" + "$";
-        if (valPass.isEmpty()) {
-            text_inputLayoutPass.setError("Không được bỏ trống");
-            return false;
-        } else if (!valPass.matches(check)) {
-            text_inputLayoutPass.setError("Mật khẩu quá yếu");
-            return false;
-        } else {
-            text_inputLayoutPass.setError(null);
-            text_inputLayoutPass.setErrorEnabled(false);
-            return true;
-        }
-    }
-    private Boolean valDiaChi() {
-        String valDia = text_inputLayoutDiaChi.getEditText().getText().toString().trim();
-        String check = "\\A\\w{4,20}\\z";
-        if (valDia.isEmpty()) {
-            text_inputLayoutDiaChi.setError("Không được để trống");
-            return false;
-        }
-        else if (!valDia.matches(check)) {
-            text_inputLayoutDiaChi.setError("Tên đăng nhập không có khoảng trắng");
-            return false;
-        } else {
-            text_inputLayoutDiaChi.setError(null);
             text_inputLayoutDiaChi.setErrorEnabled(false);
-            return true;
+
+        }
+        if (edt_registerUser.getText().toString().isEmpty()) {
+            text_inputLayoutUser.setError("Vui lòng nhập tài khoản!");
+            isEmpty = true;
+        } else {
+            text_inputLayoutUser.setErrorEnabled(false);
+
+        }
+        if (edt_registerPass.getText().toString().isEmpty()) {
+            text_inputLayoutPass.setError("Vui lòng nhập mật khẩu!");
+            isEmpty = true;
+        } else {
+            text_inputLayoutPass.setErrorEnabled(false);
+
         }
 
+        return isEmpty;
+    }
+    public boolean kiemTraKyTu() {
+        boolean isEmpty = false;
+        if (edt_registerUser.getText().toString().length()<4) {
+            text_inputLayoutUser.setError("Tài khoản nhập tối thiểu 4 ký tự!");
+            isEmpty = true;
+        } else {
+            text_inputLayoutUser.setErrorEnabled(false);
+
+        }
+        if (edt_registerPass.getText().toString().length()<6) {
+            text_inputLayoutPass.setError("Mật khẩu nhập tối thiểu 6 ký tự!");
+            isEmpty = true;
+        } else {
+            text_inputLayoutPass.setErrorEnabled(false);
+
+        }
+
+        if (!edt_registerPhone.getText().toString().matches("^0[3589]{1}\\d{8}$")) {
+            text_inputLayoutPhone.setError("Số điện thoại phải đúng định dạng!");
+            isEmpty = true;
+        } else {
+            text_inputLayoutPhone.setErrorEnabled(false);
+
+        }
+        return isEmpty;
     }
 }

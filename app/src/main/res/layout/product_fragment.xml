@@ -14,26 +14,60 @@ android:orientation="vertical"
 android:padding="10dp">
 
 <LinearLayout
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <AutoCompleteTextView
-        android:id="@+id/edt_search"
-        android:layout_width="330dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bo_tron_edt"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="10dp"
-        android:hint="Tìm kiếm sản phẩm"
-        android:padding="2dp"
-        android:paddingStart="15dp"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
         android:layout_marginRight="10dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textStyle="bold"
-        tools:ignore="TouchTargetSizeCheck" />
+        >
+
+        <AutoCompleteTextView
+            android:id="@+id/ed_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bo_tron_edt"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="10dp"
+            android:hint="Tìm kiếm sản phẩm"
+            android:padding="2dp"
+            android:paddingStart="15dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textStyle="bold"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/txt_Search"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tìm kiếm"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/red"
+            android:layout_alignParentRight="true"
+            />
+
+        <ImageView
+            android:id="@+id/icDeleteSearch"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="10dp"
+            />
+
+    </RelativeLayout>
     <ImageView
         android:id="@+id/imgNotifi"
         android:layout_width="30dp"
