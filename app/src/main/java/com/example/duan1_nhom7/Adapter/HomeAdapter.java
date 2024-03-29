@@ -53,12 +53,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.itemSpHomeGia.setText(mGiaSP + "VNĐ");
         userDAO=new UserDAO(context);
 
-        //set quyền
-        SharedPreferences pref = context.getSharedPreferences("USER_FILE", context.MODE_PRIVATE);
-        int id_user = pref.getInt("MA", 0);
-        User user = userDAO.getUser(id_user);
-        int quyenUser = user.getChucvu();
-       if (quyenUser != 1) {
+
 
            holder.itemView.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -66,14 +61,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                    loadFragment(new ChiTiet_SP_gioHang(sanPham));
                }
            });
-       }else{
-           holder.itemView.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   loadFragment(new ChiTiet_SP_Fragment(sanPham));
-               }
-           });
-       }
+
 
     }
 
