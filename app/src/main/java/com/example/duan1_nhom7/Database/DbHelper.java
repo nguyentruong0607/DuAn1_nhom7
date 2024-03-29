@@ -49,6 +49,14 @@ public class DbHelper extends SQLiteOpenHelper {
                 "DonGia DOUBLE\n" +
                 ");";
         db.execSQL(tableGioHang);
+        //admin
+        String createTableAdmin = "create table Admin (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL, " +
+                "pass TEXT NOT NULL," +
+                "quyen INTEGER )";
+        db.execSQL(createTableAdmin);
+        db.execSQL("INSERT INTO Admin VALUES (1,'admin','admin',1)");
 
         // User
         String createTableUser = "create table User (" +
@@ -57,10 +65,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 "password TEXT NOT NULL," +
                 "sodienthoai TEXT NOT NULL," +
                 "diaChi TEXT NOT NULL," +
-                "fullname TEXT NOT NULL," +
-                "Chucvu INTEGER NOT NULL)";
+                "fullname TEXT NOT NULL)";
         db.execSQL(createTableUser);
-        db.execSQL("INSERT INTO User VALUES (1,'admin','admin',098386828,'Hanoi','Admin',1)");
 
     }
 

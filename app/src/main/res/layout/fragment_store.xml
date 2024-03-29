@@ -65,23 +65,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="2"
-            android:gravity="center"
             >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-               android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_weight="1"
                 >
 
                 <TextView
                     style="@style/edt_Label"
-                    android:text="Tổng tiền"
+                    android:text="Tổng tiền :"
                     android:textColor="@color/black"
-                    android:textSize="18dp"
+                    android:textSize="25dp"
                     android:textStyle="bold"
                     />
 
@@ -99,14 +98,13 @@
 
             <Button
                 android:id="@+id/btnGioHangTT"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="#FF9800"
                 android:text="Mua hàng"
                 android:textSize="22dp"
                 android:gravity="center"
-                android:layout_marginLeft="20dp"
                 android:textColor="@color/white"
                 />
         </LinearLayout>

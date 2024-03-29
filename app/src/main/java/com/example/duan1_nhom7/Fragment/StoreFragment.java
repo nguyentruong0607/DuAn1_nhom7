@@ -40,29 +40,22 @@ public class StoreFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        daoUser=new UserDAO(getContext());
-        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", getActivity().MODE_PRIVATE);
-        int id_user = pref.getInt("MA", 0);
-        User user = daoUser.getUser(id_user);
-        int quyenUser = user.getChucvu();
-        if (quyenUser != 1) {
-            View view=inflater.inflate(R.layout.fragment_store,container,false);
-            return  view;
-            }
+        daoUser = new UserDAO(getContext());
 
+        View view = inflater.inflate(R.layout.fragment_store, container, false);
+        return view;
 
-        return null;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        daoGioHang= new GioHangDAO(getContext());
-        recycle_gioHang=view.findViewById(R.id.recycle_giohang);
-        txtGHTongTien=view.findViewById(R.id.txtGHTongTien);
+        daoGioHang = new GioHangDAO(getContext());
+        recycle_gioHang = view.findViewById(R.id.recycle_giohang);
+        txtGHTongTien = view.findViewById(R.id.txtGHTongTien);
         btnThanhToan = view.findViewById(R.id.btnGioHangTT);
-        listGioHang=daoGioHang.getGioHang();
-         createData();
+        listGioHang = daoGioHang.getGioHang();
+        createData();
 
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,13 +75,13 @@ public class StoreFragment extends Fragment {
         });
 
     }
+
     private void createData() {
         daoGioHang = new GioHangDAO(getContext());
         listGioHang = daoGioHang.getGioHang();
-        if (listGioHang.size() == 0){
+        if (listGioHang.size() == 0) {
             recycle_gioHang.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             recycle_gioHang.setLayoutManager(linearLayoutManager);
 
