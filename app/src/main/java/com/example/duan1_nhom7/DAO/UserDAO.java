@@ -29,6 +29,7 @@ public class UserDAO {
         value.put("diaChi",tt.getDiaChi());
         value.put("fullname",tt.getFullname());
 
+
         return db.insert("User",null,value);
     }
     public int updateUser(User tt){
@@ -38,6 +39,7 @@ public class UserDAO {
         value.put("sodienthoai",tt.getSodienthoai());
         value.put("diaChi",tt.getDiaChi());
         value.put("fullname",tt.getFullname());
+
 
         String [] tham_so=new String[]{tt.getId_user()+""};
         return db.update("User",value,"id_user=?",tham_so);
@@ -68,6 +70,7 @@ public class UserDAO {
                 String _sodienthoai = cursor.getString(3);
                 String _diaChi = cursor.getString(4);
                 String _fullname = cursor.getString(5);
+                int _id_chucvu = cursor.getInt(6);
 
                 list.add(new User(_id_user,_ten_user,_password,_sodienthoai,_diaChi,_fullname));
             } while (cursor.moveToNext());
@@ -76,7 +79,7 @@ public class UserDAO {
     }
     public User getUser(int inputId) {
         User user=null;
-        Cursor cursor = db.rawQuery("SELECT User.id_user, User.ten_user, User.password, User.sodienthoai,User.diaChi, User.fullname FROM User WHERE User.id_user=?", new String[]{String.valueOf(inputId)});
+        Cursor cursor = db.rawQuery("SELECT User.id_user, User.ten_user, User.password, User.sodienthoai,User.diaChi, User.fullname,User.Chucvu FROM User WHERE User.id_user=?", new String[]{String.valueOf(inputId)});
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             do {
@@ -86,6 +89,7 @@ public class UserDAO {
                 String _sodienthoai = cursor.getString(3);
                 String _diaChi = cursor.getString(4);
                 String _fullname = cursor.getString(5);
+
                 user = new User( _id_user,_ten_user,_password,_sodienthoai,_diaChi,_fullname);
             } while (cursor.moveToNext());
         }
@@ -105,6 +109,7 @@ public class UserDAO {
                 String _diaChi = cursor.getString(4);
                 String _fullname = cursor.getString(5);
 
+
                 User user=new User(_id_user,_ten_user,_password,_sodienthoai,_diaChi,_fullname);
                 list.add( user);
                 cursor.moveToNext();
@@ -119,6 +124,21 @@ public class UserDAO {
     public int deleteData(User user) {
 
         return db.delete("User","id_user=?",new String[]{user.getId_user()+""});
+    }
+
+    public List<String> getDiaChi() {
+        List<String> diaChiList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM User", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String diaChi = cursor.getString(cursor.getColumnIndex("diaChi"));
+                diaChiList.add(diaChi);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return diaChiList;
     }
 
 }
