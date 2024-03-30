@@ -11,13 +11,25 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.example.duan1_nhom7.Adapter.AdapterHoaDon;
 import com.example.duan1_nhom7.DAO.CreateOrder;
+import com.example.duan1_nhom7.DAO.UserDAO;
+import com.example.duan1_nhom7.DTO.GioHang;
+import com.example.duan1_nhom7.DTO.User;
 import com.example.duan1_nhom7.Zalo.AppInfo;
 
 import org.json.JSONObject;
@@ -29,8 +41,10 @@ import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class ThanhToanActivity extends AppCompatActivity {
 
+    RecyclerView rcvHoaDon;
     Button btnPay;
-    TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT;
+    TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang;
+    EditText edLocation;
     String tongTien;
     boolean isPaymentMethodSelected = false;
 
@@ -44,7 +58,50 @@ public class ThanhToanActivity extends AppCompatActivity {
         txtTongThanhToan = findViewById(R.id.txtTongThanhToan);
         txtTongThanhToan2 = findViewById(R.id.txtTongThanhToan2);
         txtPTTT = findViewById(R.id.txtPhuongThucTT);
+        dateDatHang = findViewById(R.id.txtDateDatHang);
+        dateNhanHang = findViewById(R.id.txtDateNhanHang);
+        edLocation = findViewById(R.id.edLocationGiaoHang);
+        rcvHoaDon = findViewById(R.id.rcv_SPThanhToan);
 
+        // Tạo định dạng ngày
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        String currentDate = sdf.format(calendar.getTime());
+        dateDatHang.setText(currentDate);
+        calendar.add(Calendar.DAY_OF_MONTH, 3);
+        String dateAfterThreeDays = sdf.format(calendar.getTime());
+        dateNhanHang.setText(dateAfterThreeDays);
+
+        UserDAO daoDiaChi = new UserDAO(this);
+
+        // Lấy danh sách địa chỉ từ DAO
+        List<String> diaChiList = daoDiaChi.getDiaChi();
+
+        // Hiển thị địa chỉ đầu tiên trong danh sách (hoặc một giá trị mặc định khác nếu cần)
+        if (!diaChiList.isEmpty()) {
+            String firstAddress = diaChiList.get(0);
+            edLocation.setText(firstAddress);
+        }
+
+        Intent intent = getIntent();
+        ArrayList<GioHang> listGioHang = null;
+        if (intent != null) {
+            listGioHang = (ArrayList<GioHang>) intent.getSerializableExtra("list_gio_hang");
+        }
+
+        // Kiểm tra xem listGioHang có dữ liệu không
+        if (listGioHang != null && !listGioHang.isEmpty()) {
+            // Tạo Adapter mới và gán cho RecyclerView
+            AdapterHoaDon adapter = new AdapterHoaDon(this, listGioHang);
+            rcvHoaDon.setAdapter(adapter);
+            rcvHoaDon.setLayoutManager(new LinearLayoutManager(this));
+        } else {
+            // Nếu không có dữ liệu, hiển thị thông báo cho người dùng
+            Toast.makeText(this, "Không có sản phẩm trong giỏ hàng", Toast.LENGTH_SHORT).show();
+        }
+
+
+        // Tien
         String tongTienWithDot = getIntent().getStringExtra("tong_tien");
         txtTongTienHang.setText(tongTienWithDot);
 
@@ -88,10 +145,9 @@ public class ThanhToanActivity extends AppCompatActivity {
                 btnZalo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        txtPTTT.setText("Zalopay");
-                        isPaymentMethodSelected = true; // Cập nhật biến boolean khi phương thức thanh toán được chọn
+                        requestZalo(tongTien);
                         dialog.dismiss();
-                        setPayButtonListener("Zalopay");
+
                     }
                 });
 
@@ -114,14 +170,14 @@ public class ThanhToanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String paymentMethod = txtPTTT.getText().toString();
-                if(!isPaymentMethodSelected) {
+                if (!isPaymentMethodSelected) {
                     // Hiển thị Toast thông báo yêu cầu chọn phương thức thanh toán trước khi thanh toán
-                    Toast.makeText(ThanhToanActivity.this, "Chọn 1 phương thức thanh toán trước khi thanh toán", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ThanhToanActivity.this, "Chọn 1 phương thức thanh toán trước khi đặt hàng", Toast.LENGTH_SHORT).show();
                 } else {
                     // Phương thức thanh toán đã được chọn, tiến hành xử lý thanh toán
                     switch (paymentMethod) {
                         case "Zalopay":
-                            requestZalo(tongTien);
+                            Toast.makeText(ThanhToanActivity.this, "Thanh toán bằng Zalopay", Toast.LENGTH_SHORT).show();
                             break;
                         case "Thanh toán khi nhận hàng":
                             // Xử lý thanh toán khi nhận hàng
@@ -138,14 +194,14 @@ public class ThanhToanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String paymentMethod = txtPTTT.getText().toString();
-                if(paymentMethod.equals("Chọn phương thức thanh toán")) {
+                if (paymentMethod.equals("Chọn phương thức thanh toán")) {
                     // Hiển thị Toast thông báo yêu cầu chọn phương thức thanh toán trước khi thanh toán
                     Toast.makeText(ThanhToanActivity.this, "Chọn 1 phương thức thanh toán trước khi thanh toán", Toast.LENGTH_SHORT).show();
                 } else {
                     // Phương thức thanh toán đã được chọn, tiến hành xử lý thanh toán
                     switch (paymentMethod) {
                         case "Zalopay":
-                            requestZalo(tongTien);
+                            Toast.makeText(ThanhToanActivity.this, "Thanh toán bằng Zalopay", Toast.LENGTH_SHORT).show();
                             break;
                         case "Thanh toán khi nhận hàng":
                             // Xử lý thanh toán khi nhận hàng
@@ -171,15 +227,21 @@ public class ThanhToanActivity extends AppCompatActivity {
                     @Override
                     public void onPaymentSucceeded(final String transactionId, final String transToken, final String appTransID) {
                         Toast.makeText(ThanhToanActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+                        txtPTTT.setText("Zalopay");
+                        isPaymentMethodSelected = true;
+                        setPayButtonListener("Zalopay");
                     }
 
                     @Override
                     public void onPaymentCanceled(String zpTransToken, String appTransID) {
                         Toast.makeText(ThanhToanActivity.this, "Thanh toán đã bị hủy", Toast.LENGTH_SHORT).show();
+                        txtPTTT.setText("Chọn phương thức thanh toán >");
                     }
+
                     @Override
                     public void onPaymentError(ZaloPayError zaloPayError, String zpTransToken, String appTransID) {
                         Toast.makeText(ThanhToanActivity.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
+                        txtPTTT.setText("Chọn phương thức thanh toán >");
                     }
                 });
             }
