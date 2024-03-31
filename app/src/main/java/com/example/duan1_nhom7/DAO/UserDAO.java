@@ -141,4 +141,15 @@ public class UserDAO {
         return diaChiList;
     }
 
+    public String getIdUser(String username) {
+        String idUser = null;
+        Cursor cursor = db.rawQuery("SELECT id_user FROM User WHERE ten_user=?", new String[]{username});
+        if (cursor.moveToFirst()) {
+            idUser = cursor.getString(0);
+        }
+        cursor.close();
+        return idUser;
+    }
+
+
 }

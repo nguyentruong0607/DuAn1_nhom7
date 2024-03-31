@@ -40,6 +40,9 @@ public class ChiTiet_SP_gioHang extends Fragment {
 
     GioHangDAO daoGioHang;
 
+    public ChiTiet_SP_gioHang() {
+        // Required empty public constructor
+    }
     public ChiTiet_SP_gioHang(SanPham sanPham) {
         this.sanPham = sanPham;
     }

@@ -62,6 +62,42 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/userFrgmTTDonHang"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_history_24"
+
+                />
+            <TextView
+                style="@style/edt_Label"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="3dp"
+                android:text="Đơn hàng đã mua"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+
+    <LinearLayout
             android:id="@+id/userFrgmThemSP"
             android:layout_width="match_parent"
             android:layout_height="45dp"

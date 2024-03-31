@@ -120,4 +120,17 @@ public class GioHangDAO {
         }
         return tongTien;
     }
+
+    public boolean deleteAllGioHang() {
+        long check = database.delete("GioHang", null, null);
+        if (check == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
+
 }
