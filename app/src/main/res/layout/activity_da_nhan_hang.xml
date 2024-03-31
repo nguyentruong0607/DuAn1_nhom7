@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/floatAddToCard"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+            <ImageView
+                android:id="@+id/imgDangGiaoHang"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/iphone15" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTenSPDangGiaoHang"
+                    style="@style/edt_Label"
+                    android:text=" Tên sản phẩm:"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/txtGiaSPDangGiaoHang"
+                    style="@style/edt_Label"
+                    android:text="2.900.000đ"
+                    android:textColor="#F80202"
+                    android:textSize="20dp"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Màu: "
+                        style="@style/edt_Label"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:id="@+id/txtMauSPDangGiaoHang"
+                        style="@style/edt_Label"
+                        android:text="Đen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    >
+
+                    <TextView
+                        style="@style/edt_Label"
+                        android:text="Số lượng :"
+                        android:textColor="@color/black"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+
+
+                    <TextView
+                        android:id="@+id/soLuongSPDangGiaoHang"
+                        style="@style/edt_Label"
+                        android:layout_width="40dp"
+                        android:textAlignment="center"
+                        android:layout_marginHorizontal="5dp"
+                        android:text="88"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+
+
+
+                </LinearLayout>
+                <TextView
+                    style="@style/edt_Label"
+                    android:text="Mô tả:"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:layout_marginTop="5dp"
+
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtMoTaSPDangGiaoHang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="iPhone 15 trở thành tâm điểm đáng chú ý tại sự kiện ra mắt thường niên của Apple vào tháng 09/2023 "
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/floatAddToCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        >
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            >
+            <Button
+                android:id="@+id/btnNhanDonHangThanhCong"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:backgroundTint="#FF9800"
+                android:text="Nhận hàng thành công"
+                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

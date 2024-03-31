@@ -134,4 +134,26 @@ public class SanPhamDAO {
         return list;
     }
 
+    public String getMoTaSPById(int idSanPham) {
+        String moTaSP = null;
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT moTaSP FROM SanPham WHERE id_sanPham = ?";
+            cursor = database.rawQuery(query, new String[]{String.valueOf(idSanPham)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                moTaSP = cursor.getString(cursor.getColumnIndex("moTaSP"));
+
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return moTaSP;
+    }
+
+
 }

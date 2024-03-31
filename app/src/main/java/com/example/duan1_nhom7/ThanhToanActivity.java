@@ -17,7 +17,6 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,9 +26,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.Adapter.AdapterHoaDon;
 import com.example.duan1_nhom7.DAO.CreateOrder;
+import com.example.duan1_nhom7.DAO.DonHangDAO;
+import com.example.duan1_nhom7.DAO.GioHangDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
+import com.example.duan1_nhom7.DTO.DonHang;
 import com.example.duan1_nhom7.DTO.GioHang;
-import com.example.duan1_nhom7.DTO.User;
+import com.example.duan1_nhom7.DAO.UserDAO;
+import com.example.duan1_nhom7.Fragment.HomeFragment;
 import com.example.duan1_nhom7.Zalo.AppInfo;
 
 import org.json.JSONObject;
@@ -41,17 +44,27 @@ import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class ThanhToanActivity extends AppCompatActivity {
 
+
     RecyclerView rcvHoaDon;
     Button btnPay;
     TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang;
     EditText edLocation;
     String tongTien;
     boolean isPaymentMethodSelected = false;
+    DonHangDAO donHangDAO;
+    GioHangDAO gioHangDAO;
+    private ArrayList<GioHang> listGioHang = null;
+    String idUser = "1", currentDate;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thanh_toan);
+
+        donHangDAO = new DonHangDAO(this);
+        gioHangDAO = new GioHangDAO(this);
 
         btnPay = findViewById(R.id.btnThanhToan);
         txtTongTienHang = findViewById(R.id.txtTongTienHangThanhToan);
@@ -63,49 +76,43 @@ public class ThanhToanActivity extends AppCompatActivity {
         edLocation = findViewById(R.id.edLocationGiaoHang);
         rcvHoaDon = findViewById(R.id.rcv_SPThanhToan);
 
-        // Tạo định dạng ngày
+
+//        idUser = userDAO.getIdUser("quan");
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
-        String currentDate = sdf.format(calendar.getTime());
+        currentDate = sdf.format(calendar.getTime());
         dateDatHang.setText(currentDate);
         calendar.add(Calendar.DAY_OF_MONTH, 3);
         String dateAfterThreeDays = sdf.format(calendar.getTime());
         dateNhanHang.setText(dateAfterThreeDays);
 
         UserDAO daoDiaChi = new UserDAO(this);
-
-        // Lấy danh sách địa chỉ từ DAO
         List<String> diaChiList = daoDiaChi.getDiaChi();
-
-        // Hiển thị địa chỉ đầu tiên trong danh sách (hoặc một giá trị mặc định khác nếu cần)
         if (!diaChiList.isEmpty()) {
             String firstAddress = diaChiList.get(0);
             edLocation.setText(firstAddress);
         }
 
         Intent intent = getIntent();
-        ArrayList<GioHang> listGioHang = null;
+
         if (intent != null) {
             listGioHang = (ArrayList<GioHang>) intent.getSerializableExtra("list_gio_hang");
         }
 
-        // Kiểm tra xem listGioHang có dữ liệu không
         if (listGioHang != null && !listGioHang.isEmpty()) {
-            // Tạo Adapter mới và gán cho RecyclerView
             AdapterHoaDon adapter = new AdapterHoaDon(this, listGioHang);
             rcvHoaDon.setAdapter(adapter);
             rcvHoaDon.setLayoutManager(new LinearLayoutManager(this));
+
+
         } else {
-            // Nếu không có dữ liệu, hiển thị thông báo cho người dùng
             Toast.makeText(this, "Không có sản phẩm trong giỏ hàng", Toast.LENGTH_SHORT).show();
         }
 
-
-        // Tien
         String tongTienWithDot = getIntent().getStringExtra("tong_tien");
         txtTongTienHang.setText(tongTienWithDot);
 
-        // Loại bỏ dấu chấm và ký tự không phải số
         String tongTienWithoutDot = tongTienWithDot.replaceAll("[^\\d]", "");
         int tongTienInt = Integer.parseInt(tongTienWithoutDot);
         int tongTienPlus30000 = tongTienInt + 30000;
@@ -147,7 +154,6 @@ public class ThanhToanActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         requestZalo(tongTien);
                         dialog.dismiss();
-
                     }
                 });
 
@@ -155,7 +161,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         txtPTTT.setText("Thanh toán khi nhận hàng");
-                        isPaymentMethodSelected = true; // Cập nhật biến boolean khi phương thức thanh toán được chọn
+                        isPaymentMethodSelected = true;
                         dialog.dismiss();
                         setPayButtonListener("Thanh toán khi nhận hàng");
                     }
@@ -165,22 +171,18 @@ public class ThanhToanActivity extends AppCompatActivity {
             }
         });
 
-
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String paymentMethod = txtPTTT.getText().toString();
                 if (!isPaymentMethodSelected) {
-                    // Hiển thị Toast thông báo yêu cầu chọn phương thức thanh toán trước khi thanh toán
                     Toast.makeText(ThanhToanActivity.this, "Chọn 1 phương thức thanh toán trước khi đặt hàng", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Phương thức thanh toán đã được chọn, tiến hành xử lý thanh toán
                     switch (paymentMethod) {
                         case "Zalopay":
                             Toast.makeText(ThanhToanActivity.this, "Thanh toán bằng Zalopay", Toast.LENGTH_SHORT).show();
                             break;
                         case "Thanh toán khi nhận hàng":
-                            // Xử lý thanh toán khi nhận hàng
                             Toast.makeText(ThanhToanActivity.this, "Thanh toán khi nhận hàng", Toast.LENGTH_SHORT).show();
                             break;
                     }
@@ -193,26 +195,41 @@ public class ThanhToanActivity extends AppCompatActivity {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String paymentMethod = txtPTTT.getText().toString();
+                // Sử dụng tham số của phương thức để tránh sự nhầm lẫn với biến cục bộ có cùng tên
                 if (paymentMethod.equals("Chọn phương thức thanh toán")) {
-                    // Hiển thị Toast thông báo yêu cầu chọn phương thức thanh toán trước khi thanh toán
                     Toast.makeText(ThanhToanActivity.this, "Chọn 1 phương thức thanh toán trước khi thanh toán", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Phương thức thanh toán đã được chọn, tiến hành xử lý thanh toán
                     switch (paymentMethod) {
                         case "Zalopay":
                             Toast.makeText(ThanhToanActivity.this, "Thanh toán bằng Zalopay", Toast.LENGTH_SHORT).show();
                             break;
                         case "Thanh toán khi nhận hàng":
-                            // Xử lý thanh toán khi nhận hàng
                             Toast.makeText(ThanhToanActivity.this, "Thanh toán khi nhận hàng", Toast.LENGTH_SHORT).show();
+                            for (GioHang gioHang : listGioHang) {
+                                DonHang donHang = new DonHang();
+                                donHang.setId_user(Integer.parseInt(idUser));
+                                donHang.setId_sanPham(gioHang.getId_sanPham());
+                                donHang.setTenSP(gioHang.getTenSP());
+                                donHang.setSoLuong(gioHang.getSoLuong());
+                                donHang.setNgayMua(currentDate);
+                                donHang.setGia(gioHang.getDonGia());
+                                donHang.setStatus("1");
+                                donHang.setImage(gioHang.getImgSP());
+                                donHang.setMau(gioHang.getMau());
+                                donHangDAO.insertDonHang(donHang);
+                            }
+
+                            gioHangDAO.deleteAllGioHang();
+                            Intent intent = new Intent(ThanhToanActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
                             break;
                     }
                 }
             }
         });
-
     }
+
 
     private void requestZalo(String tongTien) {
         CreateOrder orderApi = new CreateOrder();
