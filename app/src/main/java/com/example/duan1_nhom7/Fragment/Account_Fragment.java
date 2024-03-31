@@ -23,10 +23,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.duan1_nhom7.Activity.LoginActivity;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.User;
+import com.example.duan1_nhom7.DonHangActivity;
 import com.example.duan1_nhom7.R;
 
 public class Account_Fragment extends Fragment {
-    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat;
+    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat, donMua;
     TextView txtUserName, txtUserKH;
     UserDAO daoUser;
 
@@ -41,6 +42,9 @@ public class Account_Fragment extends Fragment {
         userFrgmDangXuat = view.findViewById(R.id.userFrgmDangXuat);
         userFrgmQLuser = view.findViewById(R.id.userFrgmQLuser);
 
+        donMua = view.findViewById(R.id.userFrgmTTDonHang);
+
+
 
         txtUserName = view.findViewById(R.id.txtUserName);
         txtUserKH=view.findViewById(R.id.txtUserName2);
@@ -54,7 +58,17 @@ public class Account_Fragment extends Fragment {
             txtUserName.setVisibility(View.GONE);
             userFrgmThemSP.setVisibility(View.GONE);
             userFrgmQLuser.setVisibility(View.GONE);
+
         }
+
+        donMua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DonHangActivity.class);
+                startActivity(intent);
+            }
+        });
+
         userFrgmThemSP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
