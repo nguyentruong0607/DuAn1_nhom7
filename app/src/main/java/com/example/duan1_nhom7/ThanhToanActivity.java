@@ -2,6 +2,7 @@ package com.example.duan1_nhom7;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -49,12 +50,15 @@ public class ThanhToanActivity extends AppCompatActivity {
     Button btnPay;
     TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang;
     EditText edLocation;
-    String tongTien;
+    String tongTien , currentDate;
     boolean isPaymentMethodSelected = false;
     DonHangDAO donHangDAO;
+    UserDAO userDAO;
     GioHangDAO gioHangDAO;
     private ArrayList<GioHang> listGioHang = null;
-    String idUser = "1", currentDate;
+    String idUser ;
+
+
 
 
 
@@ -76,8 +80,11 @@ public class ThanhToanActivity extends AppCompatActivity {
         edLocation = findViewById(R.id.edLocationGiaoHang);
         rcvHoaDon = findViewById(R.id.rcv_SPThanhToan);
 
+        userDAO = new UserDAO(ThanhToanActivity.this);
+        SharedPreferences sharedPreferences = getSharedPreferences("luuDangNhap", MODE_PRIVATE);
+        String userName = sharedPreferences.getString("TK", "");
+        idUser = userDAO.getIdUser(userName);
 
-//        idUser = userDAO.getIdUser("quan");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
@@ -216,6 +223,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                                 donHang.setStatus("1");
                                 donHang.setImage(gioHang.getImgSP());
                                 donHang.setMau(gioHang.getMau());
+                                donHang.setPttt("Thanh tóán khi nhận hàng");
                                 donHangDAO.insertDonHang(donHang);
                             }
 

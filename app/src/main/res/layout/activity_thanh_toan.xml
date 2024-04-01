@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-
             style="@style/edt_Label"
             android:layout_width="match_parent"
             android:textColor="#FF9800"

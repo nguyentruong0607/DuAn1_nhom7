@@ -1,7 +1,6 @@
 package com.example.duan1_nhom7;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,21 +10,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.SanPhamDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
-import com.example.duan1_nhom7.Fragment.DaGiaoFragment;
-import com.example.duan1_nhom7.Fragment.DangGiaoFragment;
 import com.squareup.picasso.Picasso;
 
 public class DaNhanHangActivity extends AppCompatActivity {
 
-    ImageView img;
-    TextView name, price, color, content, count;
-    Button btnNhanHang;
+    private ImageView img;
+    private TextView name, price, color, content, count, date, pttt;
+    private Button btnNhanHang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +34,8 @@ public class DaNhanHangActivity extends AppCompatActivity {
         color = findViewById(R.id.txtMauSPDangGiaoHang);
         btnNhanHang = findViewById(R.id.btnNhanDonHangThanhCong);
         content = findViewById(R.id.txtMoTaSPDangGiaoHang);
+        date = findViewById(R.id.txtDateDangGiaoHang);
+        pttt = findViewById(R.id.PTTTSPDangGiaoHang);
 
         DonHang donHang = (DonHang) getIntent().getSerializableExtra("hang");
         if (donHang != null) {
@@ -53,6 +50,8 @@ public class DaNhanHangActivity extends AppCompatActivity {
             color.setText(donHang.getMau());
             Picasso.get().load(donHang.getImage()).into(img);
             content.setText(moTaSP);
+            date.setText(donHang.getNgayMua());
+            pttt.setText(donHang.getPttt());
         }
 
         btnNhanHang.setOnClickListener(new View.OnClickListener() {
@@ -70,16 +69,17 @@ public class DaNhanHangActivity extends AppCompatActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 DonHang donHang = (DonHang) getIntent().getSerializableExtra("hang");
+                DonHangDAO donHangDAO = new DonHangDAO(DaNhanHangActivity.this);
                 if (donHang != null) {
-                    DonHangDAO donHangDAO = new DonHangDAO(DaNhanHangActivity.this);
+
                     donHang.setStatus("3"); // Cập nhật trạng thái đơn hàng thành đã nhận (status = 3)
                     int rowsAffected = donHangDAO.updateDonHangStatus(donHang);
                     if (rowsAffected > 0) {
                         Toast.makeText(DaNhanHangActivity.this, "Đã nhận hàng", Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(DaNhanHangActivity.this, DonHangActivity.class);
-                        startActivity(intent);
+                        setResult(RESULT_OK);
+                        finish();
 
                     } else {
                         Toast.makeText(DaNhanHangActivity.this, "Cập nhật trạng thái không thành công", Toast.LENGTH_SHORT).show();

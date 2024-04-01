@@ -1,5 +1,6 @@
 package com.example.duan1_nhom7.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ public class DangGiaoFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterDanGiao adapter;
     private DonHangDAO donHangDAO;
+    private static final int REQUEST_CODE_RECEIVE_ORDER = 1005;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,13 +47,34 @@ public class DangGiaoFragment extends Fragment {
             @Override
             public void onItemClick(DonHang donHang) {
                 Intent intent = new Intent(getContext(), DaNhanHangActivity.class);
-                intent.putExtra("hang", donHang); // Gửi thông tin đơn hàng sang activity mới
-                getContext().startActivity(intent);
+                intent.putExtra("hang", donHang);
+                startActivityForResult(intent, REQUEST_CODE_RECEIVE_ORDER);
             }
         });
 
+
         return view;
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_RECEIVE_ORDER) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Load lại dữ liệu và cập nhật RecyclerView
+                loadDonHangData();
+            }
+        }
+    }
+
+    private void loadDonHangData() {
+        // Cập nhật lại danh sách đơn hàng chờ xác nhận
+        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("2");
+        adapter.setData(donHangList);
+        adapter.notifyDataSetChanged();
+    }
+
 
 
 }

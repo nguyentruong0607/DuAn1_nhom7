@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.Adapter.AdapterDaGiao;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
@@ -25,19 +24,30 @@ public class DaGiaoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_da_giao, container, false);
 
         recyclerView = view.findViewById(R.id.rcv_DaGiao);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         donHangDAO = new DonHangDAO(getContext());
-        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("3");
 
+        // Đảm bảo rằng mỗi khi fragment được hiển thị, dữ liệu sẽ được cập nhật lại
+        updateData();
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Cập nhật dữ liệu mỗi khi fragment được hiển thị
+        updateData();
+    }
+
+    private void updateData() {
+        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("3");
         adapter = new AdapterDaGiao(getContext(), donHangList);
         recyclerView.setAdapter(adapter);
-        return view;
     }
 }

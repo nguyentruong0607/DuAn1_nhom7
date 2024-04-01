@@ -78,19 +78,16 @@ public class DbHelper extends SQLiteOpenHelper {
                 "gia INTEGER, " +
                 "status TEXT, " +
                 "image TEXT," +
-                "mau TEXT" +
+                "mau TEXT," +
+                "pttt TEXT" +
                 ");";
         db.execSQL(createTableDonHang);
-        db.execSQL("INSERT INTO DonHang (id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, status, image, mau) " +
-                "VALUES (100, 1, 'Sản phẩm A', '2024-03-31', 2, 500000, '2', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Đen'), " +
-                "(200, 1, 'Sản phẩm B', '2024-04-01', 2, 800000, '2', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Trắng'), " +
-                "(300, 2, 'Sản phẩm C', '2024-04-02', 2, 1200000, '2', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Xanh')");
-
-
+        db.execSQL("INSERT INTO DonHang (id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, status, image, mau, pttt) " +
+                "VALUES (100, 1, 'Sản phẩm A', '2024-03-31', 2, 500000, '1', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Đen', 'Thanh toán khi nhận hàng'), " +
+                "(200, 1, 'Sản phẩm B', '2024-04-01', 2, 800000, '2', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Trắng', 'Zalopay'), " +
+                "(300, 2, 'Sản phẩm C', '2024-04-02', 2, 1200000, '1', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Xanh', 'Thanh toán khi nhận hàng')");
 
     }
-
-
 
 
 
