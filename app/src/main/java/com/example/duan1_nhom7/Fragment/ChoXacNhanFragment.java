@@ -1,5 +1,6 @@
 package com.example.duan1_nhom7.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class ChoXacNhanFragment extends Fragment {
 
+    private static final int REQUEST_CODE_CANCEL_ORDER = 1001;
     private RecyclerView recyclerView;
     private AdapterChoXacNhan adapter;
     private DonHangDAO donHangDAO;
@@ -41,11 +43,33 @@ public class ChoXacNhanFragment extends Fragment {
             @Override
             public void onItemClick(DonHang donHang) {
                 Intent intent = new Intent(getContext(), HuyDonHangActivity.class);
-                intent.putExtra("donHang", donHang); // Gửi thông tin đơn hàng sang activity mới
-                getContext().startActivity(intent);
+                intent.putExtra("donHang", donHang);
+                startActivityForResult(intent, REQUEST_CODE_CANCEL_ORDER);
             }
         });
 
+
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CANCEL_ORDER) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Load lại dữ liệu và cập nhật RecyclerView
+                loadDonHangData();
+            }
+        }
+    }
+
+    private void loadDonHangData() {
+        // Cập nhật lại danh sách đơn hàng chờ xác nhận
+        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("1");
+        adapter.setData(donHangList);
+        adapter.notifyDataSetChanged();
+    }
+
+
+
 }

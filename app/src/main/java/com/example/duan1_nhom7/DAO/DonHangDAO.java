@@ -32,6 +32,7 @@ public class DonHangDAO {
         values.put("status", donHang.getStatus());
         values.put(("image"), donHang.getImage());
         values.put(("mau"), donHang.getMau());
+        values.put((("pttt")), donHang.getPttt());
         // Thêm các trường còn lại tương ứng vào values
 
         // Insert vào cơ sở dữ liệu
@@ -45,7 +46,7 @@ public class DonHangDAO {
         List<DonHang> donHangList = new ArrayList<>();
         db = dbHelper.getReadableDatabase();
 
-        String[] columns = {"id_donHang", "id_sanPham", "id_user", "tenSP", "ngayMua", "soLuong", "gia", "status", "image", "mau"};
+        String[] columns = {"id_donHang", "id_sanPham", "id_user", "tenSP", "ngayMua", "soLuong", "gia", "status", "image", "mau", "pttt"};
 
         String selection = "status=?";
         String[] selectionArgs = {status};
@@ -65,8 +66,9 @@ public class DonHangDAO {
                     String statusDB = cursor.getString(cursor.getColumnIndex("status"));
                     String image = cursor.getString(cursor.getColumnIndex("image"));
                     String mau = cursor.getString(cursor.getColumnIndex("mau"));
+                    String pttt= cursor.getString(cursor.getColumnIndex("pttt"));
 
-                    DonHang donHang = new DonHang(id, id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, statusDB, image, mau);
+                    DonHang donHang = new DonHang(id, id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, statusDB, image, mau, pttt);
                     donHangList.add(donHang);
                 } while (cursor.moveToNext());
             }
@@ -93,6 +95,8 @@ public class DonHangDAO {
         db.close();
         return rowsAffected;
     }
+
+
 
 
 
