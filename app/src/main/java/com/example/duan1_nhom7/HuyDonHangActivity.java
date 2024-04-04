@@ -27,7 +27,7 @@ import java.util.List;
 
 public class HuyDonHangActivity extends AppCompatActivity {
     ImageView img;
-    TextView name, price, color, content, count, date, pttt;
+    TextView name, price, color, content, count, date, pttt, nameUser, phone, location;
     Button btnHuy;
 
 
@@ -47,6 +47,10 @@ public class HuyDonHangActivity extends AppCompatActivity {
         content = findViewById(R.id.txtMoTaSPChoXacNhan);
         date = findViewById(R.id.txtDateChoXacNhan);
         pttt = findViewById(R.id.PTTTSPChoXacNhan);
+        nameUser = findViewById(R.id.txtNameHuy);
+        phone = findViewById(R.id.txtPhoneHuy);
+        location = findViewById(R.id.txtLocationHuy);
+
 
 
 
@@ -66,6 +70,9 @@ public class HuyDonHangActivity extends AppCompatActivity {
             date.setText(donHang.getNgayMua());
             pttt.setText(donHang.getPttt());
             content.setText(moTaSP);
+            nameUser.setText(donHang.getNameUser());
+            phone.setText(donHang.getPhone());
+            location.setText(donHang.getLocation());
         }
 
         // Thêm sự kiện click cho nút hủy đơn hàng

@@ -16,11 +16,15 @@ public class DonHang implements Serializable {
     private String mau;
 
     private String pttt;
+    private String location;
+    private String phone;
+
+    private String nameUser;
 
     public DonHang() {
     }
 
-    public DonHang(int id_donHang, int id_sanPham, int id_user, String tenSP, String ngayMua, int soLuong, int gia, String status, String image, String mau, String pttt) {
+    public DonHang(int id_donHang, int id_sanPham, int id_user, String tenSP, String ngayMua, int soLuong, int gia, String status, String image, String mau, String pttt, String location, String phone, String nameUser) {
         this.id_donHang = id_donHang;
         this.id_sanPham = id_sanPham;
         this.id_user = id_user;
@@ -32,6 +36,9 @@ public class DonHang implements Serializable {
         this.image = image;
         this.mau = mau;
         this.pttt = pttt;
+        this.location = location;
+        this.phone = phone;
+        this.nameUser = nameUser;
     }
 
     public int getId_donHang() {
@@ -120,5 +127,29 @@ public class DonHang implements Serializable {
 
     public void setPttt(String pttt) {
         this.pttt = pttt;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getNameUser() {
+        return nameUser;
+    }
+
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
     }
 }

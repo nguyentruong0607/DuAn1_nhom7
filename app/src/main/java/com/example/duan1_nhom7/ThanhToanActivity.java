@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,18 +49,15 @@ public class ThanhToanActivity extends AppCompatActivity {
 
     RecyclerView rcvHoaDon;
     Button btnPay;
-    TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang;
+    TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang, txtNameUser, txtPhone;
     EditText edLocation;
-    String tongTien , currentDate;
+    String tongTien, currentDate;
     boolean isPaymentMethodSelected = false;
     DonHangDAO donHangDAO;
     UserDAO userDAO;
     GioHangDAO gioHangDAO;
     private ArrayList<GioHang> listGioHang = null;
-    String idUser ;
-
-
-
+    String idUser, fullname, phone, location;
 
 
     @Override
@@ -79,13 +77,20 @@ public class ThanhToanActivity extends AppCompatActivity {
         dateNhanHang = findViewById(R.id.txtDateNhanHang);
         edLocation = findViewById(R.id.edLocationGiaoHang);
         rcvHoaDon = findViewById(R.id.rcv_SPThanhToan);
+        txtNameUser = findViewById(R.id.txtnameUserTT);
+        txtPhone = findViewById(R.id.txtphoneUserTT);
 
         userDAO = new UserDAO(ThanhToanActivity.this);
         SharedPreferences sharedPreferences = getSharedPreferences("luuDangNhap", MODE_PRIVATE);
         String userName = sharedPreferences.getString("TK", "");
         idUser = userDAO.getIdUser(userName);
+        fullname = userDAO.getFullName(userName);
+        phone = userDAO.getPhone(userName);
+        location = userDAO.getLocation(userName);
 
-
+        txtPhone.setText(phone);
+        txtNameUser.setText(fullname);
+        edLocation.setText(location);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         currentDate = sdf.format(calendar.getTime());
@@ -94,12 +99,7 @@ public class ThanhToanActivity extends AppCompatActivity {
         String dateAfterThreeDays = sdf.format(calendar.getTime());
         dateNhanHang.setText(dateAfterThreeDays);
 
-        UserDAO daoDiaChi = new UserDAO(this);
-        List<String> diaChiList = daoDiaChi.getDiaChi();
-        if (!diaChiList.isEmpty()) {
-            String firstAddress = diaChiList.get(0);
-            edLocation.setText(firstAddress);
-        }
+
 
         Intent intent = getIntent();
 
@@ -120,13 +120,9 @@ public class ThanhToanActivity extends AppCompatActivity {
         String tongTienWithDot = getIntent().getStringExtra("tong_tien");
         txtTongTienHang.setText(tongTienWithDot);
 
-        String tongTienWithoutDot = tongTienWithDot.replaceAll("[^\\d]", "");
-        int tongTienInt = Integer.parseInt(tongTienWithoutDot);
-        int tongTienPlus30000 = tongTienInt + 30000;
-        tongTien = String.valueOf(tongTienPlus30000);
-        String formattedTongTien = String.format("%,.0f VNĐ", (float) tongTienPlus30000);
-        txtTongThanhToan.setText(formattedTongTien);
-        txtTongThanhToan2.setText(formattedTongTien);
+
+        txtTongThanhToan.setText(tongTienWithDot);
+        txtTongThanhToan2.setText(tongTienWithDot);
 
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -223,7 +219,10 @@ public class ThanhToanActivity extends AppCompatActivity {
                                 donHang.setStatus("1");
                                 donHang.setImage(gioHang.getImgSP());
                                 donHang.setMau(gioHang.getMau());
-                                donHang.setPttt("Thanh tóán khi nhận hàng");
+                                donHang.setPttt("Thanh toán khi nhận hàng");
+                                donHang.setNameUser(fullname);
+                                donHang.setPhone(phone);
+                                donHang.setLocation(edLocation.getText().toString());
                                 donHangDAO.insertDonHang(donHang);
                             }
 

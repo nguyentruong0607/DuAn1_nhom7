@@ -60,7 +60,7 @@ public class ProductFragment extends Fragment {
 
 //        if (sanPham != null) {
 //            int idLoai = sanPham.getId_Loai();
-            list = sanPhamDAO.getAllProduct(1);
+            list = sanPhamDAO.getProductsByCategoryId(sanPham.getId_Loai());
             adapterSanPham = new AdapterSanPham(getContext(), (ArrayList<SanPham>) list);
             rcvProduct.setAdapter(adapterSanPham);
         //}
