@@ -1,17 +1,24 @@
 package com.example.duan1_nhom7.DTO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HoaDon {
     private int id_HoaDon;
     private String ngayMua;
     private int gia;
 
+    private int soLuong;
+
     public HoaDon() {
     }
 
-    public HoaDon(int id_HoaDon, String ngayMua, int gia) {
+    public HoaDon(int id_HoaDon, String ngayMua, int gia, int soLuong) {
         this.id_HoaDon = id_HoaDon;
         this.ngayMua = ngayMua;
         this.gia = gia;
+        this.soLuong = soLuong;
     }
 
     public int getId_HoaDon() {
@@ -36,5 +43,13 @@ public class HoaDon {
 
     public void setGia(int gia) {
         this.gia = gia;
+    }
+
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
     }
 }

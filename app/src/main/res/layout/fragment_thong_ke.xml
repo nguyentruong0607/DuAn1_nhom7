@@ -1,14 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Fragment.ThongKeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        style="@style/edt_Label"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:textColor="#FF9800"
+        android:text="Thống kê"
+        android:gravity="center_horizontal"
+        android:textSize="35dp"
+        />
+   <LinearLayout
+       android:layout_marginTop="50dp"
+       android:layout_marginHorizontal="20dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+       <Button
+           android:id="@+id/btnStart"
+           android:layout_marginRight="30dp"
+           android:layout_width="150dp"
+           android:layout_height="wrap_content"
+           android:text="Từ ngày"/>
+       <EditText
+           android:id="@+id/edStart"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="2024/04/05"/>
 
-</FrameLayout>
+   </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnEnd"
+            android:layout_marginRight="30dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Đến ngày"/>
+        <EditText
+            android:id="@+id/edEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2024/04/07"/>
+
+    </LinearLayout>
+
+        <Button
+            android:layout_marginTop="70dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/btnDoanhThu"
+            android:text="Doanh thu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:id="@+id/txtDoanhThu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Doanh thu: "/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Số lượng sản phẩm bán ra: "
+        android:id="@+id/txtSoLuongThongKe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+
+
+
+
+</LinearLayout>
