@@ -90,12 +90,16 @@ public class DbHelper extends SQLiteOpenHelper {
         String createTableHoaDon = "CREATE TABLE HoaDon (" +
                 "id_HoaDon INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "ngayMua TEXT, " +
-                "gia INTEGER " +
+                "gia INTEGER, " +
+                "soLuong INTEGER " +
                 ");";
         db.execSQL(createTableHoaDon);
-        db.execSQL("INSERT INTO HoaDon (ngayMua, gia) VALUES (1,'05-04-2024', 20000000)");
-        db.execSQL("INSERT INTO HoaDon (ngayMua, gia) VALUES (2, '06-04-2024', 25000000)");
-        db.execSQL("INSERT INTO HoaDon (ngayMua, gia) VALUES (3, '07-04-2024', 30000000)");
+        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (1,'2024/04/04', 20000000, 1)");
+        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (2, '2024/04/06', 25000000, 1)");
+        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (3, '2024/04/07', 30000000, 1)");
+        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (4, '2024/04/05', 30000000, 1)");
+        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (5, '2024/04/07', 30000000, 1)");
+
 
 
 

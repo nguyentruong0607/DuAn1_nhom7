@@ -61,12 +61,15 @@ public class ThanhToanActivity extends AppCompatActivity {
     DAOHoaDon daoHoaDon;
     private ArrayList<GioHang> listGioHang = null;
     String idUser, fullname, phone, location;
+    int soLuong;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thanh_toan);
+        soLuong = 0;
 
         donHangDAO = new DonHangDAO(this);
         gioHangDAO = new GioHangDAO(this);
@@ -228,13 +231,20 @@ public class ThanhToanActivity extends AppCompatActivity {
                                 donHang.setPhone(phone);
                                 donHang.setLocation(edLocation.getText().toString());
                                 donHangDAO.insertDonHang(donHang);
+                                soLuong += gioHang.getSoLuong();
                             }
 
 
                             String numericString = txtTongThanhToan.getText().toString().replaceAll("[^\\d]", "");
                             HoaDon hoaDon = new HoaDon();
                             hoaDon.setGia(Integer.parseInt(numericString));
-                            hoaDon.setNgayMua(currentDate);
+
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+                            Calendar calendar = Calendar.getInstance();
+                            String date = sdf.format(calendar.getTime());
+                            hoaDon.setNgayMua(date);
+                            hoaDon.setSoLuong(soLuong);
                             daoHoaDon.insertHoaDon(hoaDon);
 
 
