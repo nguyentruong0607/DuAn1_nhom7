@@ -28,8 +28,7 @@ import java.util.ArrayList;
 public class ChiTiet_SP_gioHang extends Fragment {
 
     SanPham sanPham;
-    String sizeCheck;
-    TextView txtChiTietTenSp, txtChiTietGiaSP, txtChiTietMoTaSP, txtChiTietTongTien, txtChiTietSL;
+    TextView txtChiTietTenSp, txtChiTietGiaSP, txtChiTietMoTaSP, txtChiTietTongTien, txtChiTietSL,txt_sluong,txt_ngaySP;
 
     ImageView img_sp, btnSoLuongTang, btnSoLuongGiam;
     double donGia = 0;
@@ -65,6 +64,8 @@ public class ChiTiet_SP_gioHang extends Fragment {
         txtChiTietTongTien = view.findViewById(R.id.txtChiTietTongTien);
         btnSoLuongTang = view.findViewById(R.id.btnSoLuongTang);
         btnSoLuongGiam = view.findViewById(R.id.btnSoLuongGiam);
+        txt_sluong=view.findViewById(R.id.txt_soLuong);
+        txt_ngaySP=view.findViewById(R.id.txt_ngaySP);
 
         daoGioHang = new GioHangDAO(getContext());
 
@@ -172,6 +173,8 @@ public class ChiTiet_SP_gioHang extends Fragment {
                     tongTien = tinhTien(soLuong, donGia, donGiaGoc);
                     String mTinhTien = String.format("%,.0f", tongTien);
                     txtChiTietTongTien.setText(mTinhTien + "VNĐ");
+                }else {
+                    Toast.makeText(getActivity(), "Số lượng tối thiểu là :"+soLuong, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -203,7 +206,8 @@ public class ChiTiet_SP_gioHang extends Fragment {
         String mGiaSP = String.format("%,.0f", giaSP);
         txtChiTietGiaSP.setText(mGiaSP + "VNĐ");
         txtChiTietMoTaSP.setText(sanPham.getMoTaSP());
-
+        txt_sluong.setText("Số lượng sản phẩm: "+sanPham.getSoLuongSP()+"");
+        txt_ngaySP.setText("Ngày: "+sanPham.getNgaySP());
         Picasso.get().load(sanPham.getAnhSP()).into(img_sp);
 
         tongTien = tinhTien(soLuong, donGia, donGiaGoc);

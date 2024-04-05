@@ -27,7 +27,7 @@ import com.example.duan1_nhom7.DonHangActivity;
 import com.example.duan1_nhom7.R;
 
 public class Account_Fragment extends Fragment {
-    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat, donMua;
+    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat;
     TextView txtUserName, txtUserKH;
     UserDAO daoUser;
 
@@ -42,7 +42,6 @@ public class Account_Fragment extends Fragment {
         userFrgmDangXuat = view.findViewById(R.id.userFrgmDangXuat);
         userFrgmQLuser = view.findViewById(R.id.userFrgmQLuser);
 
-        donMua = view.findViewById(R.id.userFrgmTTDonHang);
 
 
 
@@ -63,16 +62,8 @@ public class Account_Fragment extends Fragment {
         }
         if (quyen.equalsIgnoreCase("admin")){
             txtUserKH.setVisibility(View.GONE);
-            donMua.setVisibility(View.GONE);
         }
 
-        donMua.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DonHangActivity.class);
-                startActivity(intent);
-            }
-        });
 
         userFrgmThemSP.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -41,17 +41,9 @@ public class StoreFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         daoUser=new UserDAO(getContext());
-//        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", getActivity().MODE_PRIVATE);
-//        int id_user = pref.getInt("MA", 0);
-//        User user = daoUser.getUser(id_user);
-//        int quyenUser = user.getChucvu();
-//        if (quyenUser != 1) {
         View view=inflater.inflate(R.layout.fragment_store,container,false);
         return  view;
-        //}
 
-
-        //return null;
     }
 
     @Override

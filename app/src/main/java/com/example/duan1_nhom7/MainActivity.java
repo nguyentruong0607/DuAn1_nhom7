@@ -17,6 +17,8 @@ import com.example.duan1_nhom7.Fragment.Account_Fragment;
 import com.example.duan1_nhom7.Fragment.HomeFragment;
 import com.example.duan1_nhom7.Fragment.LoaiSPFragment;
 import com.example.duan1_nhom7.Fragment.ProductFragment;
+import com.example.duan1_nhom7.Fragment.QLy_DonHang_Fragment;
+import com.example.duan1_nhom7.Fragment.QLy_user_Fragment;
 import com.example.duan1_nhom7.Fragment.StoreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             loadFragment(fragment);
             return true;
         } else if (item.getItemId() == R.id.pageSanPham) {
-            fragment = new ProductFragment(sanPham);
+            fragment = new DonHangActivity();
             loadFragment(fragment);
             return true;
         } else if (item.getItemId() == R.id.pageBanHang) {

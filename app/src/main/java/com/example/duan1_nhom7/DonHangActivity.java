@@ -1,8 +1,13 @@
 package com.example.duan1_nhom7;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -14,19 +19,19 @@ import com.example.duan1_nhom7.Fragment.DaHuyFragment;
 import com.example.duan1_nhom7.Fragment.DangGiaoFragment;
 import com.google.android.material.tabs.TabLayout;
 
-public class DonHangActivity extends AppCompatActivity {
+public class DonHangActivity extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_don_hang);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_don_hang, container, false);
 
-        tabLayout = findViewById(R.id.tablayout);
-        viewPager = findViewById(R.id.viewPagerTab);
+        tabLayout = view.findViewById(R.id.tablayout);
+        viewPager = view.findViewById(R.id.viewPagerTab);
 
-        AdapterTrangThai tt = new AdapterTrangThai(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        AdapterTrangThai tt = new AdapterTrangThai(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         tt.addFragment(new ChoXacNhanFragment(), "Chờ xác nhận");
         tt.addFragment(new DangGiaoFragment(), "Đang giao");
         tt.addFragment(new DaGiaoFragment(), "Đã giao");
@@ -36,9 +41,7 @@ public class DonHangActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(tt.getFragmentPosition(new DaHuyFragment()));
+
+        return view;
     }
-
-
-
-
 }
