@@ -17,8 +17,10 @@ import com.example.duan1_nhom7.DTO.SanPham;
 import com.example.duan1_nhom7.Fragment.Account_Fragment;
 import com.example.duan1_nhom7.Fragment.HomeFragment;
 import com.example.duan1_nhom7.Fragment.ProductFragment;
+import com.example.duan1_nhom7.Fragment.QLDonHangFragment;
 import com.example.duan1_nhom7.Fragment.QLy_DonHang_Fragment;
 import com.example.duan1_nhom7.Fragment.StoreFragment;
+import com.example.duan1_nhom7.Fragment.ThongKeFragment;
 import com.example.duan1_nhom7.Fragment.ViewPagerFragment;
 import com.example.duan1_nhom7.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,11 +53,11 @@ public class MainActivity_Admin extends AppCompatActivity implements BottomNavig
             loadFragment(fragment);
             return true;
         } else if (menuItem.getItemId() == R.id.item_navi_bottom_admin_donhang) {
-            fragment = new QLy_DonHang_Fragment();
+            fragment = new QLDonHangFragment();
             loadFragment(fragment);
             return true;
         } else if (menuItem.getItemId() == R.id.item_navi_bottom_admin_thongKe) {
-            fragment = new QLy_DonHang_Fragment();
+            fragment = new ThongKeFragment();
             loadFragment(fragment);
             return true;
         } else if (menuItem.getItemId() == R.id.item_navi_bottom_admin) {

@@ -59,6 +59,11 @@ public class Account_Fragment extends Fragment {
             userFrgmThemSP.setVisibility(View.GONE);
             userFrgmQLuser.setVisibility(View.GONE);
 
+
+        }
+        if (quyen.equalsIgnoreCase("admin")){
+            txtUserKH.setVisibility(View.GONE);
+            donMua.setVisibility(View.GONE);
         }
 
         donMua.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +103,16 @@ public class Account_Fragment extends Fragment {
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
                         Toast.makeText(getContext(), "Đăng xuất", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("luuDangNhap", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("TK");
+                        editor.apply();
+
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         dialog.dismiss();
+
 
                     }
                 });

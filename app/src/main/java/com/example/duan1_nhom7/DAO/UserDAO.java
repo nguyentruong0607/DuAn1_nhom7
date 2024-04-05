@@ -141,6 +141,9 @@ public class UserDAO {
         return diaChiList;
     }
 
+
+
+
     public String getIdUser(String username) {
         String idUser = null;
         Cursor cursor = db.rawQuery("SELECT id_user FROM User WHERE ten_user=?", new String[]{username});
@@ -149,6 +152,36 @@ public class UserDAO {
         }
         cursor.close();
         return idUser;
+    }
+
+    public String getFullName(String username) {
+        String fullname = null;
+        Cursor cursor = db.rawQuery("SELECT fullname FROM User WHERE ten_user=?", new String[]{username});
+        if (cursor.moveToFirst()) {
+            fullname = cursor.getString(0);
+        }
+        cursor.close();
+        return fullname;
+    }
+
+    public String getPhone(String username) {
+        String phone = null;
+        Cursor cursor = db.rawQuery("SELECT sodienthoai FROM User WHERE ten_user=?", new String[]{username});
+        if (cursor.moveToFirst()) {
+            phone = cursor.getString(0);
+        }
+        cursor.close();
+        return phone;
+    }
+
+    public String getLocation(String username) {
+        String location = null;
+        Cursor cursor = db.rawQuery("SELECT diaChi FROM User WHERE ten_user=?", new String[]{username});
+        if (cursor.moveToFirst()) {
+            location = cursor.getString(0);
+        }
+        cursor.close();
+        return location;
     }
 
 

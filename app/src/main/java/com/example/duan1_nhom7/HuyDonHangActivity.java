@@ -16,15 +16,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.SanPhamDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HuyDonHangActivity extends AppCompatActivity {
     ImageView img;
-    TextView name, price, color, content, count;
+    TextView name, price, color, content, count, date, pttt, nameUser, phone, location;
     Button btnHuy;
+
+
 
 
     @Override
@@ -39,6 +45,13 @@ public class HuyDonHangActivity extends AppCompatActivity {
         color = findViewById(R.id.txtMauSPChoXacNhan);
         btnHuy = findViewById(R.id.btnHuyDonHang);
         content = findViewById(R.id.txtMoTaSPChoXacNhan);
+        date = findViewById(R.id.txtDateChoXacNhan);
+        pttt = findViewById(R.id.PTTTSPChoXacNhan);
+        nameUser = findViewById(R.id.txtNameHuy);
+        phone = findViewById(R.id.txtPhoneHuy);
+        location = findViewById(R.id.txtLocationHuy);
+
+
 
 
         DonHang donHang = (DonHang) getIntent().getSerializableExtra("donHang");
@@ -54,7 +67,12 @@ public class HuyDonHangActivity extends AppCompatActivity {
             count.setText(String.valueOf(donHang.getSoLuong()));
             color.setText(donHang.getMau());
             Picasso.get().load(donHang.getImage()).into(img);
+            date.setText(donHang.getNgayMua());
+            pttt.setText(donHang.getPttt());
             content.setText(moTaSP);
+            nameUser.setText(donHang.getNameUser());
+            phone.setText(donHang.getPhone());
+            location.setText(donHang.getLocation());
         }
 
         // Thêm sự kiện click cho nút hủy đơn hàng
@@ -81,8 +99,8 @@ public class HuyDonHangActivity extends AppCompatActivity {
                             int rowsAffected = donHangDAO.updateDonHangStatus(donHang);
                             if (rowsAffected > 0) {
                                 Toast.makeText(HuyDonHangActivity.this, "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(HuyDonHangActivity.this, DonHangActivity.class);
-                                startActivity(intent);
+                                setResult(RESULT_OK);
+                                finish();
                             } else {
                                 Toast.makeText(HuyDonHangActivity.this, "Hủy đơn hàng thất bại", Toast.LENGTH_SHORT).show();
                             }

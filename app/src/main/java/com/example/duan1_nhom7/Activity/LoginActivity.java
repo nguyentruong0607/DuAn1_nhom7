@@ -76,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
                     editor.remove("password");
                 }
                 editor.apply();
+
+
             }
         });
         String username = sharedPreferences.getString("username", "");
@@ -137,6 +139,9 @@ public class LoginActivity extends AppCompatActivity {
                         edit.putString("TK", strUser);
                         edit.putString("quyen", "khachhang");
                         edit.apply();
+
+
+
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     } else {

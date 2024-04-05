@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.DTO.DonHang;
-import com.example.duan1_nhom7.DTO.GioHang;
-import com.example.duan1_nhom7.Fragment.ChiTiet_SP_gioHang;
 import com.example.duan1_nhom7.R;
 import com.squareup.picasso.Picasso;
 
@@ -20,14 +18,12 @@ import java.util.List;
 public class AdapterChoXacNhan extends RecyclerView.Adapter<AdapterChoXacNhan.ViewHolder> {
     private Context context;
     private List<DonHang> hoaDonList;
-    private OnItemClickListener mListener; // Thêm biến mListener
+    private OnItemClickListener mListener;
 
-    // Interface để xử lý sự kiện click
     public interface OnItemClickListener {
         void onItemClick(DonHang gioHang);
     }
 
-    // Phương thức setter để thiết lập mListener
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
@@ -46,18 +42,22 @@ public class AdapterChoXacNhan extends RecyclerView.Adapter<AdapterChoXacNhan.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DonHang gioHang = hoaDonList.get(position);
+        DonHang donHang = hoaDonList.get(position);
 
-        Picasso.get().load(gioHang.getImage()).into(holder.imgGHAnhSP);
-        holder.txtGHTenSP.setText(gioHang.getTenSP());
-        holder.txtGHSize.setText(gioHang.getMau());
-        int soLuong = gioHang.getSoLuong();
+        Picasso.get().load(donHang.getImage()).into(holder.imgGHAnhSP);
+        holder.txtGHTenSP.setText(donHang.getTenSP());
+        holder.txtGHSize.setText(donHang.getMau());
+        int soLuong = donHang.getSoLuong();
         holder.edtGHSoLuong.setText(String.valueOf(soLuong));
     }
 
     @Override
     public int getItemCount() {
         return hoaDonList.size();
+    }
+
+    public void setData(List<DonHang> data) {
+        this.hoaDonList = data;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -72,7 +72,6 @@ public class AdapterChoXacNhan extends RecyclerView.Adapter<AdapterChoXacNhan.Vi
             txtGHSize = itemView.findViewById(R.id.txtMau_HoadonXacNhan);
             edtGHSoLuong = itemView.findViewById(R.id.txtSoLuong_HpadonXacNhan);
 
-            // Thêm sự kiện click vào itemView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,3 +84,4 @@ public class AdapterChoXacNhan extends RecyclerView.Adapter<AdapterChoXacNhan.Vi
         }
     }
 }
+

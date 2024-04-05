@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-
             style="@style/edt_Label"
             android:layout_width="match_parent"
             android:textColor="#FF9800"
@@ -125,21 +124,78 @@
                     <TextView
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:text="Địa chỉ nhận hàng "
+                        android:text="Giao đến "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
-                <EditText
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/edLocationGiaoHang"
-                    android:ellipsize="end"
+                <LinearLayout
+                   android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thiên đàng"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Người nhận: "/>
+
+                    <TextView
+                        android:id="@+id/txtnameUserTT"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="quan"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số điện thoại: "/>
+
+                    <TextView
+                        android:id="@+id/txtphoneUserTT"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="quan"
+                        />
+                </LinearLayout>
+
+
+                <LinearLayout
+
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Địa chỉ nhận hàng: "/>
+
+                    <EditText
+                        android:id="@+id/edLocationGiaoHang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thiên đàng"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_marginTop="10dp"
                     android:background="#FF9800"
@@ -211,11 +267,12 @@
                         android:text="Tổng tiền hàng: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
+
                     <TextView
                         android:id="@+id/txtTongTienHangThanhToan"
-                        android:text="0 vnd"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"
+                        android:text="0 vnd" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -229,7 +286,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:text="30.000 VNĐ"
+                        android:text="Miễn phí"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>

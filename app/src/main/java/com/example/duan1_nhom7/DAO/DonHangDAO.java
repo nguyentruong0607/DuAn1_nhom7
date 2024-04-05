@@ -32,10 +32,16 @@ public class DonHangDAO {
         values.put("status", donHang.getStatus());
         values.put(("image"), donHang.getImage());
         values.put(("mau"), donHang.getMau());
+        values.put((("pttt")), donHang.getPttt());
+        values.put((("location")), donHang.getLocation());
+        values.put((("phone")), donHang.getPhone());
+        values.put((("nameUser")), donHang.getNameUser());
+
+
         // Thêm các trường còn lại tương ứng vào values
 
         // Insert vào cơ sở dữ liệu
-        db.insert("DonHang", null, values);
+        db.insert("DonHangChiTiet", null, values);
 
         // Đóng kết nối tới cơ sở dữ liệu
         db.close();
@@ -45,14 +51,14 @@ public class DonHangDAO {
         List<DonHang> donHangList = new ArrayList<>();
         db = dbHelper.getReadableDatabase();
 
-        String[] columns = {"id_donHang", "id_sanPham", "id_user", "tenSP", "ngayMua", "soLuong", "gia", "status", "image", "mau"};
+        String[] columns = {"id_donHang", "id_sanPham", "id_user", "tenSP", "ngayMua", "soLuong", "gia", "status", "image", "mau", "pttt", "location", "phone", "nameUser"};
 
         String selection = "status=?";
         String[] selectionArgs = {status};
 
         Cursor cursor = null;
         try {
-            cursor = db.query("DonHang", columns, selection, selectionArgs, null, null, null);
+            cursor = db.query("DonHangChiTiet", columns, selection, selectionArgs, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     int id = cursor.getInt(cursor.getColumnIndex("id_donHang"));
@@ -65,8 +71,14 @@ public class DonHangDAO {
                     String statusDB = cursor.getString(cursor.getColumnIndex("status"));
                     String image = cursor.getString(cursor.getColumnIndex("image"));
                     String mau = cursor.getString(cursor.getColumnIndex("mau"));
+                    String pttt= cursor.getString(cursor.getColumnIndex("pttt"));
+                    String location = cursor.getString(cursor.getColumnIndex("location"));
+                    String phone = cursor.getString(cursor.getColumnIndex("phone"));
+                    String nameUser = cursor.getString(cursor.getColumnIndex("nameUser"));
 
-                    DonHang donHang = new DonHang(id, id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, statusDB, image, mau);
+
+
+                    DonHang donHang = new DonHang(id, id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, statusDB, image, mau, pttt, location, phone, nameUser);
                     donHangList.add(donHang);
                 } while (cursor.moveToNext());
             }
@@ -81,18 +93,65 @@ public class DonHangDAO {
         return donHangList;
     }
 
+    public List<DonHang> getDonHangByIdUserAndStatus(int id_user, String status) {
+        List<DonHang> donHangList = new ArrayList<>();
+        db = dbHelper.getReadableDatabase();
+
+        String[] columns = {"id_donHang", "id_sanPham", "id_user", "tenSP", "ngayMua", "soLuong", "gia", "status", "image", "mau", "pttt", "location", "phone", "nameUser"};
+
+        String selection = "id_user=? AND status=?";
+        String[] selectionArgs = {String.valueOf(id_user), status};
+
+        Cursor cursor = null;
+        try {
+            cursor = db.query("DonHangChiTiet", columns, selection, selectionArgs, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndex("id_donHang"));
+                    int id_sanPham = cursor.getInt(cursor.getColumnIndex("id_sanPham"));
+                    String tenSP = cursor.getString(cursor.getColumnIndex("tenSP"));
+                    String ngayMua = cursor.getString(cursor.getColumnIndex("ngayMua"));
+                    int soLuong = cursor.getInt(cursor.getColumnIndex("soLuong"));
+                    int gia = cursor.getInt(cursor.getColumnIndex("gia"));
+                    String statusDB = cursor.getString(cursor.getColumnIndex("status"));
+                    String image = cursor.getString(cursor.getColumnIndex("image"));
+                    String mau = cursor.getString(cursor.getColumnIndex("mau"));
+                    String pttt= cursor.getString(cursor.getColumnIndex("pttt"));
+                    String location = cursor.getString(cursor.getColumnIndex("location"));
+                    String phone = cursor.getString(cursor.getColumnIndex("phone"));
+                    String nameUser = cursor.getString(cursor.getColumnIndex("nameUser"));
+
+                    DonHang donHang = new DonHang(id, id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, statusDB, image, mau, pttt, location, phone, nameUser);
+                    donHangList.add(donHang);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DonHangDAO", "Error while trying to get don hang by user ID and status: " + e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return donHangList;
+    }
+
+
     public int updateDonHangStatus(DonHang donHang) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("status", donHang.getStatus());
+        values.put("ngayMua", donHang.getNgayMua());
 
         String selection = "id_donHang=?";
         String[] selectionArgs = {String.valueOf(donHang.getId_donHang())};
 
-        int rowsAffected = db.update("DonHang", values, selection, selectionArgs);
+        int rowsAffected = db.update("DonHangChiTiet", values, selection, selectionArgs);
         db.close();
         return rowsAffected;
     }
+
+
 
 
 

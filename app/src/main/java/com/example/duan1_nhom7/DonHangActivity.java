@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.duan1_nhom7.Adapter.AdapterTrangThai;
+import com.example.duan1_nhom7.Fragment.Account_Fragment;
 import com.example.duan1_nhom7.Fragment.ChoXacNhanFragment;
 import com.example.duan1_nhom7.Fragment.DaGiaoFragment;
 import com.example.duan1_nhom7.Fragment.DaHuyFragment;
@@ -36,5 +37,8 @@ public class DonHangActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(tt.getFragmentPosition(new DaHuyFragment()));
     }
+
+
+
 
 }

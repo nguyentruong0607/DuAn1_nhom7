@@ -134,6 +134,7 @@ public class SanPhamDAO {
         return list;
     }
 
+    @SuppressLint("Range")
     public String getMoTaSPById(int idSanPham) {
         String moTaSP = null;
         Cursor cursor = null;
