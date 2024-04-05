@@ -8,11 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import com.example.duan1_nhom7.DTO.DonHang;
 import com.example.duan1_nhom7.DTO.SanPham;
+import com.example.duan1_nhom7.DTO.Top10BanChay;
 import com.example.duan1_nhom7.DTO.User;
 import com.example.duan1_nhom7.Database.DbHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SanPhamDAO {
@@ -66,7 +70,7 @@ public class SanPhamDAO {
             sql = "SELECT * FROM SanPham";
         }
         if (rdoCheck == 1) {
-            sql = "SELECT * FROM SanPham ORDER BY ngaySP ASC";
+            sql = "SELECT * FROM SanPham ORDER BY ngaySP DESC";
         }
         if (rdoCheck == 2) {
             sql = "SELECT * FROM SanPham ORDER BY id_Loai ASC";
@@ -74,17 +78,7 @@ public class SanPhamDAO {
         return getData(sql);
     }
 
-    public SanPham getSPofMaSP(int maSp) {
-        String sql = "Select * FROM SanPham WHERE SanPham.id_sanPham = ?";
-        ArrayList<SanPham> list = getData(sql, String.valueOf(maSp));
-        return list.get(0);
-    }
 
-    public ArrayList<SanPham> getSPofTL(int id_Loai) {
-        String sql = "Select * FROM SanPham WHERE SanPham.id_Loai = ? ";
-        ArrayList<SanPham> list = getData(sql, String.valueOf(id_Loai));
-        return list;
-    }
     @SuppressLint("Range")
     public List<SanPham> getProductsByCategoryId(int Id_Loai) {
         List<SanPham> productList = new ArrayList<>();
@@ -96,7 +90,7 @@ public class SanPhamDAO {
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                     int id = cursor.getInt(cursor.getColumnIndex("id_sanPham"));
+                    int id = cursor.getInt(cursor.getColumnIndex("id_sanPham"));
                     String anhSP = cursor.getString(cursor.getColumnIndex("anhSP"));
                     String tenSP = cursor.getString(cursor.getColumnIndex("tenSP"));
                     int giaTienSP = cursor.getInt(cursor.getColumnIndex("giaTienSP"));
@@ -112,11 +106,11 @@ public class SanPhamDAO {
             if (cursor != null) {
                 cursor.close();
             }
-            database.close();
         }
 
         return productList;
     }
+
     public ArrayList<SanPham> getData(String sql, String... selectionAGrs) {
         ArrayList<SanPham> list = new ArrayList<>();
         Cursor cursor = database.rawQuery(sql, selectionAGrs);
@@ -155,6 +149,58 @@ public class SanPhamDAO {
 
         return moTaSP;
     }
+
+    public ArrayList<SanPham> searchProductByName(String searchName) {
+        String sql = "SELECT * FROM SanPham WHERE tenSP LIKE ?";
+        String[] selectionArgs = new String[]{"%"+searchName + "%"};
+        return getData(sql, selectionArgs);
+    }
+
+
+    public List<Top10BanChay> getTop10BestSellingProducts(Context context) {
+        List<Top10BanChay> top10List = new ArrayList<>();
+
+        // Lấy danh sách sản phẩm từ cơ sở dữ liệu
+        List<SanPham> allProducts = getAllProduct(0);
+
+        // Tính toán số lượng bán được cho từng sản phẩm và lưu vào list top10List
+        for (SanPham sanPham : allProducts) {
+            int totalSold = getTotalSoldForProductWithStatus(sanPham.getId_sanPham(), context);
+            top10List.add(new Top10BanChay(sanPham, totalSold));
+        }
+
+        // Sắp xếp top10List theo số lượng bán chạy giảm dần
+        Collections.sort(top10List, new Comparator<Top10BanChay>() {
+            @Override
+            public int compare(Top10BanChay t1, Top10BanChay t2) {
+                return t2.getSoluong().compareTo(t1.getSoluong());
+            }
+        });
+
+        // Trả về chỉ 10 sản phẩm đầu tiên trong top10List (nếu có)
+        if (top10List.size() > 10) {
+            return top10List.subList(0, 10);
+        } else {
+            return top10List;
+        }
+    }
+
+    private int getTotalSoldForProductWithStatus(int productId,Context context) {
+        int totalSold = 0;
+        DonHangDAO donHangDAO = new DonHangDAO(context);
+        // Lấy danh sách đơn hàng có status là status từ cơ sở dữ liệu
+        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("3");
+
+        // Tính tổng số lượng sản phẩm có productId trong các đơn hàng đã lấy được
+        for (DonHang donHang : donHangList) {
+            if (donHang.getId_sanPham() == productId) {
+                totalSold += donHang.getSoLuong();
+            }
+        }
+
+        return totalSold;
+    }
+
 
 
 }

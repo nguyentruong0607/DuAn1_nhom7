@@ -1,5 +1,6 @@
 package com.example.duan1_nhom7.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -46,7 +47,7 @@ public class DonHangDAO {
         // Đóng kết nối tới cơ sở dữ liệu
         db.close();
     }
-
+    @SuppressLint("Range")
     public List<DonHang> getDonHangByStatus(String status) {
         List<DonHang> donHangList = new ArrayList<>();
         db = dbHelper.getReadableDatabase();
@@ -93,6 +94,7 @@ public class DonHangDAO {
         return donHangList;
     }
 
+    @SuppressLint("Range")
     public List<DonHang> getDonHangByIdUserAndStatus(int id_user, String status) {
         List<DonHang> donHangList = new ArrayList<>();
         db = dbHelper.getReadableDatabase();

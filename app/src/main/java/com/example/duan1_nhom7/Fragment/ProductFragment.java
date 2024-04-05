@@ -57,13 +57,9 @@ public class ProductFragment extends Fragment {
         ed_search=view.findViewById(R.id.ed_search);
         sanPhamDAO=new SanPhamDAO(getContext());
 
-
-//        if (sanPham != null) {
-//            int idLoai = sanPham.getId_Loai();
-            list = sanPhamDAO.getProductsByCategoryId(sanPham.getId_Loai());
-            adapterSanPham = new AdapterSanPham(getContext(), (ArrayList<SanPham>) list);
-            rcvProduct.setAdapter(adapterSanPham);
-        //}
+        list = sanPhamDAO.getProductsByCategoryId(sanPham.getId_Loai());
+        adapterSanPham = new AdapterSanPham(getContext(), (ArrayList<SanPham>) list);
+        rcvProduct.setAdapter(adapterSanPham);
 
 
 

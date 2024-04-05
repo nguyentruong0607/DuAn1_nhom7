@@ -37,9 +37,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
                 ");");
         db.execSQL(createTableSanPham);
-        db.execSQL("INSERT INTO SanPham VALUES(1, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 128gb',20000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50,'3/3/30224'),"+
-                "(2, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 promax 128gb',30000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50,'21/3/2024')," +
-                " (3, 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg','Xiaomi 14 256gb',18000000,2,'Xiaomi 14 256GB chiếc flagship hứa hẹn mang đến những trải nghiệm đột phá cho người dùng. Với thiết kế sang trọng, màn hình hiển thị đỉnh cao, hiệu năng mạnh mẽ, camera chụp ảnh ấn tượng và thời lượng pin dài. Máy là một lựa chọn hoàn hảo cho những ai đang tìm kiếm một chiếc điện thoại cao cấp trong phân khúc giá tầm trung.',50,'27/3/2024')");
+        db.execSQL("INSERT INTO SanPham VALUES(1, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 128gb',20000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50,'03/03/30224'),"+
+                "(2, 'https://cdn.tgdd.vn/Products/Images/42/299033/iphone-15-pro-black-1.jpg','iphone 15 promax 128gb',30000000,1,'Chế tác bộ bộ khung viền từ chất liệu Titanium cứng cáp',50,'21/03/2024')," +
+                " (3, 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg','Xiaomi 14 256gb',18000000,2,'Xiaomi 14 256GB chiếc flagship hứa hẹn mang đến những trải nghiệm đột phá cho người dùng. Với thiết kế sang trọng, màn hình hiển thị đỉnh cao, hiệu năng mạnh mẽ, camera chụp ảnh ấn tượng và thời lượng pin dài. Máy là một lựa chọn hoàn hảo cho những ai đang tìm kiếm một chiếc điện thoại cao cấp trong phân khúc giá tầm trung.',50,'27/03/2024')");
         //Gio hang
         String tableGioHang = "CREATE Table GioHang (\n" +
                 "id_gioHang INTEGER,\n" +

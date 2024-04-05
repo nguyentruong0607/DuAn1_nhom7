@@ -9,7 +9,7 @@
         android:id="@+id/pageSanPham"
         android:enabled="true"
         android:icon="@mipmap/box"
-        android:title="Sản Phẩm"/>
+        android:title="Đơn hàng"/>
     <item
         android:id="@+id/pageBanHang"
         android:enabled="true"
