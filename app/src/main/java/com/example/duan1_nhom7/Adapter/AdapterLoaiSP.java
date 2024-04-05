@@ -33,6 +33,12 @@ public class AdapterLoaiSP extends RecyclerView.Adapter<AdapterLoaiSP.ViewHolder
         this.loaiSPList = loaiSPList;
     }
 
+    public AdapterLoaiSP(Context context, List<LoaiSP> loaiSPList, OnItemClickListener onItemClickListener) {
+        this.context = context;
+        this.loaiSPList = loaiSPList;
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public interface OnItemClickListener {
         void onItemClick(LoaiSP loaiSP);
     }
@@ -68,12 +74,6 @@ public class AdapterLoaiSP extends RecyclerView.Adapter<AdapterLoaiSP.ViewHolder
                 }
             }
         });
-        holder.imageViewProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               loadFragment(new ProductFragment(sanPham));
-            }
-        });
     }
 
     @Override
@@ -90,11 +90,5 @@ public class AdapterLoaiSP extends RecyclerView.Adapter<AdapterLoaiSP.ViewHolder
             textViewTenLoaiSP = itemView.findViewById(R.id.txtNameLoaiSP);
             imageViewProduct = itemView.findViewById(R.id.imageViewProduct);
         }
-    }
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

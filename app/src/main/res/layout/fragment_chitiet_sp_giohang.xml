@@ -119,6 +119,7 @@
                     >
 
                     <TextView
+                        android:id="@+id/txt_soLuong"
                         style="@style/edt_Label"
                         android:text="Số lượng :"
                         android:textColor="@color/black"
@@ -187,30 +188,14 @@
                     android:textSize="15dp" />
 
                 <TextView
+                    android:id="@+id/txt_ngaySP"
                     style="@style/edt_Label"
                     android:text="Ghi Chú"
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/txtChiTietGhiChu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/bo_tron_edt"
-                    android:gravity="top"
-                    android:hint="Yêu cầu của khách hàng"
-                    android:inputType="text|textMultiLine"
-                    android:lines="2"
-                    android:maxLines="2"
-                    android:minLines="2"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
+
 
             </LinearLayout>
 
