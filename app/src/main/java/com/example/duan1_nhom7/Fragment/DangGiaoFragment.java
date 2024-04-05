@@ -1,7 +1,10 @@
 package com.example.duan1_nhom7.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.Adapter.AdapterDanGiao;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
+import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
 import com.example.duan1_nhom7.DaNhanHangActivity;
 import com.example.duan1_nhom7.HuyDonHangActivity;
@@ -28,6 +32,9 @@ public class DangGiaoFragment extends Fragment {
     private AdapterDanGiao adapter;
     private DonHangDAO donHangDAO;
     private static final int REQUEST_CODE_RECEIVE_ORDER = 1005;
+    int idUser;
+
+    UserDAO userDAO;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,8 +44,13 @@ public class DangGiaoFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rcv_DangGiao);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        userDAO = new UserDAO(getActivity());
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("luuDangNhap", MODE_PRIVATE);
+        String userName = sharedPreferences.getString("TK", "");
+        idUser = Integer.parseInt(userDAO.getIdUser(userName));
+
         donHangDAO = new DonHangDAO(getContext());
-        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("2");
+        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"2");
 
         adapter = new AdapterDanGiao(getContext(), donHangList);
         recyclerView.setAdapter(adapter);
@@ -70,7 +82,7 @@ public class DangGiaoFragment extends Fragment {
 
     private void loadDonHangData() {
         // Cập nhật lại danh sách đơn hàng chờ xác nhận
-        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("2");
+        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"2");
         adapter.setData(donHangList);
         adapter.notifyDataSetChanged();
     }

@@ -28,12 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.Adapter.AdapterHoaDon;
 import com.example.duan1_nhom7.DAO.CreateOrder;
+import com.example.duan1_nhom7.DAO.DAOHoaDon;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.GioHangDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
 import com.example.duan1_nhom7.DTO.GioHang;
 import com.example.duan1_nhom7.DAO.UserDAO;
+import com.example.duan1_nhom7.DTO.HoaDon;
 import com.example.duan1_nhom7.Fragment.HomeFragment;
 import com.example.duan1_nhom7.Zalo.AppInfo;
 
@@ -56,6 +58,7 @@ public class ThanhToanActivity extends AppCompatActivity {
     DonHangDAO donHangDAO;
     UserDAO userDAO;
     GioHangDAO gioHangDAO;
+    DAOHoaDon daoHoaDon;
     private ArrayList<GioHang> listGioHang = null;
     String idUser, fullname, phone, location;
 
@@ -67,6 +70,7 @@ public class ThanhToanActivity extends AppCompatActivity {
 
         donHangDAO = new DonHangDAO(this);
         gioHangDAO = new GioHangDAO(this);
+        daoHoaDon = new DAOHoaDon(ThanhToanActivity.this);
 
         btnPay = findViewById(R.id.btnThanhToan);
         txtTongTienHang = findViewById(R.id.txtTongTienHangThanhToan);
@@ -225,6 +229,14 @@ public class ThanhToanActivity extends AppCompatActivity {
                                 donHang.setLocation(edLocation.getText().toString());
                                 donHangDAO.insertDonHang(donHang);
                             }
+
+
+                            String numericString = txtTongThanhToan.getText().toString().replaceAll("[^\\d]", "");
+                            HoaDon hoaDon = new HoaDon();
+                            hoaDon.setGia(Integer.parseInt(numericString));
+                            hoaDon.setNgayMua(currentDate);
+                            daoHoaDon.insertHoaDon(hoaDon);
+
 
                             gioHangDAO.deleteAllGioHang();
                             Intent intent = new Intent(ThanhToanActivity.this, MainActivity.class);

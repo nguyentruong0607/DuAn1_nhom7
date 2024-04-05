@@ -86,10 +86,18 @@ public class DbHelper extends SQLiteOpenHelper {
 
                 ");";
         db.execSQL(createTableDonHangChiTiet);
-        db.execSQL("INSERT INTO DonHangChiTiet (id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, status, image, mau, pttt, location, phone, nameUser) " +
-                "VALUES (100, 1, 'Sản phẩm A', '2024-03-31', 2, 500000, '1', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Đen', 'Thanh toán khi nhận hàng', 'hi', '113', 'quan nguyen hong'), " +
-                "(200, 1, 'Sản phẩm B', '2024-04-01', 2, 800000, '2', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Trắng', 'Zalopay', 'lo', '114', 'nguyen hong quan'), " +
-                "(300, 2, 'Sản phẩm C', '2024-04-02', 2, 1200000, '1', 'https://cdn.tgdd.vn/Products/Images/42/322526/xiaomi-14-den-5.jpg', 'Xanh', 'Thanh toán khi nhận hàng', 'hai', '115', 'do trung bao')");
+
+        String createTableHoaDon = "CREATE TABLE HoaDon (" +
+                "id_HoaDon INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "ngayMua TEXT, " +
+                "gia INTEGER " +
+                ");";
+        db.execSQL(createTableHoaDon);
+        db.execSQL("INSERT INTO HoaDon (ngayMua, gia) VALUES (1,'05-04-2024', 20000000)");
+        db.execSQL("INSERT INTO HoaDon (ngayMua, gia) VALUES (2, '06-04-2024', 25000000)");
+        db.execSQL("INSERT INTO HoaDon (ngayMua, gia) VALUES (3, '07-04-2024', 30000000)");
+
+
 
     }
 
