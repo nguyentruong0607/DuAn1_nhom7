@@ -1,7 +1,10 @@
 package com.example.duan1_nhom7.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
+import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
 import com.example.duan1_nhom7.HuyDonHangActivity;
 import com.example.duan1_nhom7.R;
@@ -23,6 +27,9 @@ public class ChoXacNhanFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterChoXacNhan adapter;
     private DonHangDAO donHangDAO;
+    int idUser;
+
+    UserDAO userDAO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,11 +39,18 @@ public class ChoXacNhanFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rcv_ChoXacNhan);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        donHangDAO = new DonHangDAO(getContext());
-        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("1");
+        userDAO = new UserDAO(getActivity());
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("luuDangNhap", MODE_PRIVATE);
+        String userName = sharedPreferences.getString("TK", "");
+        idUser = Integer.parseInt(userDAO.getIdUser(userName));
+
+        donHangDAO = new DonHangDAO(getActivity());
+        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"1");
 
         adapter = new AdapterChoXacNhan(getContext(), donHangList);
         recyclerView.setAdapter(adapter);
+
+
 
 
         adapter.setOnItemClickListener(new AdapterChoXacNhan.OnItemClickListener() {
@@ -65,7 +79,7 @@ public class ChoXacNhanFragment extends Fragment {
 
     private void loadDonHangData() {
         // Cập nhật lại danh sách đơn hàng chờ xác nhận
-        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("1");
+        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser, "1");
         adapter.setData(donHangList);
         adapter.notifyDataSetChanged();
     }

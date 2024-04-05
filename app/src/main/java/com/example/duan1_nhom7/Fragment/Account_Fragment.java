@@ -59,6 +59,11 @@ public class Account_Fragment extends Fragment {
             userFrgmThemSP.setVisibility(View.GONE);
             userFrgmQLuser.setVisibility(View.GONE);
 
+
+        }
+        if (quyen.equalsIgnoreCase("admin")){
+            txtUserKH.setVisibility(View.GONE);
+            donMua.setVisibility(View.GONE);
         }
 
         donMua.setOnClickListener(new View.OnClickListener() {

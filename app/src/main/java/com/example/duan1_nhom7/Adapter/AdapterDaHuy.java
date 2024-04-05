@@ -17,7 +17,7 @@ public class AdapterDaHuy extends RecyclerView.Adapter<AdapterDaHuy.ViewHolder> 
 
     private Context context;
     private List<DonHang> hoaDonList;
-    private OnItemClickListener mListener; // Interface
+    private static OnItemClickListener mListener; // Interface
 
     public interface OnItemClickListener {
         void onItemClick(DonHang donHang);
@@ -75,6 +75,15 @@ public class AdapterDaHuy extends RecyclerView.Adapter<AdapterDaHuy.ViewHolder> 
             txtGHSize = itemView.findViewById(R.id.txtMau_HoadonXacNhan);
             edtGHSoLuong = itemView.findViewById(R.id.txtSoLuong_HpadonXacNhan);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && mListener != null) {
+                        mListener.onItemClick(hoaDonList.get(position));
+                    }
+                }
+            });
 
         }
     }

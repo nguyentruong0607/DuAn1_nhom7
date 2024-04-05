@@ -23,7 +23,7 @@ android:padding="10dp">
 
     <AutoCompleteTextView
         android:id="@+id/edt_search"
-        android:layout_width="320dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bo_tron_edt"
         android:drawableStart="@drawable/ic_search"

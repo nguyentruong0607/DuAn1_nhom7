@@ -8,19 +8,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.SanPhamDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class DaNhanHangActivity extends AppCompatActivity {
 
     private ImageView img;
-    private TextView name, price, color, content, count, date, pttt;
+    private TextView name, price, color, content, count, date, pttt, nameUser, phone, location;
     private Button btnNhanHang;
+    String currentDate, dateAfterThreeDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,17 @@ public class DaNhanHangActivity extends AppCompatActivity {
         content = findViewById(R.id.txtMoTaSPDangGiaoHang);
         date = findViewById(R.id.txtDateDangGiaoHang);
         pttt = findViewById(R.id.PTTTSPDangGiaoHang);
+        nameUser = findViewById(R.id.txtNameNhanHang);
+        phone = findViewById(R.id.txtPhoneNhanHang);
+        location = findViewById(R.id.txtLocationNhanHang);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        currentDate = sdf.format(calendar.getTime());
+
+        calendar.add(Calendar.DAY_OF_MONTH, 3);
+         dateAfterThreeDays = sdf.format(calendar.getTime());
+
 
         DonHang donHang = (DonHang) getIntent().getSerializableExtra("hang");
         if (donHang != null) {
@@ -52,6 +72,9 @@ public class DaNhanHangActivity extends AppCompatActivity {
             content.setText(moTaSP);
             date.setText(donHang.getNgayMua());
             pttt.setText(donHang.getPttt());
+            nameUser.setText(donHang.getNameUser());
+            phone.setText(donHang.getPhone());
+            location.setText(donHang.getLocation());
         }
 
         btnNhanHang.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +96,7 @@ public class DaNhanHangActivity extends AppCompatActivity {
                 DonHang donHang = (DonHang) getIntent().getSerializableExtra("hang");
                 DonHangDAO donHangDAO = new DonHangDAO(DaNhanHangActivity.this);
                 if (donHang != null) {
-
+                    donHang.setNgayMua(dateAfterThreeDays);
                     donHang.setStatus("3"); // Cập nhật trạng thái đơn hàng thành đã nhận (status = 3)
                     int rowsAffected = donHangDAO.updateDonHangStatus(donHang);
                     if (rowsAffected > 0) {
@@ -90,5 +113,20 @@ public class DaNhanHangActivity extends AppCompatActivity {
         builder.setNegativeButton("Thoát", null);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public static class DonHuyActivity extends AppCompatActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            EdgeToEdge.enable(this);
+            setContentView(R.layout.activity_don_huy);
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
     }
 }
