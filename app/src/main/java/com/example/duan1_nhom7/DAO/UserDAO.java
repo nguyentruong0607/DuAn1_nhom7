@@ -34,8 +34,6 @@ public class UserDAO {
     }
     public int updateUser(User tt){
         ContentValues value = new ContentValues();
-        value.put("ten_user",tt.getTen_user());
-        value.put("password",tt.getPassword());
         value.put("sodienthoai",tt.getSodienthoai());
         value.put("diaChi",tt.getDiaChi());
         value.put("fullname",tt.getFullname());
@@ -45,6 +43,7 @@ public class UserDAO {
         return db.update("User",value,"id_user=?",tham_so);
 
     }
+
 
     public boolean checkLogin(String username, String password) {
         boolean success = false;
@@ -184,5 +183,23 @@ public class UserDAO {
         return location;
     }
 
+    public User getUserByName(String inputName) {
+        User user = null;
+        Cursor cursor = db.rawQuery("SELECT User.id_user, User.ten_user, User.password, User.sodienthoai,User.diaChi, User.fullname FROM User WHERE User.ten_user=?", new String[]{inputName});
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                int _id_user = cursor.getInt(0);
+                String _ten_user = cursor.getString(1);
+                String _password = cursor.getString(2);
+                String _sodienthoai = cursor.getString(3);
+                String _diaChi = cursor.getString(4);
+                String _fullname = cursor.getString(5);
+
+                user = new User(_id_user, _ten_user, _password, _sodienthoai, _diaChi, _fullname);
+            } while (cursor.moveToNext());
+        }
+        return user;
+    }
 
 }
