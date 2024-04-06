@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.duan1_nhom7.Activity.Edit_Activity;
 import com.example.duan1_nhom7.Activity.LoginActivity;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.User;
@@ -31,6 +33,7 @@ public class Account_Fragment extends Fragment {
     TextView txtUserName, txtUserKH;
     UserDAO daoUser;
 
+    TextView tvedit;
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,18 +44,25 @@ public class Account_Fragment extends Fragment {
         userFrgmThemSP = view.findViewById(R.id.userFrgmThemSP);
         userFrgmDangXuat = view.findViewById(R.id.userFrgmDangXuat);
         userFrgmQLuser = view.findViewById(R.id.userFrgmQLuser);
-
-
+        tvedit = view.findViewById(R.id.tv_edit);
 
 
         txtUserName = view.findViewById(R.id.txtUserName);
         txtUserKH=view.findViewById(R.id.txtUserName2);
-
         //set quyen
         daoUser = new UserDAO(getContext());
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("luuDangNhap", Context.MODE_PRIVATE);
         String quyen = sharedPreferences.getString("quyen", "");
         String taiKhoan = sharedPreferences.getString("TK", "");
+
+        User user1 =    daoUser.getUserByName(taiKhoan);
+        Log.i("zzzzzzzzzzzzzz",user1.toString());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", user1);
+
+        // Pass the Bundle to another activity
+
+
         if (quyen.equalsIgnoreCase("khachhang")) {
             txtUserName.setVisibility(View.GONE);
             userFrgmThemSP.setVisibility(View.GONE);
@@ -63,7 +73,11 @@ public class Account_Fragment extends Fragment {
         if (quyen.equalsIgnoreCase("admin")){
             txtUserKH.setVisibility(View.GONE);
         }
-
+        tvedit.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Edit_Activity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
 
         userFrgmThemSP.setOnClickListener(new View.OnClickListener() {
             @Override

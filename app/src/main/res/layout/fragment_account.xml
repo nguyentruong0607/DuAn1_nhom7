@@ -46,6 +46,7 @@
 
                 />
             <TextView
+                android:id="@+id/tv_edit"
                 style="@style/edt_Label"
                 android:layout_marginLeft="10dp"
                 android:paddingBottom="3dp"
