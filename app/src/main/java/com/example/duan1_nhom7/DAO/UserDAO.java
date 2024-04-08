@@ -43,6 +43,13 @@ public class UserDAO {
         return db.update("User",value,"id_user=?",tham_so);
 
     }
+    public int updatePass(User tt){
+        ContentValues value = new ContentValues();
+        value.put("password",tt.getPassword());
+        String [] tham_so=new String[]{tt.getId_user()+""};
+        return db.update("User",value,"id_user=?",tham_so);
+
+    }
 
 
     public boolean checkLogin(String username, String password) {
