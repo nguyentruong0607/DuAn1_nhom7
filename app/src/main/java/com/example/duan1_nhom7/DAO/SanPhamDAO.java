@@ -202,5 +202,34 @@ public class SanPhamDAO {
     }
 
 
+    @SuppressLint("Range")
+    public int getSoLuongSanPhamById(int idSanPham) {
+        int soLuongSP = 0;
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT soLuongSP FROM SanPham WHERE id_sanPham = ?";
+            cursor = database.rawQuery(query, new String[]{String.valueOf(idSanPham)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                soLuongSP = cursor.getInt(cursor.getColumnIndex("soLuongSP"));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return soLuongSP;
+    }
+
+    public int updateSoluongSP(int idSanPham, int soLuongMoi) {
+        ContentValues values = new ContentValues();
+        values.put("soLuongSP", soLuongMoi);
+
+        return database.update("SanPham", values, "id_sanPham=?", new String[]{String.valueOf(idSanPham)});
+    }
+
+
 
 }

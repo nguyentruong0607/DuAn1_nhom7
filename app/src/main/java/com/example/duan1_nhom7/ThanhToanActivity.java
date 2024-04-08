@@ -31,6 +31,7 @@ import com.example.duan1_nhom7.DAO.CreateOrder;
 import com.example.duan1_nhom7.DAO.DAOHoaDon;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.GioHangDAO;
+import com.example.duan1_nhom7.DAO.SanPhamDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
 import com.example.duan1_nhom7.DTO.GioHang;
@@ -58,6 +59,7 @@ public class ThanhToanActivity extends AppCompatActivity {
     DonHangDAO donHangDAO;
     UserDAO userDAO;
     GioHangDAO gioHangDAO;
+    SanPhamDAO sanPhamDAO;
     DAOHoaDon daoHoaDon;
     private ArrayList<GioHang> listGioHang = null;
     String idUser, fullname, phone, location;
@@ -74,6 +76,7 @@ public class ThanhToanActivity extends AppCompatActivity {
         donHangDAO = new DonHangDAO(this);
         gioHangDAO = new GioHangDAO(this);
         daoHoaDon = new DAOHoaDon(ThanhToanActivity.this);
+        sanPhamDAO = new SanPhamDAO(ThanhToanActivity.this);
 
         btnPay = findViewById(R.id.btnThanhToan);
         txtTongTienHang = findViewById(R.id.txtTongTienHangThanhToan);
@@ -232,6 +235,13 @@ public class ThanhToanActivity extends AppCompatActivity {
                                 donHang.setLocation(edLocation.getText().toString());
                                 donHangDAO.insertDonHang(donHang);
                                 soLuong += gioHang.getSoLuong();
+
+                                int soLuongSanPham = sanPhamDAO.getSoLuongSanPhamById(gioHang.getId_sanPham());
+                                // Trừ đi số lượng đã bán ra
+                                int soLuongDaBan = gioHang.getSoLuong();
+                                int soLuongConLai = soLuongSanPham - soLuongDaBan;
+                                sanPhamDAO.updateSoluongSP(gioHang.getId_sanPham(), soLuongConLai);
+
                             }
 
 
