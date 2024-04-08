@@ -1,8 +1,10 @@
 package com.example.duan1_nhom7.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -26,13 +28,16 @@ import com.example.duan1_nhom7.Activity.LoginActivity;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.User;
 import com.example.duan1_nhom7.DonHangActivity;
+import com.example.duan1_nhom7.MainActivity;
 import com.example.duan1_nhom7.R;
 
 public class Account_Fragment extends Fragment {
-    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat;
+    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat,user_edit_pass;
     TextView txtUserName, txtUserKH;
     UserDAO daoUser;
 
+    int id;
+    String pass;
     TextView tvedit;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -44,6 +49,7 @@ public class Account_Fragment extends Fragment {
         userFrgmThemSP = view.findViewById(R.id.userFrgmThemSP);
         userFrgmDangXuat = view.findViewById(R.id.userFrgmDangXuat);
         userFrgmQLuser = view.findViewById(R.id.userFrgmQLuser);
+        user_edit_pass = view.findViewById(R.id.user_edit_pass);
         tvedit = view.findViewById(R.id.tv_edit);
 
 
@@ -57,9 +63,16 @@ public class Account_Fragment extends Fragment {
 
         User user1 =    daoUser.getUserByName(taiKhoan);
         Log.i("zzzzzzzzzzzzzz",user1.toString());
+        id = user1.getId_user();
+        pass = user1.getPassword();
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", user1);
-
+        user_edit_pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChangePasswordDialog();
+            }
+        });
         // Pass the Bundle to another activity
 
 
@@ -142,5 +155,49 @@ public class Account_Fragment extends Fragment {
         transaction.commit();
     }
 
+    private void openChangePasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_update_pass, null);
 
+        EditText currentPasswordEditText = dialogView.findViewById(R.id.currentPasswordEditText);
+        EditText newPasswordEditText = dialogView.findViewById(R.id.newPasswordEditText);
+        EditText confirmPasswordEditText = dialogView.findViewById(R.id.confirmPasswordEditText);
+
+        builder.setView(dialogView)
+                .setTitle("Change Password")
+                .setPositiveButton("Change", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle password change logic here
+                        String currentPassword = currentPasswordEditText.getText().toString();
+                        String newPassword = newPasswordEditText.getText().toString();
+                        String confirmPassword = confirmPasswordEditText.getText().toString();
+                        if(currentPassword.equals(pass)){
+                            if (newPassword.equals(confirmPassword)) {
+                                User user = new User(id,newPassword);
+                                if ( daoUser.updatePass(user)>0){
+                                    Toast.makeText(getContext(), "Thay đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                                }  else {
+                                    Toast.makeText(getContext(), "Thay đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getContext(), "Mật khẩu mới phải giống mật khẩu cũ ", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(getContext(), "Mật khẩu cũ không đúng ", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }
+

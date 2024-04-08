@@ -148,7 +148,46 @@
             android:background="@android:color/darker_gray" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/user_edit_pass"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/qlaccount"
+
+                />
+            <TextView
+                style="@style/edt_Label"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="3dp"
+                android:text="Thay đổi mật khẩu"
+                android:textColor="@color/black" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/back"
+                android:layout_marginLeft="210dp"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
 
         <LinearLayout
             android:id="@+id/userFrgmDangXuat"
