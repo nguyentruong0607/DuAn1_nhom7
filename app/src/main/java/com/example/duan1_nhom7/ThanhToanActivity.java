@@ -55,7 +55,7 @@ public class ThanhToanActivity extends AppCompatActivity {
     Button btnPay;
     TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang;
     EditText edLocation, edName, edPhone;
-    String tongTien, currentDate;
+    String  currentDate;
     boolean isPaymentMethodSelected = false;
     DonHangDAO donHangDAO;
     UserDAO userDAO;
@@ -164,6 +164,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                 btnZalo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String tongTien = txtTongThanhToan.getText().toString().replaceAll("[^\\d]", "");
                         requestZalo(tongTien);
                         dialog.dismiss();
                     }
@@ -214,11 +215,6 @@ public class ThanhToanActivity extends AppCompatActivity {
                     switch (paymentMethod) {
                         case "Zalopay":
                             Toast.makeText(ThanhToanActivity.this, "Thanh toán bằng Zalopay", Toast.LENGTH_SHORT).show();
-                            break;
-                        case "Thanh toán khi nhận hàng":
-                            Toast.makeText(ThanhToanActivity.this, "Thanh toán khi nhận hàng", Toast.LENGTH_SHORT).show();
-
-
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
                             Calendar calendar = Calendar.getInstance();
                             String date = sdf.format(calendar.getTime());
@@ -228,13 +224,11 @@ public class ThanhToanActivity extends AppCompatActivity {
                             hoaDon.setNgayMua(date);
                             String numericString = txtTongThanhToan.getText().toString().replaceAll("[^\\d]", "");
                             hoaDon.setTongTien(Integer.parseInt(numericString));
-                            hoaDon.setPttt("Thanh toán khi nhận hàng");
+                            hoaDon.setPttt("Zalopay");
                             hoaDon.setPhone(edPhone.getText().toString());
                             hoaDon.setNameUser(edName.getText().toString());
                             hoaDon.setLocation(edLocation.getText().toString());
                             hoaDon.setStatus("1");
-
-
 
                             int idHoaDon = daoHoaDon.insertHoaDonAndGetId(hoaDon);
 
@@ -248,13 +242,6 @@ public class ThanhToanActivity extends AppCompatActivity {
 
                                 donHangDAO.insertDonHang(donHang);
 
-                                Log.d("HoaDonData", "ID Hóa đơn: " + donHang.getId_HoaDon());
-                                Log.d("HoaDonData", "ID sản phẩm: " + donHang.getId_sanPham());
-                                Log.d("HoaDonData", "Số lượng: " + donHang.getSoLuong());
-                                Log.d("HoaDonData", "Giá: " + donHang.getGiaBan());
-                                Log.d("HoaDonData", "Màu: " + donHang.getMau());
-
-
                                 // Trừ trong giỏ hàng
                                 int soLuongSanPham = sanPhamDAO.getSoLuongSanPhamById(gioHang.getId_sanPham());
                                 int soLuongDaBan = gioHang.getSoLuong();
@@ -267,6 +254,53 @@ public class ThanhToanActivity extends AppCompatActivity {
                             gioHangDAO.deleteAllGioHang();
                             Intent intent = new Intent(ThanhToanActivity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
+                            break;
+                        case "Thanh toán khi nhận hàng":
+                            Toast.makeText(ThanhToanActivity.this, "Thanh toán khi nhận hàng", Toast.LENGTH_SHORT).show();
+
+
+                            SimpleDateFormat sdff = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+                            Calendar calendarr = Calendar.getInstance();
+                            String datee = sdff.format(calendarr.getTime());
+
+                            HoaDon hoaDonn = new HoaDon();
+                            hoaDonn.setId_user(Integer.parseInt(idUser)); // Chuyển đổi từ String sang int
+                            hoaDonn.setNgayMua(datee);
+                            String numericStringg = txtTongThanhToan.getText().toString().replaceAll("[^\\d]", "");
+                            hoaDonn.setTongTien(Integer.parseInt(numericStringg));
+                            hoaDonn.setPttt("Thanh toán khi nhận hàng");
+                            hoaDonn.setPhone(edPhone.getText().toString());
+                            hoaDonn.setNameUser(edName.getText().toString());
+                            hoaDonn.setLocation(edLocation.getText().toString());
+                            hoaDonn.setStatus("1");
+
+
+
+                            int idHoaDonn = daoHoaDon.insertHoaDonAndGetId(hoaDonn);
+
+                            for (GioHang gioHang : listGioHang) {
+                                DonHang donHang = new DonHang();
+                                donHang.setId_HoaDon(idHoaDonn);
+                                donHang.setId_sanPham(gioHang.getId_sanPham());
+                                donHang.setSoLuong(gioHang.getSoLuong());
+                                donHang.setGiaBan(gioHang.getDonGia());
+                                donHang.setMau(gioHang.getMau());
+
+                                donHangDAO.insertDonHang(donHang);
+
+                                // Trừ trong giỏ hàng
+                                int soLuongSanPham = sanPhamDAO.getSoLuongSanPhamById(gioHang.getId_sanPham());
+                                int soLuongDaBan = gioHang.getSoLuong();
+                                int soLuongConLai = soLuongSanPham - soLuongDaBan;
+                                sanPhamDAO.updateSoluongSP(gioHang.getId_sanPham(), soLuongConLai);
+
+                            }
+
+
+                            gioHangDAO.deleteAllGioHang();
+                            Intent intentn = new Intent(ThanhToanActivity.this, MainActivity.class);
+                            startActivity(intentn);
                             finish();
                             break;
                     }

@@ -14,6 +14,7 @@ import com.example.duan1_nhom7.DTO.HoaDon;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -101,6 +102,72 @@ public class DAOHoaDon {
         return rowsAffected;
     }
 
+    public int getTotalRevenueByDateRangeAndStatus(String startDate, String endDate, String status) {
+        int totalRevenue = 0;
+        db = dbHelper.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
+        try {
+            // Chuyển đổi ngày bắt đầu và ngày kết thúc sang định dạng ngày tháng
+            Date start = dateFormat.parse(startDate);
+            Date end = dateFormat.parse(endDate);
+
+            // Chuyển đổi ngày kết thúc sang ngày tiếp theo để bao gồm cả ngày đó
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(end);
+            calendar.add(Calendar.DATE, 1);
+            end = calendar.getTime();
+
+            String query = "SELECT SUM(tongTien) AS total FROM HoaDon WHERE ngayMua BETWEEN ? AND ? AND status = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{dateFormat.format(start), dateFormat.format(end), status});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                totalRevenue = cursor.getInt(cursor.getColumnIndex("total"));
+                cursor.close();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+        return totalRevenue;
+    }
+
+    public int getTotalOrdersByDateRangeAndStatus(String startDate, String endDate, String status) {
+        int totalOrders = 0;
+        db = dbHelper.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+        try {
+            // Chuyển đổi ngày bắt đầu và ngày kết thúc sang định dạng ngày tháng
+            Date start = dateFormat.parse(startDate);
+            Date end = dateFormat.parse(endDate);
+
+            // Chuyển đổi ngày kết thúc sang ngày tiếp theo để bao gồm cả ngày đó
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(end);
+            calendar.add(Calendar.DATE, 1);
+            end = calendar.getTime();
+
+            String query = "SELECT SUM(soLuong) AS total FROM DonHangChiTiet " +
+                    "JOIN HoaDon ON DonHangChiTiet.id_HoaDon = HoaDon.id_HoaDon " +
+                    "WHERE HoaDon.ngayMua BETWEEN ? AND ? AND HoaDon.status = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{dateFormat.format(start), dateFormat.format(end), status});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                totalOrders = cursor.getInt(cursor.getColumnIndex("total"));
+                cursor.close();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+        return totalOrders;
+    }
 
 }
+
+
+
+

@@ -79,10 +79,10 @@ public class ThongKeFragment extends Fragment {
                 String tuNgayString = edStart.getText().toString();
                 String denNgayString = edEnd.getText().toString();
 
-//                double tong = daoHoaDon.calculateRevenueByTimePeriod(tuNgayString, denNgayString);
-//                String outTongTien = String.format("%,.0f VNĐ", tong);
-//                txtDoanhThu.setText("Doanh thu từ ngày " + tuNgayString+ " đến ngày " + denNgayString + " là: " + outTongTien);
-//                txtSoLuong.setText("Số lượng sản phẩm bán ra là: " + String.valueOf(daoHoaDon.calculateQuantityByTimePeriod(tuNgayString, denNgayString)));
+                double tong = daoHoaDon.getTotalRevenueByDateRangeAndStatus(tuNgayString, denNgayString, "3");
+                String outTongTien = String.format("%,.0f VNĐ", tong);
+                txtDoanhThu.setText("Doanh thu từ ngày " + tuNgayString+ " đến ngày " + denNgayString + " là: " + outTongTien);
+                txtSoLuong.setText("Số lượng sản phẩm bán ra là: " + String.valueOf(daoHoaDon.getTotalOrdersByDateRangeAndStatus(tuNgayString, denNgayString, "3")));
             }
         });
 
