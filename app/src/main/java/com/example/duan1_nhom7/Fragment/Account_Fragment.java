@@ -32,7 +32,7 @@ import com.example.duan1_nhom7.MainActivity;
 import com.example.duan1_nhom7.R;
 
 public class Account_Fragment extends Fragment {
-    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmThemNhanVien, userFrgmDangXuat,user_edit_pass;
+    private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmTTtaiKhoan, userFrgmDangXuat,user_edit_pass;
     TextView txtUserName, txtUserKH;
     UserDAO daoUser;
 
@@ -50,6 +50,7 @@ public class Account_Fragment extends Fragment {
         userFrgmDangXuat = view.findViewById(R.id.userFrgmDangXuat);
         userFrgmQLuser = view.findViewById(R.id.userFrgmQLuser);
         user_edit_pass = view.findViewById(R.id.user_edit_pass);
+
         tvedit = view.findViewById(R.id.tv_edit);
 
 

@@ -48,7 +48,7 @@ public class DAOHoaDon {
         // Trả về id_HoaDon
         return (int) idHoaDon;
     }
-
+    @SuppressLint("Range")
     public HoaDon getHoaDonById(int id_HoaDon) {
         HoaDon hoaDon = null;
         db = dbHelper.getReadableDatabase();
@@ -102,6 +102,7 @@ public class DAOHoaDon {
         return rowsAffected;
     }
 
+    @SuppressLint("Range")
     public int getTotalRevenueByDateRangeAndStatus(String startDate, String endDate, String status) {
         int totalRevenue = 0;
         db = dbHelper.getReadableDatabase();
@@ -133,6 +134,7 @@ public class DAOHoaDon {
         return totalRevenue;
     }
 
+    @SuppressLint("Range")
     public int getTotalOrdersByDateRangeAndStatus(String startDate, String endDate, String status) {
         int totalOrders = 0;
         db = dbHelper.getReadableDatabase();
