@@ -18,9 +18,11 @@ import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.Adapter.AdapterDaGiao;
 import com.example.duan1_nhom7.Adapter.AdapterDaHuy;
 import com.example.duan1_nhom7.Adapter.AdapterDanGiao;
+import com.example.duan1_nhom7.DAO.DAOHoaDon;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.HoaDon;
 import com.example.duan1_nhom7.DaNhanHangActivity;
 import com.example.duan1_nhom7.DonHuyActivity;
 import com.example.duan1_nhom7.R;
@@ -34,7 +36,7 @@ public class DaHuyFragment extends Fragment {
     private AdapterDaHuy adapter;
     private DonHangDAO donHangDAO;
     int idUser;
-
+private DAOHoaDon daoHoaDon;
     UserDAO userDAO;
 
     @Override
@@ -51,19 +53,21 @@ public class DaHuyFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("luuDangNhap", MODE_PRIVATE);
         String userName = sharedPreferences.getString("TK", "");
         idUser = Integer.parseInt(userDAO.getIdUser(userName));
+        donHangDAO = new DonHangDAO(getActivity());
+        daoHoaDon = new DAOHoaDon(getActivity());
 
-        donHangDAO = new DonHangDAO(getContext());
-        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"4");
+        List<DonHang> donHangs = donHangDAO.getDonHangsByUserAndStatus(idUser, "4");
 
-        adapter = new AdapterDaHuy(getContext(), donHangList);
+       adapter = new AdapterDaHuy(getContext(), donHangs);
         recyclerView.setAdapter(adapter);
-
-
+//
+//
         adapter.setOnItemClickListener(new AdapterDaHuy.OnItemClickListener() {
             @Override
             public void onItemClick(DonHang donHang) {
+                HoaDon hoaDon = daoHoaDon.getHoaDonById(donHang.getId_HoaDon());
                 Intent intent = new Intent(getContext(), DonHuyActivity.class);
-                intent.putExtra("hanghuy", donHang);
+                intent.putExtra("hanghuy", hoaDon);
                startActivity(intent);
             }
         });

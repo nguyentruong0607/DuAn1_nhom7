@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.Adapter.AdapterChoXacNhanAdmin;
+import com.example.duan1_nhom7.Adapter.AdapterItem;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
 import com.example.duan1_nhom7.HuyDonHangActivity;
@@ -24,7 +25,7 @@ import java.util.List;
 public class QLDonHangFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private AdapterChoXacNhanAdmin adapter;
+    private AdapterItem adapter;
     private DonHangDAO donHangDAO;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,20 +37,15 @@ public class QLDonHangFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         donHangDAO = new DonHangDAO(getContext());
-        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("1");
+        List<DonHang> donHangList = donHangDAO.getDonHangsByStatus("1");
 
-        adapter = new AdapterChoXacNhanAdmin(getContext(), donHangList);
+        adapter = new AdapterItem(getContext(), donHangList);
         recyclerView.setAdapter(adapter);
 
 
 
 
-        adapter.setOnItemClickListener(new AdapterChoXacNhanAdmin.OnItemClickListener() {
-            @Override
-            public void onItemClick(DonHang donHang) {
 
-            }
-        });
 
         return view;
     }

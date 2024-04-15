@@ -17,9 +17,11 @@ import android.view.ViewGroup;
 
 import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.Adapter.AdapterDanGiao;
+import com.example.duan1_nhom7.DAO.DAOHoaDon;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.HoaDon;
 import com.example.duan1_nhom7.DaNhanHangActivity;
 import com.example.duan1_nhom7.HuyDonHangActivity;
 import com.example.duan1_nhom7.R;
@@ -31,6 +33,7 @@ public class DangGiaoFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterDanGiao adapter;
     private DonHangDAO donHangDAO;
+    private DAOHoaDon daoHoaDon;
     private static final int REQUEST_CODE_RECEIVE_ORDER = 1005;
     int idUser;
 
@@ -42,6 +45,7 @@ public class DangGiaoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dang_giao, container, false);
 
         recyclerView = view.findViewById(R.id.rcv_DangGiao);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         userDAO = new UserDAO(getActivity());
@@ -49,17 +53,19 @@ public class DangGiaoFragment extends Fragment {
         String userName = sharedPreferences.getString("TK", "");
         idUser = Integer.parseInt(userDAO.getIdUser(userName));
 
-        donHangDAO = new DonHangDAO(getContext());
-        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"2");
 
-        adapter = new AdapterDanGiao(getContext(), donHangList);
-        recyclerView.setAdapter(adapter);
+        daoHoaDon = new DAOHoaDon(getActivity());
+        donHangDAO = new DonHangDAO(getActivity());
+        List<DonHang> donHangs = donHangDAO.getDonHangsByUserAndStatus(idUser, "2");
+       adapter = new AdapterDanGiao(getContext(), donHangs);
+       recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new AdapterDanGiao.OnItemClickListener() {
             @Override
             public void onItemClick(DonHang donHang) {
+                HoaDon hoaDon = daoHoaDon.getHoaDonById(donHang.getId_HoaDon());
                 Intent intent = new Intent(getContext(), DaNhanHangActivity.class);
-                intent.putExtra("hang", donHang);
+                intent.putExtra("hang", hoaDon);
                 startActivityForResult(intent, REQUEST_CODE_RECEIVE_ORDER);
             }
         });
@@ -81,9 +87,8 @@ public class DangGiaoFragment extends Fragment {
     }
 
     private void loadDonHangData() {
-        // Cập nhật lại danh sách đơn hàng chờ xác nhận
-        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"2");
-        adapter.setData(donHangList);
+        List<DonHang> donHangs = donHangDAO.getDonHangsByUserAndStatus(idUser, "2");
+        adapter.setData(donHangs);
         adapter.notifyDataSetChanged();
     }
 

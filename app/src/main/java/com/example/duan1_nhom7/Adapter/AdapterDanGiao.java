@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.ProductInfo;
 import com.example.duan1_nhom7.R;
 import com.squareup.picasso.Picasso;
 
@@ -44,8 +45,17 @@ public class AdapterDanGiao extends RecyclerView.Adapter<AdapterDanGiao.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DonHang donHang = hoaDonList.get(position);
 
-        Picasso.get().load(donHang.getImage()).into(holder.imgGHAnhSP);
-        holder.txtGHTenSP.setText(donHang.getTenSP());
+        ProductInfo productInfo = donHang.getProductInfo();
+
+        if (productInfo != null) {
+            if (productInfo.getAnhSP() != null && !productInfo.getAnhSP().isEmpty()) {
+                Picasso.get().load(productInfo.getAnhSP()).into(holder.imgGHAnhSP);
+            }
+            holder.txtGHTenSP.setText(productInfo.getTenSP());
+        }
+
+        holder.txtGHSize.setText(donHang.getMau());
+        holder.edtGHSoLuong.setText(String.valueOf(donHang.getSoLuong()));
         holder.txtGHSize.setText(donHang.getMau());
         int soLuong = donHang.getSoLuong();
         holder.edtGHSoLuong.setText(String.valueOf(soLuong));

@@ -10,14 +10,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duan1_nhom7.Adapter.AdapterItem;
+import com.example.duan1_nhom7.DAO.DAOHoaDon;
+import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.SanPhamDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.HoaDon;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 public class DonHuyActivity extends AppCompatActivity {
-    private ImageView img;
-    private TextView name, price, color, content, count, date, pttt, nameUser, phone, location;
+    TextView date, pttt, nameUser, phone, location, tongTienHang, tongThanhToan;
+RecyclerView rcv;
+    DonHangDAO donHangDAO;
+    AdapterItem adapter;
 
 
     @Override
@@ -25,39 +38,56 @@ public class DonHuyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_don_huy);
 
-        count = findViewById(R.id.soLuongSPDonHuy);
-        img = findViewById(R.id.imgDonHuy);
-        name = findViewById(R.id.txtTenSPDonHuy);
-        price = findViewById(R.id.txtGiaSPDonHuy);
-        color = findViewById(R.id.txtMauSPDonHuy);
+        date = findViewById(R.id.txtDateHuyDon);
+        pttt = findViewById(R.id.PTTTSPHuyDon);
+        nameUser = findViewById(R.id.txtNameHuyDon);
+        phone = findViewById(R.id.txtPhoneHuyDon);
+        location = findViewById(R.id.txtLocationHuyDon);
+        tongThanhToan = findViewById(R.id.txtTongThanhToanHuyDonActivity);
+        tongTienHang = findViewById(R.id.txtTongTienHangHuyDonActivity);
+        rcv = findViewById(R.id.rcv_huyDonActivity2);
 
-        content = findViewById(R.id.txtMoTaSPDonHuy);
-        date = findViewById(R.id.txtDateDonHuy);
-        pttt = findViewById(R.id.PTTTSPDonHuy);
-        nameUser = findViewById(R.id.txtNameDonHuy);
-        phone = findViewById(R.id.txtPhoneDonHuy);
-        location = findViewById(R.id.txtLocationNhanDonHuy);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rcv.setLayoutManager(layoutManager);
+        donHangDAO = new DonHangDAO(this);
 
-        DonHang donHang = (DonHang) getIntent().getSerializableExtra("hanghuy");
-        if (donHang != null) {
+        HoaDon hoaDon = (HoaDon) getIntent().getSerializableExtra("hanghuy");
+        if (hoaDon != null) {
 
-            int id_sanPham = donHang.getId_sanPham();
-            SanPhamDAO sanPhamDAO = new SanPhamDAO(DonHuyActivity.this);
-            String moTaSP = sanPhamDAO.getMoTaSPById(id_sanPham);
-            name.setText(donHang.getTenSP());
-            double giaSP = donHang.getGia();
-            String mGiaSP = String.format("%,.0f", giaSP);
-            price.setText(mGiaSP + "VNĐ");
-            count.setText(String.valueOf(donHang.getSoLuong()));
-            color.setText(donHang.getMau());
-            Picasso.get().load(donHang.getImage()).into(img);
-            date.setText(donHang.getNgayMua());
-            pttt.setText(donHang.getPttt());
-            content.setText(moTaSP);
-            nameUser.setText(donHang.getNameUser());
-            phone.setText(donHang.getPhone());
-            location.setText(donHang.getLocation());
+            int id_HoaDon = hoaDon.getId_HoaDon();
+
+            int giaSP = hoaDon.getTongTien();
+            String mGiaSP = String.format("%,.0f", (float) giaSP);
+            tongTienHang.setText(mGiaSP + "VNĐ");
+            tongThanhToan.setText(mGiaSP + "VNĐ");
+
+
+            date.setText(convertDateFormat(hoaDon.getNgayMua()));
+            pttt.setText(hoaDon.getPttt());
+            nameUser.setText(hoaDon.getNameUser());
+            phone.setText(hoaDon.getPhone());
+            location.setText(hoaDon.getLocation());
+
+            List<DonHang> list = donHangDAO.getDonHangsByIdHoaDon(id_HoaDon);
+
+            adapter = new AdapterItem(DonHuyActivity.this, list);
+            rcv.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+
         }
 
+    }
+
+    private String convertDateFormat(String dateString) {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdfOutput = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = sdfInput.parse(dateString);
+            return sdfOutput.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

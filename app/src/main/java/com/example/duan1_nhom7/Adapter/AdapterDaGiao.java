@@ -44,8 +44,8 @@ public class AdapterDaGiao extends RecyclerView.Adapter<AdapterDaGiao.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DonHang donHang = hoaDonList.get(position);
 
-        Picasso.get().load(donHang.getImage()).into(holder.imgGHAnhSP);
-        holder.txtGHTenSP.setText(donHang.getTenSP());
+//        Picasso.get().load(donHang.getImage()).into(holder.imgGHAnhSP);
+//        holder.txtGHTenSP.setText(donHang.getTenSP());
         holder.txtGHSize.setText(donHang.getMau());
         int soLuong = donHang.getSoLuong();
         holder.edtGHSoLuong.setText(String.valueOf(soLuong));

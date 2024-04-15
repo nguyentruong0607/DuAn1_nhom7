@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -52,8 +53,8 @@ public class ThanhToanActivity extends AppCompatActivity {
 
     RecyclerView rcvHoaDon;
     Button btnPay;
-    TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang, txtNameUser, txtPhone;
-    EditText edLocation;
+    TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang;
+    EditText edLocation, edName, edPhone;
     String tongTien, currentDate;
     boolean isPaymentMethodSelected = false;
     DonHangDAO donHangDAO;
@@ -64,7 +65,6 @@ public class ThanhToanActivity extends AppCompatActivity {
     private ArrayList<GioHang> listGioHang = null;
     String idUser, fullname, phone, location;
     int soLuong;
-
 
 
     @Override
@@ -87,8 +87,8 @@ public class ThanhToanActivity extends AppCompatActivity {
         dateNhanHang = findViewById(R.id.txtDateNhanHang);
         edLocation = findViewById(R.id.edLocationGiaoHang);
         rcvHoaDon = findViewById(R.id.rcv_SPThanhToan);
-        txtNameUser = findViewById(R.id.txtnameUserTT);
-        txtPhone = findViewById(R.id.txtphoneUserTT);
+        edName = findViewById(R.id.txtnameUserTT);
+        edPhone = findViewById(R.id.txtphoneUserTT);
 
         userDAO = new UserDAO(ThanhToanActivity.this);
         SharedPreferences sharedPreferences = getSharedPreferences("luuDangNhap", MODE_PRIVATE);
@@ -98,8 +98,8 @@ public class ThanhToanActivity extends AppCompatActivity {
         phone = userDAO.getPhone(userName);
         location = userDAO.getLocation(userName);
 
-        txtPhone.setText(phone);
-        txtNameUser.setText(fullname);
+        edPhone.setText(phone);
+        edName.setText(fullname);
         edLocation.setText(location);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
@@ -108,7 +108,6 @@ public class ThanhToanActivity extends AppCompatActivity {
         calendar.add(Calendar.DAY_OF_MONTH, 3);
         String dateAfterThreeDays = sdf.format(calendar.getTime());
         dateNhanHang.setText(dateAfterThreeDays);
-
 
 
         Intent intent = getIntent();
@@ -218,44 +217,51 @@ public class ThanhToanActivity extends AppCompatActivity {
                             break;
                         case "Thanh toán khi nhận hàng":
                             Toast.makeText(ThanhToanActivity.this, "Thanh toán khi nhận hàng", Toast.LENGTH_SHORT).show();
-                            for (GioHang gioHang : listGioHang) {
-                                DonHang donHang = new DonHang();
-                                donHang.setId_user(Integer.parseInt(idUser));
-                                donHang.setId_sanPham(gioHang.getId_sanPham());
-                                donHang.setTenSP(gioHang.getTenSP());
-                                donHang.setSoLuong(gioHang.getSoLuong());
-                                donHang.setNgayMua(currentDate);
-                                donHang.setGia(gioHang.getDonGia());
-                                donHang.setStatus("1");
-                                donHang.setImage(gioHang.getImgSP());
-                                donHang.setMau(gioHang.getMau());
-                                donHang.setPttt("Thanh toán khi nhận hàng");
-                                donHang.setNameUser(fullname);
-                                donHang.setPhone(phone);
-                                donHang.setLocation(edLocation.getText().toString());
-                                donHangDAO.insertDonHang(donHang);
-                                soLuong += gioHang.getSoLuong();
-
-                                int soLuongSanPham = sanPhamDAO.getSoLuongSanPhamById(gioHang.getId_sanPham());
-                                // Trừ đi số lượng đã bán ra
-                                int soLuongDaBan = gioHang.getSoLuong();
-                                int soLuongConLai = soLuongSanPham - soLuongDaBan;
-                                sanPhamDAO.updateSoluongSP(gioHang.getId_sanPham(), soLuongConLai);
-
-                            }
-
-
-                            String numericString = txtTongThanhToan.getText().toString().replaceAll("[^\\d]", "");
-                            HoaDon hoaDon = new HoaDon();
-                            hoaDon.setGia(Integer.parseInt(numericString));
 
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
                             Calendar calendar = Calendar.getInstance();
                             String date = sdf.format(calendar.getTime());
+
+                            HoaDon hoaDon = new HoaDon();
+                            hoaDon.setId_user(Integer.parseInt(idUser)); // Chuyển đổi từ String sang int
                             hoaDon.setNgayMua(date);
-                            hoaDon.setSoLuong(soLuong);
-                            daoHoaDon.insertHoaDon(hoaDon);
+                            String numericString = txtTongThanhToan.getText().toString().replaceAll("[^\\d]", "");
+                            hoaDon.setTongTien(Integer.parseInt(numericString));
+                            hoaDon.setPttt("Thanh toán khi nhận hàng");
+                            hoaDon.setPhone(edPhone.getText().toString());
+                            hoaDon.setNameUser(edName.getText().toString());
+                            hoaDon.setLocation(edLocation.getText().toString());
+                            hoaDon.setStatus("1");
+
+
+
+                            int idHoaDon = daoHoaDon.insertHoaDonAndGetId(hoaDon);
+
+                            for (GioHang gioHang : listGioHang) {
+                                DonHang donHang = new DonHang();
+                                donHang.setId_HoaDon(idHoaDon);
+                                donHang.setId_sanPham(gioHang.getId_sanPham());
+                                donHang.setSoLuong(gioHang.getSoLuong());
+                                donHang.setGiaBan(gioHang.getDonGia());
+                                donHang.setMau(gioHang.getMau());
+
+                                donHangDAO.insertDonHang(donHang);
+
+                                Log.d("HoaDonData", "ID Hóa đơn: " + donHang.getId_HoaDon());
+                                Log.d("HoaDonData", "ID sản phẩm: " + donHang.getId_sanPham());
+                                Log.d("HoaDonData", "Số lượng: " + donHang.getSoLuong());
+                                Log.d("HoaDonData", "Giá: " + donHang.getGiaBan());
+                                Log.d("HoaDonData", "Màu: " + donHang.getMau());
+
+
+                                // Trừ trong giỏ hàng
+                                int soLuongSanPham = sanPhamDAO.getSoLuongSanPhamById(gioHang.getId_sanPham());
+                                int soLuongDaBan = gioHang.getSoLuong();
+                                int soLuongConLai = soLuongSanPham - soLuongDaBan;
+                                sanPhamDAO.updateSoluongSP(gioHang.getId_sanPham(), soLuongConLai);
+
+                            }
 
 
                             gioHangDAO.deleteAllGioHang();

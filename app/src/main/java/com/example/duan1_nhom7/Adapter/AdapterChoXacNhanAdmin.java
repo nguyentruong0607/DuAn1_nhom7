@@ -57,12 +57,12 @@ public class AdapterChoXacNhanAdmin extends RecyclerView.Adapter<AdapterChoXacNh
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DonHang gioHang = hoaDonList.get(position);
 
-        Picasso.get().load(gioHang.getImage()).into(holder.imgGHAnhSP);
-        holder.txtGHTenSP.setText(gioHang.getTenSP());
-        holder.txtGHSize.setText(gioHang.getMau());
-        int soLuong = gioHang.getSoLuong();
-        holder.edtGHSoLuong.setText(String.valueOf(soLuong));
-        int idDonHang = gioHang.getId_donHang();
+//        Picasso.get().load(gioHang.getImage()).into(holder.imgGHAnhSP);
+//        holder.txtGHTenSP.setText(gioHang.getTenSP());
+//        holder.txtGHSize.setText(gioHang.getMau());
+//        int soLuong = gioHang.getSoLuong();
+//        holder.edtGHSoLuong.setText(String.valueOf(soLuong));
+//        int idDonHang = gioHang.getId_donHang();
 
         holder.btnXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,18 +76,18 @@ public class AdapterChoXacNhanAdmin extends RecyclerView.Adapter<AdapterChoXacNh
                         DonHangDAO donHangDAO = new DonHangDAO(context);
                         DonHang donHang = hoaDonList.get(holder.getAdapterPosition());
                         if (donHang != null) {
-                            donHang.setStatus("2");
-                            int rowsAffected = donHangDAO.updateDonHangStatus(donHang);
-                            if (rowsAffected > 0) {
-                                Toast.makeText(context, "Đã xác nhận đơn hàng", Toast.LENGTH_SHORT).show();
-
-                                // Cập nhật lại danh sách đơn hàng sau khi xác nhận thành công
-                                hoaDonList = donHangDAO.getDonHangByStatus("1");
-                                notifyDataSetChanged();
-
-                            } else {
-                                Toast.makeText(context, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
-                            }
+//                            donHang.setStatus("2");
+//                            int rowsAffected = donHangDAO.updateDonHangStatus(donHang);
+//                            if (rowsAffected > 0) {
+//                                Toast.makeText(context, "Đã xác nhận đơn hàng", Toast.LENGTH_SHORT).show();
+//
+//                                // Cập nhật lại danh sách đơn hàng sau khi xác nhận thành công
+//                                hoaDonList = donHangDAO.getDonHangByStatus("1");
+//                                notifyDataSetChanged();
+//
+//                            } else {
+//                                Toast.makeText(context, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+//                            }
                         }
                     }
                 });
