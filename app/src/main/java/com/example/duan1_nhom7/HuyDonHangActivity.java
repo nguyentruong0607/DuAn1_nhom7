@@ -1,7 +1,11 @@
 package com.example.duan1_nhom7;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -60,7 +65,7 @@ public class HuyDonHangActivity extends AppCompatActivity {
         location = findViewById(R.id.txtLocationHuy);
         tongThanhToan = findViewById(R.id.txtTongThanhToanHuyActivity);
         tongTienHang = findViewById(R.id.txtTongTienHangHuyActivity);
-        rcv = findViewById(R.id.rcv_huyDonActivity);
+        rcv = findViewById(R.id.rcv_huyDonActivityy);
         donHangDAO = new DonHangDAO(HuyDonHangActivity.this);
         daoHoaDon = new DAOHoaDon(HuyDonHangActivity.this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -113,17 +118,17 @@ public class HuyDonHangActivity extends AppCompatActivity {
                             Calendar calendar = Calendar.getInstance();
                             // Cộng thêm 1 ngày
                             calendar.add(Calendar.DAY_OF_MONTH, 1);
-                            // Format ngày thành chuỗi
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
                             String ngayHuy = sdf.format(calendar.getTime());
 
-                            // Cập nhật ngày hủy
+
                             hoaDon.setNgayMua(ngayHuy);
 
                             int rowsAffected = daoHoaDon.updateHoaDonStatusAndCancelDate(hoaDon);
                             if (rowsAffected > 0) {
                                 Toast.makeText(HuyDonHangActivity.this, "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
                                 setResult(RESULT_OK);
+
                                 finish();
                             } else {
                                 Toast.makeText(HuyDonHangActivity.this, "Hủy đơn hàng thất bại", Toast.LENGTH_SHORT).show();
@@ -136,7 +141,12 @@ public class HuyDonHangActivity extends AppCompatActivity {
                 dialog.show();
             }
 
+
+
+
         });
+
+
 
     }
 
@@ -151,4 +161,7 @@ public class HuyDonHangActivity extends AppCompatActivity {
         }
         return "";
     }
+
+
+
 }

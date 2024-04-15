@@ -30,6 +30,7 @@ public class AdapterDaHuy extends RecyclerView.Adapter<AdapterDaHuy.ViewHolder> 
     public AdapterDaHuy(Context context, List<DonHang> hoaDonList) {
         this.context = context;
         this.hoaDonList = hoaDonList;
+
     }
 
     @NonNull

@@ -60,7 +60,7 @@ public class ChoXacNhanFragment extends Fragment {
         adapter.setOnItemClickListener(new AdapterChoXacNhan.OnItemClickListener() {
             @Override
             public void onItemClick(DonHang donHang) {
-                // Lấy thông tin hóa đơn từ ID
+
                 HoaDon hoaDon = daoHoaDon.getHoaDonById(donHang.getId_HoaDon());
                 if (hoaDon != null) {
                     // Nếu hóa đơn tồn tại, mở activity HuyDonHangActivity
@@ -68,7 +68,7 @@ public class ChoXacNhanFragment extends Fragment {
                     intent.putExtra("hoaDon", hoaDon);
                     startActivityForResult(intent, REQUEST_CODE_CANCEL_ORDER);
                 } else {
-                    // Nếu không tìm thấy hóa đơn, xử lý trường hợp này
+                    // Nếu không tìm thấy hóa đơn
                 }
             }
         });

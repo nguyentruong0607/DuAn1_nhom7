@@ -206,7 +206,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginTop="10dp"
-                android:id="@+id/rcv_huyDonActivity"
+                android:id="@+id/rcv_huyDonActivityy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

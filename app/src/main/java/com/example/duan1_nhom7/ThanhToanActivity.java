@@ -1,10 +1,14 @@
 package com.example.duan1_nhom7;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,7 +60,7 @@ public class ThanhToanActivity extends AppCompatActivity {
     Button btnPay;
     TextView txtTongTienHang, txtTongThanhToan, txtTongThanhToan2, txtPTTT, dateDatHang, dateNhanHang;
     EditText edLocation, edName, edPhone;
-    String  currentDate;
+    String currentDate;
     boolean isPaymentMethodSelected = false;
     DonHangDAO donHangDAO;
     UserDAO userDAO;
@@ -72,7 +77,7 @@ public class ThanhToanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thanh_toan);
         soLuong = 0;
-
+        createNotificationChannel();
         donHangDAO = new DonHangDAO(this);
         gioHangDAO = new GioHangDAO(this);
         daoHoaDon = new DAOHoaDon(ThanhToanActivity.this);
@@ -250,7 +255,7 @@ public class ThanhToanActivity extends AppCompatActivity {
 
                             }
 
-
+                            sendCancelNotification();
                             gioHangDAO.deleteAllGioHang();
                             Intent intent = new Intent(ThanhToanActivity.this, MainActivity.class);
                             startActivity(intent);
@@ -276,7 +281,6 @@ public class ThanhToanActivity extends AppCompatActivity {
                             hoaDonn.setStatus("1");
 
 
-
                             int idHoaDonn = daoHoaDon.insertHoaDonAndGetId(hoaDonn);
 
                             for (GioHang gioHang : listGioHang) {
@@ -297,7 +301,7 @@ public class ThanhToanActivity extends AppCompatActivity {
 
                             }
 
-
+                            sendCancelNotification();
                             gioHangDAO.deleteAllGioHang();
                             Intent intentn = new Intent(ThanhToanActivity.this, MainActivity.class);
                             startActivity(intentn);
@@ -306,7 +310,33 @@ public class ThanhToanActivity extends AppCompatActivity {
                     }
                 }
             }
+
+
+            private void sendCancelNotification() {
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                // Generate unique notification id
+                int notificationId = generateNotificationId();
+
+                // Build notification
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(ThanhToanActivity.this, "order_cancel_channel")
+                        .setSmallIcon(R.drawable.baseline_phone_android_24)
+                        .setContentTitle("Thông báo")
+                        .setContentText("Đặt hàng thành công.")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true);
+
+                // Notify
+                notificationManager.notify(notificationId, builder.build());
+            }
+
+            // Method to generate unique notification id
+            private int generateNotificationId() {
+                return (int) System.currentTimeMillis();
+            }
         });
+
+
     }
 
 
@@ -352,4 +382,19 @@ public class ThanhToanActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         ZaloPaySDK.getInstance().onResult(intent);
     }
+
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Thong bao";
+            String description = "Huy don hang thanh cong";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("order_cancel_channel", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
 }

@@ -8,8 +8,9 @@
     tools:context=".DonHangAdmin">
 
     <com.google.android.material.tabs.TabLayout
+        android:layout_marginHorizontal="5dp"
         android:id="@+id/tablayoutAdmin"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

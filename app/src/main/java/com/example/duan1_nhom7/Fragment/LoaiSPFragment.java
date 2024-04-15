@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.duan1_nhom7.Adapter.AdapterLoaiSP;
+import com.example.duan1_nhom7.Adapter.AdapterLoaiSPAdmin;
 import com.example.duan1_nhom7.DAO.DAOLoaiSP;
 
 import com.example.duan1_nhom7.DTO.LoaiSP;
@@ -36,7 +37,7 @@ public class LoaiSPFragment extends Fragment {
 
     private DAOLoaiSP daoLoaiSP;
     private RecyclerView recyclerView;
-    private AdapterLoaiSP adapter;
+    private AdapterLoaiSPAdmin adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,10 +49,10 @@ public class LoaiSPFragment extends Fragment {
         List<LoaiSP> loaiSPList = daoLoaiSP.getAllLoaiSP(); // Lấy danh sách loại sản phẩm từ DAO
 
         recyclerView = view.findViewById(R.id.listDanhSachSP);
-        adapter = new AdapterLoaiSP(getContext(), loaiSPList);
+        adapter = new AdapterLoaiSPAdmin(getContext(), loaiSPList);
 
-//        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-//        recyclerView.setLayoutManager(layoutManager);
+       GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+       recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
@@ -62,7 +63,7 @@ public class LoaiSPFragment extends Fragment {
             }
         });
 
-        adapter.setOnItemClickListener(new AdapterLoaiSP.OnItemClickListener() {
+        adapter.setOnItemClickListener(new AdapterLoaiSPAdmin.OnItemClickListener() {
             @Override
             public void onItemClick(LoaiSP loaiSP) {
                 showDialog(loaiSP);

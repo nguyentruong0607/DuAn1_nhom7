@@ -1,0 +1,33 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp"
+    android:background="@drawable/bo_tron_edt"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/imageViewProduct"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_launcher_background"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+        <TextView
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:id="@+id/txtNameLoaiSP"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:text="Oppo" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

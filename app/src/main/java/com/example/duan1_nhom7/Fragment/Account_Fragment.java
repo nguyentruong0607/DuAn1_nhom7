@@ -31,7 +31,7 @@ import com.example.duan1_nhom7.DonHangActivity;
 import com.example.duan1_nhom7.MainActivity;
 import com.example.duan1_nhom7.R;
 
-public class Account_Fragment extends Fragment {
+public class  Account_Fragment extends Fragment {
     private LinearLayout  userFrgmQLuser, userFrgmThemSP, userFrgmLoaiSP, userFrgmTTtaiKhoan, userFrgmDangXuat,user_edit_pass;
     TextView txtUserName, txtUserKH;
     UserDAO daoUser;
@@ -50,7 +50,7 @@ public class Account_Fragment extends Fragment {
         userFrgmDangXuat = view.findViewById(R.id.userFrgmDangXuat);
         userFrgmQLuser = view.findViewById(R.id.userFrgmQLuser);
         user_edit_pass = view.findViewById(R.id.user_edit_pass);
-
+        userFrgmTTtaiKhoan = view.findViewById(R.id.userFrgmTTTaiKhoan);
         tvedit = view.findViewById(R.id.tv_edit);
 
 
@@ -62,18 +62,7 @@ public class Account_Fragment extends Fragment {
         String quyen = sharedPreferences.getString("quyen", "");
         String taiKhoan = sharedPreferences.getString("TK", "");
 
-        User user1 =    daoUser.getUserByName(taiKhoan);
-        Log.i("zzzzzzzzzzzzzz",user1.toString());
-        id = user1.getId_user();
-        pass = user1.getPassword();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", user1);
-        user_edit_pass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openChangePasswordDialog();
-            }
-        });
+
         // Pass the Bundle to another activity
 
 
@@ -83,15 +72,33 @@ public class Account_Fragment extends Fragment {
             userFrgmQLuser.setVisibility(View.GONE);
 
 
+            User user1 =    daoUser.getUserByName(taiKhoan);
+            Log.i("zzzzzzzzzzzzzz",user1.toString());
+            id = user1.getId_user();
+            pass = user1.getPassword();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user", user1);
+            user_edit_pass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openChangePasswordDialog();
+                }
+            });
+
+            tvedit.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), Edit_Activity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            });
+
         }
         if (quyen.equalsIgnoreCase("admin")){
             txtUserKH.setVisibility(View.GONE);
+         
+            user_edit_pass.setVisibility(View.GONE);
+userFrgmTTtaiKhoan.setVisibility(View.GONE);
         }
-        tvedit.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Edit_Activity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
+
 
         userFrgmThemSP.setOnClickListener(new View.OnClickListener() {
             @Override

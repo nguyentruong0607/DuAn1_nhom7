@@ -66,4 +66,20 @@ public class DaXacNhanAdminFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateData();
+    }
+
+    private void updateData() {
+
+        List<DonHang> donHangs = donHangDAO.getDonHangsByStatus("2");
+        adapter.setData(donHangs);
+        adapter.notifyDataSetChanged();
+    }
+
+
+
 }
