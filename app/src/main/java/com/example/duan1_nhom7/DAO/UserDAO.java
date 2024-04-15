@@ -1,5 +1,6 @@
 package com.example.duan1_nhom7.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -131,14 +132,14 @@ public class UserDAO {
 
         return db.delete("User","id_user=?",new String[]{user.getId_user()+""});
     }
-
+    @SuppressLint("Range")
     public List<String> getDiaChi() {
         List<String> diaChiList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM User", null);
         if (cursor.moveToFirst()) {
             do {
-                String diaChi = cursor.getString(cursor.getColumnIndex("diaChi"));
+                 String diaChi = cursor.getString(cursor.getColumnIndex("diaChi"));
                 diaChiList.add(diaChi);
             } while (cursor.moveToNext());
         }

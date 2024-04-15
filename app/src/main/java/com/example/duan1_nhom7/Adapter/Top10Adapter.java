@@ -48,12 +48,6 @@ public class Top10Adapter extends RecyclerView.Adapter<Top10Adapter.ViewHolder>{
         holder.itemSoLuong.setText(list.get(position).getSoluong()+"");
         userDAO=new UserDAO(context);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new ChiTiet_SP_gioHang(sanPham));
-            }
-        });
 
 
     }

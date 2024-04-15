@@ -67,7 +67,7 @@ public class SanPhamDAO {
     public ArrayList<SanPham> getAllProduct(int rdoCheck) {
         String sql = null;
         if (rdoCheck == 0) {
-            sql = "SELECT * FROM SanPham";
+            sql = "SELECT * FROM SanPham ";
         }
         if (rdoCheck == 1) {
             sql = "SELECT * FROM SanPham ORDER BY ngaySP DESC";
@@ -189,14 +189,14 @@ public class SanPhamDAO {
         int totalSold = 0;
         DonHangDAO donHangDAO = new DonHangDAO(context);
         // Lấy danh sách đơn hàng có status là status từ cơ sở dữ liệu
-//        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("3");
+        List<DonHang> donHangList = donHangDAO.getDonHangsByStatus("3");
 
         // Tính tổng số lượng sản phẩm có productId trong các đơn hàng đã lấy được
-//        for (DonHang donHang : donHangList) {
-//            if (donHang.getId_sanPham() == productId) {
-//                totalSold += donHang.getSoLuong();
-//            }
-//        }
+        for (DonHang donHang : donHangList) {
+            if (donHang.getId_sanPham() == productId) {
+                totalSold += donHang.getSoLuong();
+            }
+        }
 
         return totalSold;
     }
@@ -230,6 +230,7 @@ public class SanPhamDAO {
         return database.update("SanPham", values, "id_sanPham=?", new String[]{String.valueOf(idSanPham)});
     }
 
+    @SuppressLint("Range")
     public String getTenSanPhamById(int idSanPham) {
         String tenSanPham = null;
         Cursor cursor = null;
@@ -250,6 +251,7 @@ public class SanPhamDAO {
         return tenSanPham;
     }
 
+    @SuppressLint("Range")
     public String getAnhSanPhamById(int idSanPham) {
         String anhSanPham = null;
         Cursor cursor = null;
