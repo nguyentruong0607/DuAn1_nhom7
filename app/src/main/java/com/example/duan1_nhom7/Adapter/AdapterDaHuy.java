@@ -9,19 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.ProductInfo;
 import com.example.duan1_nhom7.R;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class AdapterDaHuy extends RecyclerView.Adapter<AdapterDaHuy.ViewHolder> {
-
     private Context context;
     private List<DonHang> hoaDonList;
-    private static OnItemClickListener mListener; // Interface
+    private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(DonHang donHang);
+        void onItemClick(DonHang gioHang);
     }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
@@ -31,29 +32,31 @@ public class AdapterDaHuy extends RecyclerView.Adapter<AdapterDaHuy.ViewHolder> 
         this.hoaDonList = hoaDonList;
     }
 
-
-
-
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.cardview_choxacnhan, parent, false);
-        return new ViewHolder(view, mListener, hoaDonList);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DonHang donHang = hoaDonList.get(position);
 
-        Picasso.get().load(donHang.getImage()).into(holder.imgGHAnhSP);
-        holder.txtGHTenSP.setText(donHang.getTenSP());
+        ProductInfo productInfo = donHang.getProductInfo();
+
+        if (productInfo != null) {
+            if (productInfo.getAnhSP() != null && !productInfo.getAnhSP().isEmpty()) {
+                Picasso.get().load(productInfo.getAnhSP()).into(holder.imgGHAnhSP);
+            }
+            holder.txtGHTenSP.setText(productInfo.getTenSP());
+        }
+
+        holder.txtGHSize.setText(donHang.getMau());
+        holder.edtGHSoLuong.setText(String.valueOf(donHang.getSoLuong()));
         holder.txtGHSize.setText(donHang.getMau());
         int soLuong = donHang.getSoLuong();
         holder.edtGHSoLuong.setText(String.valueOf(soLuong));
-    }
-    public void setData(List<DonHang> data) {
-        this.hoaDonList = data;
     }
 
     @Override
@@ -61,14 +64,16 @@ public class AdapterDaHuy extends RecyclerView.Adapter<AdapterDaHuy.ViewHolder> 
         return hoaDonList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void setData(List<DonHang> data) {
+        this.hoaDonList = data;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgGHAnhSP;
         TextView txtGHTenSP, txtGHSize, edtGHSoLuong;
-        List<DonHang> hoaDonList; // Danh sách đơn hàng
 
-        public ViewHolder(@NonNull View itemView, final OnItemClickListener listener, List<DonHang> hoaDonList) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.hoaDonList = hoaDonList; // Khởi tạo danh sách đơn hàng
 
             imgGHAnhSP = itemView.findViewById(R.id.imgHoaDonXacNhan);
             txtGHTenSP = itemView.findViewById(R.id.txtTenSP_HoadonXacNhan);
@@ -84,7 +89,6 @@ public class AdapterDaHuy extends RecyclerView.Adapter<AdapterDaHuy.ViewHolder> 
                     }
                 }
             });
-
         }
     }
 }

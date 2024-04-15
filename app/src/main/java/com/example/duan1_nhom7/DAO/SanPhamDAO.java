@@ -189,18 +189,86 @@ public class SanPhamDAO {
         int totalSold = 0;
         DonHangDAO donHangDAO = new DonHangDAO(context);
         // Lấy danh sách đơn hàng có status là status từ cơ sở dữ liệu
-        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("3");
+//        List<DonHang> donHangList = donHangDAO.getDonHangByStatus("3");
 
         // Tính tổng số lượng sản phẩm có productId trong các đơn hàng đã lấy được
-        for (DonHang donHang : donHangList) {
-            if (donHang.getId_sanPham() == productId) {
-                totalSold += donHang.getSoLuong();
-            }
-        }
+//        for (DonHang donHang : donHangList) {
+//            if (donHang.getId_sanPham() == productId) {
+//                totalSold += donHang.getSoLuong();
+//            }
+//        }
 
         return totalSold;
     }
 
+
+    @SuppressLint("Range")
+    public int getSoLuongSanPhamById(int idSanPham) {
+        int soLuongSP = 0;
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT soLuongSP FROM SanPham WHERE id_sanPham = ?";
+            cursor = database.rawQuery(query, new String[]{String.valueOf(idSanPham)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                soLuongSP = cursor.getInt(cursor.getColumnIndex("soLuongSP"));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return soLuongSP;
+    }
+
+    public int updateSoluongSP(int idSanPham, int soLuongMoi) {
+        ContentValues values = new ContentValues();
+        values.put("soLuongSP", soLuongMoi);
+
+        return database.update("SanPham", values, "id_sanPham=?", new String[]{String.valueOf(idSanPham)});
+    }
+
+    public String getTenSanPhamById(int idSanPham) {
+        String tenSanPham = null;
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT tenSP FROM SanPham WHERE id_sanPham = ?";
+            cursor = database.rawQuery(query, new String[]{String.valueOf(idSanPham)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                tenSanPham = cursor.getString(cursor.getColumnIndex("tenSP"));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return tenSanPham;
+    }
+
+    public String getAnhSanPhamById(int idSanPham) {
+        String anhSanPham = null;
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT anhSP FROM SanPham WHERE id_sanPham = ?";
+            cursor = database.rawQuery(query, new String[]{String.valueOf(idSanPham)});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                anhSanPham = cursor.getString(cursor.getColumnIndex("anhSP"));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return anhSanPham;
+    }
 
 
 }

@@ -68,39 +68,49 @@ public class DbHelper extends SQLiteOpenHelper {
                 "fullname TEXT NOT NULL)";
         db.execSQL(createTableUser);
 
-        String createTableDonHangChiTiet = "CREATE TABLE DonHangChiTiet (" +
-                "id_donHang INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "id_sanPham INTEGER REFERENCES SanPham(id_sanPham), " +
-                "id_user INTEGER REFERENCES User(id_user), " +
-                "tenSP TEXT, " +
-                "ngayMua TEXT, " +
-                "soLuong INTEGER, " +
-                "gia INTEGER, " +
-                "status TEXT, " +
-                "image TEXT," +
-                "mau TEXT," +
-                "pttt TEXT," +
-                "location TEXT," +
-                "phone TEXT," +
-                "nameUser TEXT" +
-
-                ");";
-        db.execSQL(createTableDonHangChiTiet);
-
         String createTableHoaDon = "CREATE TABLE HoaDon (" +
                 "id_HoaDon INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "id_user INTEGER REFERENCES User(id_user), " +
                 "ngayMua TEXT, " +
-                "gia INTEGER, " +
-                "soLuong INTEGER " +
+                "tongTien INTEGER, " +
+                "pttt TEXT, " +
+                "status TEXT, " +
+                "nameUser TEXT, " +
+                "location TEXT, " +
+                "phone TEXT" +
                 ");";
         db.execSQL(createTableHoaDon);
-        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (1,'2024/04/04', 20000000, 1)");
-        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (2, '2024/04/06', 25000000, 1)");
-        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (3, '2024/04/07', 30000000, 1)");
-        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (4, '2024/04/05', 30000000, 1)");
-        db.execSQL("INSERT INTO HoaDon (id_HoaDon, ngayMua, gia, soLuong) VALUES (5, '2024/04/07', 30000000, 1)");
+
+        db.execSQL("INSERT INTO HoaDon (id_HoaDon, id_user, ngayMua, tongTien, pttt, status, nameUser, location, phone) " +
+                "VALUES (1001, 1, '2024/04/11', 500000, 'COD', '1', 'John Doe', '123 Street, City', '123456789'), " +
+                "(1002, 1, '2024/04/12', 750000, 'Credit card', '1', 'Alice Smith', '456 Avenue, Town', '987654321'), " +
+                "(1003, 1, '2024/04/13', 600000, 'COD', '1', 'Bob Johnson', '789 Road, Village', '111222333'), " +
+                "(1005, 2, '2024/04/13', 600000, 'COD', '1', 'Bob Johnson', '789 Road, Village', '111222333'), " +
+                "(1006, 3, '2024/04/13', 600000, 'COD', '1', 'Bob Johnson', '789 Road, Village', '111222333'), " +
+                "(1007, 4, '2024/04/13', 600000, 'COD', '1', 'Bob Johnson', '789 Road, Village', '111222333'), " +
+                "(1004, 1, '2024/04/14', 900000, 'Credit card', '1', 'Eva Brown', '987 Lane, Hamlet', '444555666')");
 
 
+
+        String createTableDonHangChiTiet = "CREATE TABLE DonHangChiTiet(" +
+                "id_donHangChiTiet INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "id_HoaDon INTEGER REFERENCES HoaDon(id_HoaDon), " +
+                "id_sanPham INTEGER REFERENCES SanPham(id_sanPham), " +
+                "soLuong INTEGER, " +
+                "giaBan INTEGER, " +
+                "mau TEXT);";
+        db.execSQL(createTableDonHangChiTiet);
+        db.execSQL("INSERT INTO DonHangChiTiet (id_donHangChiTiet, id_HoaDon, id_sanPham, soLuong, giaBan, mau) " +
+                "VALUES (1, 1001, 1, 2, 100000, 'red'), " +
+                "(2, 1002, 2, 1, 200000, 'blue'), " +
+                "(3,  1003, 3, 3,  150000, 'green'), " +
+                "(5,  1005, 3, 3,  150000, 'green'), " +
+                "(6,  1005, 2, 3,  150000, 'purple'), " +
+                "(7,  1006, 3, 3,  150000, 'green'), " +
+                "(8,  1006, 2, 4,  150000, 'green'), " +
+                "(9,  1006, 1, 7,  150000, 'green'), " +
+                "(10,  1007, 3, 3,  150000, 'green'), " +
+                "(4, 1004, 4, 2, 180000, 'yellow')");
 
 
     }

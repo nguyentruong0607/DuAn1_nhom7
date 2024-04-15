@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.duan1_nhom7.DAO.AdminDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.User;
+import com.example.duan1_nhom7.Fragment.Account_Fragment;
+import com.example.duan1_nhom7.Fragment.Personal_Account_Fragment;
 import com.example.duan1_nhom7.MainActivity;
 import com.example.duan1_nhom7.MainActivity_Admin;
 import com.example.duan1_nhom7.R;
@@ -137,12 +140,20 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences shareQuyen = getSharedPreferences("luuDangNhap", MODE_PRIVATE);
                         SharedPreferences.Editor edit = shareQuyen.edit();
                         edit.putString("TK", strUser);
+                    User user1 =    userDAO.getUserByName(strUser);
+                    Log.i("zzzzzzzzzzzzzz",user1.toString());
+
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("user", user1);
+                        Account_Fragment fragment = new Account_Fragment();
+                        fragment.setArguments(bundle);
                         edit.putString("quyen", "khachhang");
                         edit.apply();
 
 
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtras(bundle);
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();

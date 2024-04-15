@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.ProductInfo;
 import com.example.duan1_nhom7.Database.DbHelper;
 
 import java.util.ArrayList;
@@ -24,135 +25,118 @@ public class DonHangDAO {
     public void insertDonHang(DonHang donHang) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("id_HoaDon", donHang.getId_HoaDon());
         values.put("id_sanPham", donHang.getId_sanPham());
-        values.put("id_user", donHang.getId_user());
-        values.put("tenSP", donHang.getTenSP());
-        values.put("ngayMua", donHang.getNgayMua());
         values.put("soLuong", donHang.getSoLuong());
-        values.put("gia", donHang.getGia());
-        values.put("status", donHang.getStatus());
-        values.put(("image"), donHang.getImage());
-        values.put(("mau"), donHang.getMau());
-        values.put((("pttt")), donHang.getPttt());
-        values.put((("location")), donHang.getLocation());
-        values.put((("phone")), donHang.getPhone());
-        values.put((("nameUser")), donHang.getNameUser());
+        values.put("giaBan", donHang.getGiaBan());
+        values.put("mau", donHang.getMau());
 
-
-        // Thêm các trường còn lại tương ứng vào values
-
-        // Insert vào cơ sở dữ liệu
         db.insert("DonHangChiTiet", null, values);
 
-        // Đóng kết nối tới cơ sở dữ liệu
         db.close();
-    }
-    @SuppressLint("Range")
-    public List<DonHang> getDonHangByStatus(String status) {
-        List<DonHang> donHangList = new ArrayList<>();
-        db = dbHelper.getReadableDatabase();
-
-        String[] columns = {"id_donHang", "id_sanPham", "id_user", "tenSP", "ngayMua", "soLuong", "gia", "status", "image", "mau", "pttt", "location", "phone", "nameUser"};
-
-        String selection = "status=?";
-        String[] selectionArgs = {status};
-
-        Cursor cursor = null;
-        try {
-            cursor = db.query("DonHangChiTiet", columns, selection, selectionArgs, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    int id = cursor.getInt(cursor.getColumnIndex("id_donHang"));
-                    int id_sanPham = cursor.getInt(cursor.getColumnIndex("id_sanPham"));
-                    int id_user = cursor.getInt(cursor.getColumnIndex("id_user"));
-                    String tenSP = cursor.getString(cursor.getColumnIndex("tenSP"));
-                    String ngayMua = cursor.getString(cursor.getColumnIndex("ngayMua"));
-                    int soLuong = cursor.getInt(cursor.getColumnIndex("soLuong"));
-                    int gia = cursor.getInt(cursor.getColumnIndex("gia"));
-                    String statusDB = cursor.getString(cursor.getColumnIndex("status"));
-                    String image = cursor.getString(cursor.getColumnIndex("image"));
-                    String mau = cursor.getString(cursor.getColumnIndex("mau"));
-                    String pttt= cursor.getString(cursor.getColumnIndex("pttt"));
-                    String location = cursor.getString(cursor.getColumnIndex("location"));
-                    String phone = cursor.getString(cursor.getColumnIndex("phone"));
-                    String nameUser = cursor.getString(cursor.getColumnIndex("nameUser"));
-
-
-
-                    DonHang donHang = new DonHang(id, id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, statusDB, image, mau, pttt, location, phone, nameUser);
-                    donHangList.add(donHang);
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.e("DonHangDAO", "Error while trying to get don hang by status: " + e.getMessage());
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-            db.close();
-        }
-        return donHangList;
     }
 
     @SuppressLint("Range")
-    public List<DonHang> getDonHangByIdUserAndStatus(int id_user, String status) {
-        List<DonHang> donHangList = new ArrayList<>();
+    public List<DonHang> getDonHangsByUserAndStatus(int idUser, String status) {
+        List<DonHang> list = new ArrayList<>();
         db = dbHelper.getReadableDatabase();
 
-        String[] columns = {"id_donHang", "id_sanPham", "id_user", "tenSP", "ngayMua", "soLuong", "gia", "status", "image", "mau", "pttt", "location", "phone", "nameUser"};
+        String query = "SELECT DISTINCT HoaDon.*, DonHangChiTiet.id_sanPham, DonHangChiTiet.soLuong, DonHangChiTiet.giaBan, DonHangChiTiet.mau, " +
+                "SanPham.tenSP, SanPham.anhSP " +
+                "FROM HoaDon " +
+                "JOIN DonHangChiTiet ON HoaDon.id_HoaDon = DonHangChiTiet.id_HoaDon " +
+                "JOIN SanPham ON DonHangChiTiet.id_sanPham = SanPham.id_sanPham " +
+                "WHERE HoaDon.id_user = ? AND HoaDon.status = ? " +
+                "GROUP BY HoaDon.id_HoaDon " +
+                "ORDER BY DonHangChiTiet.id_donHangChiTiet ASC";
 
-        String selection = "id_user=? AND status=?";
-        String[] selectionArgs = {String.valueOf(id_user), status};
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idUser), status});
 
-        Cursor cursor = null;
-        try {
-            cursor = db.query("DonHangChiTiet", columns, selection, selectionArgs, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    int id = cursor.getInt(cursor.getColumnIndex("id_donHang"));
-                    int id_sanPham = cursor.getInt(cursor.getColumnIndex("id_sanPham"));
-                    String tenSP = cursor.getString(cursor.getColumnIndex("tenSP"));
-                    String ngayMua = cursor.getString(cursor.getColumnIndex("ngayMua"));
-                    int soLuong = cursor.getInt(cursor.getColumnIndex("soLuong"));
-                    int gia = cursor.getInt(cursor.getColumnIndex("gia"));
-                    String statusDB = cursor.getString(cursor.getColumnIndex("status"));
-                    String image = cursor.getString(cursor.getColumnIndex("image"));
-                    String mau = cursor.getString(cursor.getColumnIndex("mau"));
-                    String pttt= cursor.getString(cursor.getColumnIndex("pttt"));
-                    String location = cursor.getString(cursor.getColumnIndex("location"));
-                    String phone = cursor.getString(cursor.getColumnIndex("phone"));
-                    String nameUser = cursor.getString(cursor.getColumnIndex("nameUser"));
+        while (cursor.moveToNext()) {
+            DonHang donHang = new DonHang();
+            donHang.setId_HoaDon(cursor.getInt(cursor.getColumnIndexOrThrow("id_HoaDon")));
+            donHang.setId_sanPham(cursor.getInt(cursor.getColumnIndexOrThrow("id_sanPham")));
+            donHang.setSoLuong(cursor.getInt(cursor.getColumnIndexOrThrow("soLuong")));
+            donHang.setGiaBan(cursor.getInt(cursor.getColumnIndexOrThrow("giaBan")));
+            donHang.setMau(cursor.getString(cursor.getColumnIndexOrThrow("mau")));
 
-                    DonHang donHang = new DonHang(id, id_sanPham, id_user, tenSP, ngayMua, soLuong, gia, statusDB, image, mau, pttt, location, phone, nameUser);
-                    donHangList.add(donHang);
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.e("DonHangDAO", "Error while trying to get don hang by user ID and status: " + e.getMessage());
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-            db.close();
+            // Thiết lập thông tin sản phẩm
+            ProductInfo productInfo = new ProductInfo(
+                    cursor.getString(cursor.getColumnIndexOrThrow("tenSP")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("anhSP"))
+            );
+            donHang.setProductInfo(productInfo);
+
+            list.add(donHang);
         }
-        return donHangList;
-    }
 
-
-    public int updateDonHangStatus(DonHang donHang) {
-        db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("status", donHang.getStatus());
-        values.put("ngayMua", donHang.getNgayMua());
-
-        String selection = "id_donHang=?";
-        String[] selectionArgs = {String.valueOf(donHang.getId_donHang())};
-
-        int rowsAffected = db.update("DonHangChiTiet", values, selection, selectionArgs);
+        cursor.close();
         db.close();
-        return rowsAffected;
+        return list;
     }
 
+
+    public List<DonHang> getDonHangsByIdHoaDon(int idHoaDon) {
+        List<DonHang> list = new ArrayList<>();
+        db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT * FROM DonHangChiTiet WHERE id_HoaDon = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idHoaDon)});
+
+        while (cursor.moveToNext()) {
+            DonHang donHang = new DonHang();
+            donHang.setId_HoaDon(cursor.getInt(cursor.getColumnIndexOrThrow("id_HoaDon")));
+            donHang.setId_sanPham(cursor.getInt(cursor.getColumnIndexOrThrow("id_sanPham")));
+            donHang.setSoLuong(cursor.getInt(cursor.getColumnIndexOrThrow("soLuong")));
+            donHang.setGiaBan(cursor.getInt(cursor.getColumnIndexOrThrow("giaBan")));
+            donHang.setMau(cursor.getString(cursor.getColumnIndexOrThrow("mau")));
+
+            list.add(donHang);
+        }
+
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+
+    public List<DonHang> getDonHangsByStatus(String status) {
+        List<DonHang> list = new ArrayList<>();
+        db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT DISTINCT HoaDon.*, DonHangChiTiet.id_sanPham, DonHangChiTiet.soLuong, DonHangChiTiet.giaBan, DonHangChiTiet.mau, " +
+                "SanPham.tenSP, SanPham.anhSP " +
+                "FROM HoaDon " +
+                "JOIN DonHangChiTiet ON HoaDon.id_HoaDon = DonHangChiTiet.id_HoaDon " +
+                "JOIN SanPham ON DonHangChiTiet.id_sanPham = SanPham.id_sanPham " +
+                "WHERE HoaDon.status = ? " +
+                "GROUP BY HoaDon.id_HoaDon " +
+                "ORDER BY DonHangChiTiet.id_donHangChiTiet ASC";
+
+        Cursor cursor = db.rawQuery(query, new String[]{status});
+
+        while (cursor.moveToNext()) {
+            DonHang donHang = new DonHang();
+            donHang.setId_HoaDon(cursor.getInt(cursor.getColumnIndexOrThrow("id_HoaDon")));
+            donHang.setId_sanPham(cursor.getInt(cursor.getColumnIndexOrThrow("id_sanPham")));
+            donHang.setSoLuong(cursor.getInt(cursor.getColumnIndexOrThrow("soLuong")));
+            donHang.setGiaBan(cursor.getInt(cursor.getColumnIndexOrThrow("giaBan")));
+            donHang.setMau(cursor.getString(cursor.getColumnIndexOrThrow("mau")));
+
+            // Thiết lập thông tin sản phẩm
+            ProductInfo productInfo = new ProductInfo(
+                    cursor.getString(cursor.getColumnIndexOrThrow("tenSP")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("anhSP"))
+            );
+            donHang.setProductInfo(productInfo);
+
+            list.add(donHang);
+        }
+
+        cursor.close();
+        db.close();
+        return list;
+    }
 
 
 

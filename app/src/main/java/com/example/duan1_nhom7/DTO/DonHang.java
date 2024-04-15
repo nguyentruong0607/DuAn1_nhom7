@@ -3,50 +3,51 @@ package com.example.duan1_nhom7.DTO;
 import java.io.Serializable;
 
 public class DonHang implements Serializable {
-    private int id_donHang;
+    private int id_donHangChiTiet;
+    private int id_HoaDon;
     private int id_sanPham;
-    private int id_user;
-    private String tenSP;
-    private String ngayMua;
     private int soLuong;
-    private int gia;
-    private String status;
-    private String image; // Thêm trường image
-
+    private int giaBan;
     private String mau;
+    private ProductInfo productInfo;
 
-    private String pttt;
-    private String location;
-    private String phone;
-
-    private String nameUser;
-
+    // Constructor không tham số
     public DonHang() {
     }
 
-    public DonHang(int id_donHang, int id_sanPham, int id_user, String tenSP, String ngayMua, int soLuong, int gia, String status, String image, String mau, String pttt, String location, String phone, String nameUser) {
-        this.id_donHang = id_donHang;
+    // Constructor đầy đủ tham số
+    public DonHang(int id_donHangChiTiet, int id_HoaDon, int id_sanPham, int soLuong, int giaBan, String mau) {
+        this.id_donHangChiTiet = id_donHangChiTiet;
+        this.id_HoaDon = id_HoaDon;
         this.id_sanPham = id_sanPham;
-        this.id_user = id_user;
-        this.tenSP = tenSP;
-        this.ngayMua = ngayMua;
         this.soLuong = soLuong;
-        this.gia = gia;
-        this.status = status;
-        this.image = image;
+        this.giaBan = giaBan;
         this.mau = mau;
-        this.pttt = pttt;
-        this.location = location;
-        this.phone = phone;
-        this.nameUser = nameUser;
     }
 
-    public int getId_donHang() {
-        return id_donHang;
+    public ProductInfo getProductInfo() {
+        return productInfo;
     }
 
-    public void setId_donHang(int id_donHang) {
-        this.id_donHang = id_donHang;
+    public void setProductInfo(ProductInfo productInfo) {
+        this.productInfo = productInfo;
+    }
+
+    // Getter và Setter cho tất cả thuộc tính
+    public int getId_donHangChiTiet() {
+        return id_donHangChiTiet;
+    }
+
+    public void setId_donHangChiTiet(int id_donHangChiTiet) {
+        this.id_donHangChiTiet = id_donHangChiTiet;
+    }
+
+    public int getId_HoaDon() {
+        return id_HoaDon;
+    }
+
+    public void setId_HoaDon(int id_HoaDon) {
+        this.id_HoaDon = id_HoaDon;
     }
 
     public int getId_sanPham() {
@@ -57,30 +58,6 @@ public class DonHang implements Serializable {
         this.id_sanPham = id_sanPham;
     }
 
-    public int getId_user() {
-        return id_user;
-    }
-
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
-    }
-
-    public String getTenSP() {
-        return tenSP;
-    }
-
-    public void setTenSP(String tenSP) {
-        this.tenSP = tenSP;
-    }
-
-    public String getNgayMua() {
-        return ngayMua;
-    }
-
-    public void setNgayMua(String ngayMua) {
-        this.ngayMua = ngayMua;
-    }
-
     public int getSoLuong() {
         return soLuong;
     }
@@ -89,28 +66,12 @@ public class DonHang implements Serializable {
         this.soLuong = soLuong;
     }
 
-    public int getGia() {
-        return gia;
+    public int getGiaBan() {
+        return giaBan;
     }
 
-    public void setGia(int gia) {
-        this.gia = gia;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+    public void setGiaBan(int giaBan) {
+        this.giaBan = giaBan;
     }
 
     public String getMau() {
@@ -120,36 +81,6 @@ public class DonHang implements Serializable {
     public void setMau(String mau) {
         this.mau = mau;
     }
-
-    public String getPttt() {
-        return pttt;
-    }
-
-    public void setPttt(String pttt) {
-        this.pttt = pttt;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getNameUser() {
-        return nameUser;
-    }
-
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
-    }
 }
+
+

@@ -143,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:text="Người nhận: "/>
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtnameUserTT"
                         android:textSize="18sp"
                         android:layout_width="wrap_content"
@@ -165,7 +165,7 @@
                         android:layout_height="wrap_content"
                         android:text="Số điện thoại: "/>
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtphoneUserTT"
                         android:textSize="18sp"
                         android:layout_width="wrap_content"

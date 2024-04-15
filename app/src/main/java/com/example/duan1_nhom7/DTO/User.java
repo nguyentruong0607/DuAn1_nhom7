@@ -1,6 +1,8 @@
 package com.example.duan1_nhom7.DTO;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     int id_user;
     String ten_user;
     String password;
@@ -31,6 +33,18 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(int id_user, String sodienthoai, String diaChi, String fullname) {
+        this.id_user = id_user;
+        this.sodienthoai = sodienthoai;
+        this.diaChi = diaChi;
+        this.fullname = fullname;
+    }
+
+    public User(int id_user, String password) {
+        this.id_user = id_user;
+        this.password = password;
     }
 
     public int getId_user() {

@@ -3,6 +3,7 @@ package com.example.duan1_nhom7;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,22 +16,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
+import com.example.duan1_nhom7.Adapter.AdapterHoaDon;
+import com.example.duan1_nhom7.Adapter.AdapterItem;
+import com.example.duan1_nhom7.DAO.DAOHoaDon;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.SanPhamDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.HoaDon;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class HuyDonHangActivity extends AppCompatActivity {
-    ImageView img;
-    TextView name, price, color, content, count, date, pttt, nameUser, phone, location;
+
+    TextView date, pttt, nameUser, phone, location, tongTienHang, tongThanhToan;
     Button btnHuy;
-
-
+    DonHangDAO donHangDAO;
+    AdapterItem adapter;
+    DAOHoaDon daoHoaDon;
+    RecyclerView rcv;
 
 
     @Override
@@ -38,41 +51,45 @@ public class HuyDonHangActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huy_don_hang);
 
-        count = findViewById(R.id.soLuongSPChoXacNhan);
-        img = findViewById(R.id.imgChoXacNhan);
-        name = findViewById(R.id.txtTenSPChoXacNhan);
-        price = findViewById(R.id.txtGiaSPChoXacNhan);
-        color = findViewById(R.id.txtMauSPChoXacNhan);
+
         btnHuy = findViewById(R.id.btnHuyDonHang);
-        content = findViewById(R.id.txtMoTaSPChoXacNhan);
         date = findViewById(R.id.txtDateChoXacNhan);
         pttt = findViewById(R.id.PTTTSPChoXacNhan);
         nameUser = findViewById(R.id.txtNameHuy);
         phone = findViewById(R.id.txtPhoneHuy);
         location = findViewById(R.id.txtLocationHuy);
+        tongThanhToan = findViewById(R.id.txtTongThanhToanHuyActivity);
+        tongTienHang = findViewById(R.id.txtTongTienHangHuyActivity);
+        rcv = findViewById(R.id.rcv_huyDonActivity);
+        donHangDAO = new DonHangDAO(HuyDonHangActivity.this);
+        daoHoaDon = new DAOHoaDon(HuyDonHangActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rcv.setLayoutManager(layoutManager);
+
+        HoaDon hoaDon = (HoaDon) getIntent().getSerializableExtra("hoaDon");
+        if (hoaDon != null) {
+
+            int id_HoaDon = hoaDon.getId_HoaDon();
+
+            int giaSP = hoaDon.getTongTien();
+            String mGiaSP = String.format("%,.0f", (float) giaSP);
+            tongTienHang.setText(mGiaSP + "VNĐ");
+            tongThanhToan.setText(mGiaSP + "VNĐ");
 
 
+            date.setText(convertDateFormat(hoaDon.getNgayMua()));
+            pttt.setText(hoaDon.getPttt());
+            nameUser.setText(hoaDon.getNameUser());
+            phone.setText(hoaDon.getPhone());
+            location.setText(hoaDon.getLocation());
+
+            List<DonHang> list = donHangDAO.getDonHangsByIdHoaDon(id_HoaDon);
+
+            adapter = new AdapterItem(HuyDonHangActivity.this, list);
+            rcv.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
 
 
-        DonHang donHang = (DonHang) getIntent().getSerializableExtra("donHang");
-        if (donHang != null) {
-
-            int id_sanPham = donHang.getId_sanPham();
-            SanPhamDAO sanPhamDAO = new SanPhamDAO(HuyDonHangActivity.this);
-            String moTaSP = sanPhamDAO.getMoTaSPById(id_sanPham);
-            name.setText(donHang.getTenSP());
-            double giaSP = donHang.getGia();
-            String mGiaSP = String.format("%,.0f", giaSP);
-            price.setText(mGiaSP + "VNĐ");
-            count.setText(String.valueOf(donHang.getSoLuong()));
-            color.setText(donHang.getMau());
-            Picasso.get().load(donHang.getImage()).into(img);
-            date.setText(donHang.getNgayMua());
-            pttt.setText(donHang.getPttt());
-            content.setText(moTaSP);
-            nameUser.setText(donHang.getNameUser());
-            phone.setText(donHang.getPhone());
-            location.setText(donHang.getLocation());
         }
 
         // Thêm sự kiện click cho nút hủy đơn hàng
@@ -89,14 +106,21 @@ public class HuyDonHangActivity extends AppCompatActivity {
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        DonHangDAO donHangDAO = new DonHangDAO(HuyDonHangActivity.this);
-                        DonHang donHang = (DonHang) getIntent().getSerializableExtra("donHang");
-                        if (donHang != null) {
+                        if (hoaDon != null) {
                             // Cập nhật trạng thái của đơn hàng thành 4 (đã hủy)
-                            donHang.setStatus("4");
-                            // Sử dụng DonHangDAO để cập nhật trạng thái của đơn hàng trong cơ sở dữ liệu
-                            int rowsAffected = donHangDAO.updateDonHangStatus(donHang);
+                            hoaDon.setStatus("4");
+
+                            Calendar calendar = Calendar.getInstance();
+                            // Cộng thêm 1 ngày
+                            calendar.add(Calendar.DAY_OF_MONTH, 1);
+                            // Format ngày thành chuỗi
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            String ngayHuy = sdf.format(calendar.getTime());
+
+                            // Cập nhật ngày hủy
+                            hoaDon.setNgayMua(ngayHuy);
+
+                            int rowsAffected = daoHoaDon.updateHoaDonStatusAndCancelDate(hoaDon);
                             if (rowsAffected > 0) {
                                 Toast.makeText(HuyDonHangActivity.this, "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
                                 setResult(RESULT_OK);
@@ -111,7 +135,20 @@ public class HuyDonHangActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
+
         });
 
+    }
+
+    private String convertDateFormat(String dateString) {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdfOutput = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = sdfInput.parse(dateString);
+            return sdfOutput.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
