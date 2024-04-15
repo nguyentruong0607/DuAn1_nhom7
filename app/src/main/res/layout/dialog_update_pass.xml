@@ -9,20 +9,20 @@
         android:id="@+id/currentPasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Current Password"
+        android:hint="Nhập mật khẩu cũ"
         android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/newPasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="New Password"
+        android:hint=" Nhập mật khẩu mới"
         android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/confirmPasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Confirm New Password"
+        android:hint="Nhập lại mật khẩu mới"
         android:inputType="textPassword" />
 </LinearLayout>
