@@ -9,14 +9,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
+import com.example.duan1_nhom7.DAO.DAOHoaDon;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.HoaDon;
 import com.example.duan1_nhom7.HuyDonHangActivity;
 import com.example.duan1_nhom7.R;
 import java.util.List;
@@ -27,6 +32,7 @@ public class ChoXacNhanFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterChoXacNhan adapter;
     private DonHangDAO donHangDAO;
+    private DAOHoaDon daoHoaDon;
     int idUser;
 
     UserDAO userDAO;
@@ -45,45 +51,44 @@ public class ChoXacNhanFragment extends Fragment {
         idUser = Integer.parseInt(userDAO.getIdUser(userName));
 
         donHangDAO = new DonHangDAO(getActivity());
-        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"1");
+        daoHoaDon = new DAOHoaDon(getActivity());
+        List<DonHang> donHangs = donHangDAO.getDonHangsByUserAndStatus(idUser, "1");
 
-        adapter = new AdapterChoXacNhan(getContext(), donHangList);
+        adapter = new AdapterChoXacNhan(getActivity(), donHangs);
         recyclerView.setAdapter(adapter);
-
-
-
 
         adapter.setOnItemClickListener(new AdapterChoXacNhan.OnItemClickListener() {
             @Override
             public void onItemClick(DonHang donHang) {
-                Intent intent = new Intent(getContext(), HuyDonHangActivity.class);
-                intent.putExtra("donHang", donHang);
-                startActivityForResult(intent, REQUEST_CODE_CANCEL_ORDER);
+                // Lấy thông tin hóa đơn từ ID
+                HoaDon hoaDon = daoHoaDon.getHoaDonById(donHang.getId_HoaDon());
+                if (hoaDon != null) {
+                    // Nếu hóa đơn tồn tại, mở activity HuyDonHangActivity
+                    Intent intent = new Intent(getContext(), HuyDonHangActivity.class);
+                    intent.putExtra("hoaDon", hoaDon);
+                    startActivityForResult(intent, REQUEST_CODE_CANCEL_ORDER);
+                } else {
+                    // Nếu không tìm thấy hóa đơn, xử lý trường hợp này
+                }
             }
         });
-
 
         return view;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CANCEL_ORDER) {
-            if (resultCode == Activity.RESULT_OK) {
-                // Load lại dữ liệu và cập nhật RecyclerView
-                loadDonHangData();
-            }
+        if (requestCode == REQUEST_CODE_CANCEL_ORDER && resultCode == Activity.RESULT_OK) {
+            // Cập nhật lại dữ liệu khi kết thúc hoạt động hủy đơn hàng
+            refreshData();
         }
     }
 
-    private void loadDonHangData() {
-        // Cập nhật lại danh sách đơn hàng chờ xác nhận
-        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser, "1");
-        adapter.setData(donHangList);
+    private void refreshData() {
+        // Lấy lại danh sách đơn hàng cần xác nhận và cập nhật RecyclerView
+        List<DonHang> donHangs = donHangDAO.getDonHangsByUserAndStatus(idUser, "1");
+        adapter.setData(donHangs);
         adapter.notifyDataSetChanged();
     }
-
-
-
 }

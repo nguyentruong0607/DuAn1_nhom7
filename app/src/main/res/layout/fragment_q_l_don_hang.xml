@@ -7,16 +7,9 @@
     android:layout_marginHorizontal="15dp"
     tools:context=".Fragment.QLDonHangFragment">
 
-    <TextView
-        style="@style/edt_Label"
-        android:layout_width="match_parent"
-        android:textColor="#FF9800"
-        android:text="Đơn hàng chờ xác nhận"
-        android:gravity="center_horizontal"
-        android:textSize="35dp"
-        />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginBottom="30dp"
         android:id="@+id/rcvXacNhanHangAdmin"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"

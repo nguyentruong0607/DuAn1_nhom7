@@ -14,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.duan1_nhom7.Adapter.AdapterChoXacNhan;
 import com.example.duan1_nhom7.Adapter.AdapterDaGiao;
 import com.example.duan1_nhom7.Adapter.AdapterDanGiao;
+import com.example.duan1_nhom7.DAO.DAOHoaDon;
 import com.example.duan1_nhom7.DAO.DonHangDAO;
 import com.example.duan1_nhom7.DAO.UserDAO;
 import com.example.duan1_nhom7.DTO.DonHang;
+import com.example.duan1_nhom7.DTO.HoaDon;
 import com.example.duan1_nhom7.DaNhanHangActivity;
 import com.example.duan1_nhom7.NhanHangActivity;
 import com.example.duan1_nhom7.R;
@@ -27,8 +30,9 @@ import java.util.List;
 
 public class DaGiaoFragment extends Fragment {
     private RecyclerView recyclerView;
-    private AdapterDaGiao adapter;
+    private AdapterChoXacNhan adapter;
     private DonHangDAO donHangDAO;
+    private DAOHoaDon daoHoaDon;
     int idUser;
 
     UserDAO userDAO;
@@ -41,13 +45,14 @@ public class DaGiaoFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rcv_DaGiao);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        donHangDAO = new DonHangDAO(getContext());
+        donHangDAO = new DonHangDAO(getActivity());
+        daoHoaDon = new DAOHoaDon(getActivity());
         userDAO = new UserDAO(getActivity());
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("luuDangNhap", MODE_PRIVATE);
         String userName = sharedPreferences.getString("TK", "");
         idUser = Integer.parseInt(userDAO.getIdUser(userName));
 
-        // Đảm bảo rằng mỗi khi fragment được hiển thị, dữ liệu sẽ được cập nhật lại
+
         updateData();
 
 
@@ -58,21 +63,22 @@ public class DaGiaoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Cập nhật dữ liệu mỗi khi fragment được hiển thị
+
         updateData();
     }
 
     private void updateData() {
-        List<DonHang> donHangList = donHangDAO.getDonHangByIdUserAndStatus(idUser,"3");
-        adapter = new AdapterDaGiao(getContext(), donHangList);
+        List<DonHang> donHangs = donHangDAO.getDonHangsByUserAndStatus(idUser, "3");
+        adapter = new AdapterChoXacNhan(getContext(), donHangs);
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new AdapterDaGiao.OnItemClickListener() {
+        adapter.setOnItemClickListener(new AdapterChoXacNhan.OnItemClickListener() {
             @Override
             public void onItemClick(DonHang donHang) {
+                HoaDon hoaDon = daoHoaDon.getHoaDonById(donHang.getId_HoaDon());
                 Intent intent = new Intent(getContext(), NhanHangActivity.class);
-                intent.putExtra("hanggg", donHang);
-startActivity(intent);
+                intent.putExtra("hangggg", hoaDon);
+                startActivity(intent);
             }
         });
     }

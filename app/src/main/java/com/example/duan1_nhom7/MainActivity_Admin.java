@@ -49,7 +49,7 @@ public class MainActivity_Admin extends AppCompatActivity implements BottomNavig
             loadFragment(fragment);
             return true;
         } else if (menuItem.getItemId() == R.id.item_navi_bottom_admin_donhang) {
-            fragment = new QLDonHangFragment();
+            fragment = new DonHangAdmin();
             loadFragment(fragment);
             return true;
         } else if (menuItem.getItemId() == R.id.item_navi_bottom_admin_thongKe) {

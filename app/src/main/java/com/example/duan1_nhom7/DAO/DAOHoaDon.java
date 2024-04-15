@@ -6,13 +6,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.duan1_nhom7.Database.DbHelper;
 import com.example.duan1_nhom7.DTO.HoaDon;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DAOHoaDon {
     private SQLiteDatabase db;
@@ -23,91 +27,147 @@ public class DAOHoaDon {
     }
 
     // Hàm insert hóa đơn
-    public long insertHoaDon(HoaDon hoaDon) {
-
-        db = dbHelper.getWritableDatabase();
+    public int insertHoaDonAndGetId(HoaDon hoaDon) {
         ContentValues values = new ContentValues();
-        values.put("ngayMua", hoaDon.getNgayMua());
-        values.put("gia", hoaDon.getGia());
-        values.put("soLuong", hoaDon.getSoLuong());
+        db = dbHelper.getWritableDatabase();
 
-        // Thực hiện thao tác insert vào bảng HoaDon
-        long result = -1;
-        try {
-            result = db.insert("HoaDon", null, values);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        values.put("id_user", hoaDon.getId_user());
+        values.put("ngayMua", hoaDon.getNgayMua());
+        values.put("tongTien", hoaDon.getTongTien());
+        values.put("pttt", hoaDon.getPttt());
+        values.put("status", hoaDon.getStatus());
+        values.put("nameUser", hoaDon.getNameUser());
+        values.put("location", hoaDon.getLocation());
+        values.put("phone", hoaDon.getPhone());
+
+        // Thêm hóa đơn vào cơ sở dữ liệu
+        long idHoaDon = db.insert("HoaDon", null, values);
+
+        db.close();
+
+        // Trả về id_HoaDon
+        return (int) idHoaDon;
+    }
+
+    public HoaDon getHoaDonById(int id_HoaDon) {
+        HoaDon hoaDon = null;
+        db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM HoaDon WHERE id_HoaDon = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(id_HoaDon)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex("id_HoaDon"));
+            int id_user = cursor.getInt(cursor.getColumnIndex("id_user"));
+            String ngayMua = cursor.getString(cursor.getColumnIndex("ngayMua"));
+            int tongTien = cursor.getInt(cursor.getColumnIndex("tongTien"));
+            String pttt = cursor.getString(cursor.getColumnIndex("pttt"));
+            String status = cursor.getString(cursor.getColumnIndex("status"));
+            String nameUser = cursor.getString(cursor.getColumnIndex("nameUser"));
+            String location = cursor.getString(cursor.getColumnIndex("location"));
+            String phone = cursor.getString(cursor.getColumnIndex("phone"));
+
+                hoaDon = new HoaDon(id, id_user, ngayMua, tongTien, pttt, status, nameUser, location, phone);
+
+            cursor.close();
         }
 
-        // Đóng kết nối và trả về kết quả
         db.close();
-        return result;
+        return hoaDon;
     }
 
 
 
+    public int updateHoaDonStatus(int id_HoaDon, String newStatus) {
+        db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("status", newStatus);
 
-    public int calculateRevenueByTimePeriod(String startDate, String endDate) {
+        // Tiến hành cập nhật trạng thái của hóa đơn
+        int rowsAffected = db.update("HoaDon", values, "id_HoaDon = ?", new String[]{String.valueOf(id_HoaDon)});
+
+        db.close();
+
+        return rowsAffected;
+    }
+
+    public int updateHoaDonStatusAndCancelDate(HoaDon hoaDon) {
+        ContentValues values = new ContentValues();
+        values.put("status", hoaDon.getStatus());
+        values.put("ngayMua", hoaDon.getNgayMua());
+
+        db = dbHelper.getWritableDatabase();
+        int rowsAffected = db.update("HoaDon", values, "id_HoaDon = ?", new String[]{String.valueOf(hoaDon.getId_HoaDon())});
+        db.close();
+
+        return rowsAffected;
+    }
+
+    public int getTotalRevenueByDateRangeAndStatus(String startDate, String endDate, String status) {
         int totalRevenue = 0;
-
         db = dbHelper.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
-        // Định dạng ngày tháng từ chuỗi sang đối tượng Date
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date startDateTime = null;
-        Date endDateTime = null;
         try {
-            startDateTime = sdf.parse(startDate);
-            endDateTime = sdf.parse(endDate);
+            // Chuyển đổi ngày bắt đầu và ngày kết thúc sang định dạng ngày tháng
+            Date start = dateFormat.parse(startDate);
+            Date end = dateFormat.parse(endDate);
+
+            // Chuyển đổi ngày kết thúc sang ngày tiếp theo để bao gồm cả ngày đó
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(end);
+            calendar.add(Calendar.DATE, 1);
+            end = calendar.getTime();
+
+            String query = "SELECT SUM(tongTien) AS total FROM HoaDon WHERE ngayMua BETWEEN ? AND ? AND status = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{dateFormat.format(start), dateFormat.format(end), status});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                totalRevenue = cursor.getInt(cursor.getColumnIndex("total"));
+                cursor.close();
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        // Sử dụng câu truy vấn SQL để tính tổng doanh thu theo khoảng thời gian
-        String query = "SELECT SUM(gia) AS total FROM HoaDon WHERE ngayMua BETWEEN ? AND ?";
-        Cursor cursor = db.rawQuery(query, new String[]{sdf.format(startDateTime), sdf.format(endDateTime)});
-
-        // Kiểm tra cursor và tính tổng doanh thu nếu có dữ liệu
-        if (cursor != null && cursor.moveToFirst()) {
-            totalRevenue = cursor.getInt(cursor.getColumnIndex("total"));
-            cursor.close();
-        }
-
-        // Đóng kết nối và trả về tổng doanh thu
         db.close();
         return totalRevenue;
     }
 
-    public int calculateQuantityByTimePeriod(String startDate, String endDate) {
-        int totalQuantity = 0;
+    public int getTotalOrdersByDateRangeAndStatus(String startDate, String endDate, String status) {
+        int totalOrders = 0;
         db = dbHelper.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
-        // Định dạng ngày tháng từ chuỗi sang đối tượng Date
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date startDateTime = null;
-        Date endDateTime = null;
         try {
-            startDateTime = sdf.parse(startDate);
-            endDateTime = sdf.parse(endDate);
+            // Chuyển đổi ngày bắt đầu và ngày kết thúc sang định dạng ngày tháng
+            Date start = dateFormat.parse(startDate);
+            Date end = dateFormat.parse(endDate);
+
+            // Chuyển đổi ngày kết thúc sang ngày tiếp theo để bao gồm cả ngày đó
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(end);
+            calendar.add(Calendar.DATE, 1);
+            end = calendar.getTime();
+
+            String query = "SELECT SUM(soLuong) AS total FROM DonHangChiTiet " +
+                    "JOIN HoaDon ON DonHangChiTiet.id_HoaDon = HoaDon.id_HoaDon " +
+                    "WHERE HoaDon.ngayMua BETWEEN ? AND ? AND HoaDon.status = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{dateFormat.format(start), dateFormat.format(end), status});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                totalOrders = cursor.getInt(cursor.getColumnIndex("total"));
+                cursor.close();
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        // Sử dụng câu truy vấn SQL để tính tổng số lượng theo khoảng thời gian
-        String query = "SELECT SUM(soLuong) AS totalQuantity FROM HoaDon WHERE ngayMua BETWEEN ? AND ?";
-        Cursor cursor = db.rawQuery(query, new String[]{sdf.format(startDateTime), sdf.format(endDateTime)});
-
-        // Kiểm tra cursor và tính tổng số lượng nếu có dữ liệu
-        if (cursor != null && cursor.moveToFirst()) {
-            totalQuantity = cursor.getInt(cursor.getColumnIndex("totalQuantity"));
-            cursor.close();
-        }
-
-        // Đóng kết nối và trả về tổng số lượng
         db.close();
-        return totalQuantity;
+        return totalOrders;
     }
 
-
-
 }
+
+
+
+

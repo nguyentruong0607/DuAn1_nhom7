@@ -21,6 +21,12 @@
         android:theme="@style/Theme.DuAn1_nhom7"
         tools:targetApi="31">
         <activity
+            android:name=".DonHangsAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".XacNhanDonHangAdmin"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Edit_Activity"
             android:exported="false" />
         <activity
