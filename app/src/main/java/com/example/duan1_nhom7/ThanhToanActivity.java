@@ -320,7 +320,7 @@ public class ThanhToanActivity extends AppCompatActivity {
 
                 // Build notification
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(ThanhToanActivity.this, "order_cancel_channel")
-                        .setSmallIcon(R.drawable.baseline_phone_android_24)
+                        .setSmallIcon(R.drawable.avt)
                         .setContentTitle("Thông báo")
                         .setContentText("Đặt hàng thành công.")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
